@@ -4,9 +4,6 @@
 package com.cheng.rostergenerator.ui;
 
 import javax.swing.JFrame;
-import javax.swing.JTextArea;
-
-import com.cheng.rostergenerator.model.UiConstants;
 
 /**
  * @author Chandler Cheng
