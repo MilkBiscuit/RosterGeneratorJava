@@ -44,7 +44,7 @@ public class MyTableModel extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-        return col >= 2;
+        return true;
     }
 
     public void setValueAt(Object value, int row, int col) {

@@ -31,26 +31,26 @@
 
 package com.cheng.rostergenerator.ui;
 
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /*
  * NameList.java requires SpringUtilities.java
  */
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SpringLayout;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.MyTableModel;
-import com.cheng.rostergenerator.util.SpringUtilities;
 
 public class NameList extends JPanel {
     /**
@@ -59,8 +59,20 @@ public class NameList extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private JTable table;
-    private JTextField statusText;
     private TableRowSorter<MyTableModel> sorter;
+    private ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int viewRow = table.getSelectedRow();
+            if (viewRow >= 0) {
+                int modelRow = table.convertRowIndexToModel(viewRow);
+                String selectedText = String.format("Selected Row in view: %d. " +
+                        "Selected Row in model: %d.", 
+                        viewRow, modelRow);
+                System.out.println(selectedText);
+            }
+        }
+    };
 
     public NameList() {
         super();
@@ -75,22 +87,10 @@ public class NameList extends JPanel {
         table.setFillsViewportHeight(true);
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
         //When selection changes, provide user with row numbers for both view and model.
         table.getSelectionModel().addListSelectionListener(
                 new ListSelectionListener() {
                     public void valueChanged(ListSelectionEvent event) {
-                        int viewRow = table.getSelectedRow();
-                        if (viewRow < 0) {
-                            //Selection got filtered away.
-                            statusText.setText("");
-                        } else {
-                            int modelRow = table.convertRowIndexToModel(viewRow);
-                            statusText.setText(
-                                String.format("Selected Row in view: %d. " +
-                                    "Selected Row in model: %d.", 
-                                    viewRow, modelRow));
-                        }
                     }
                 }
         );
@@ -99,15 +99,10 @@ public class NameList extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane);
 
-        //Create a separate form for filterText and statusText
-        JPanel form = new JPanel(new SpringLayout());
-        JLabel l2 = new JLabel("Status:", SwingConstants.TRAILING);
-        form.add(l2);
-        statusText = new JTextField();
-        l2.setLabelFor(statusText);
-        form.add(statusText);
-        SpringUtilities.makeCompactGrid(form, 1, 2, 6, 6, 6, 6);
-        add(form);
+        JButton button = new JButton(ResBundleHelper.getString("common.done"));
+        button.addActionListener(actionListener);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(button);
     }
 
 }
