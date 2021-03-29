@@ -2,6 +2,8 @@ package com.cheng.rostergenerator.ui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -9,6 +11,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.UiConstants;
 
 public class NameCollector extends JPanel {
@@ -22,7 +25,7 @@ public class NameCollector extends JPanel {
             UiConstants.PADDING_BIG, UiConstants.PADDING_BIG));
         setLayout(new GridBagLayout());
 
-        JLabel label = new JLabel("Please input names, one name each line:");
+        JLabel label = new JLabel(ResBundleHelper.getString("please_input_names"));
         GridBagConstraints c = new GridBagConstraints();
         c.gridwidth = GridBagConstraints.REMAINDER;
         c.fill = GridBagConstraints.HORIZONTAL;
