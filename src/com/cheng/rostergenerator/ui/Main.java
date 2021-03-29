@@ -18,9 +18,9 @@ public class Main {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        NameCollector nameCollector = new NameCollector();
-        nameCollector.initLayout();
-        frame.add(nameCollector);
+        NameList newContentPane = new NameList();
+        newContentPane.setOpaque(true); //content panes must be opaque
+        frame.setContentPane(newContentPane);
 
         frame.pack();
         frame.setVisible(true);
