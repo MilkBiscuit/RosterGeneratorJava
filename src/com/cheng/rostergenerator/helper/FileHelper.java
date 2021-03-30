@@ -17,7 +17,7 @@ public class FileHelper {
 
     private static final String MEMBER_LIST_FILE_PATH = "src/res/memberList.json";
 
-    public static List<User> readJsonFile() {
+    public static List<User> readUserList() {
         JSONParser jsonParser = new JSONParser();
         ArrayList<User> memberList = new ArrayList<User>();
         try (FileReader reader = new FileReader(MEMBER_LIST_FILE_PATH))

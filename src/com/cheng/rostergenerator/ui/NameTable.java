@@ -50,16 +50,16 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.helper.ResBundleHelper;
-import com.cheng.rostergenerator.model.MyTableModel;
+import com.cheng.rostergenerator.model.NameTableModel;
 
-public class NameList extends JPanel {
+public class NameTable extends JPanel {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
     private JTable table;
-    private TableRowSorter<MyTableModel> sorter;
+    private TableRowSorter<NameTableModel> sorter;
     private ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -74,16 +74,16 @@ public class NameList extends JPanel {
         }
     };
 
-    public NameList() {
+    public NameTable() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         //Create a table with a sorter.
-        MyTableModel model = new MyTableModel();
-        sorter = new TableRowSorter<MyTableModel>(model);
+        NameTableModel model = new NameTableModel();
+        sorter = new TableRowSorter<NameTableModel>(model);
         table = new JTable(model);
         table.setRowSorter(sorter);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 100));
+        table.setPreferredScrollableViewportSize(new Dimension(500, 300));
         table.setFillsViewportHeight(true);
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -99,10 +99,15 @@ public class NameList extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane);
 
-        JButton button = new JButton(ResBundleHelper.getString("common.done"));
-        button.addActionListener(actionListener);
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(button);
+        JButton saveChangeBtn = new JButton(ResBundleHelper.getString("saveChanges"));
+        saveChangeBtn.addActionListener(actionListener);
+        saveChangeBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(saveChangeBtn);
+
+        JButton generateBtn = new JButton(ResBundleHelper.getString("generateRoster"));
+        generateBtn.addActionListener(actionListener);
+        generateBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(generateBtn);
     }
 
 }

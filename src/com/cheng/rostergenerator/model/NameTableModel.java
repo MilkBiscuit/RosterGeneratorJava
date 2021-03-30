@@ -1,8 +1,13 @@
 package com.cheng.rostergenerator.model;
 
+import java.util.List;
+
 import javax.swing.table.AbstractTableModel;
 
-public class MyTableModel extends AbstractTableModel {
+import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.helper.ResBundleHelper;
+
+public class NameTableModel extends AbstractTableModel {
 
     /**
      *
@@ -11,12 +16,25 @@ public class MyTableModel extends AbstractTableModel {
 
     private static final boolean DEBUG = true;
 
-    private String[] columnNames = { "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" };
-    private Object[][] data = { { "Kathy", "Smith", "Snowboarding", new Integer(5), new Boolean(false) },
-            { "John", "Doe", "Rowing", new Integer(3), new Boolean(true) },
-            { "Sue", "Black", "Knitting", new Integer(2), new Boolean(false) },
-            { "Jane", "White", "Speed reading", new Integer(20), new Boolean(true) },
-            { "Joe", "Brown", "Pool", new Integer(10), new Boolean(false) } };
+    private String[] columnNames = {
+        ResBundleHelper.getString("name"),
+        ResBundleHelper.getString("experienced"),
+        ResBundleHelper.getString("assignASpeech"),
+    };
+    private List<User> users = FileHelper.readUserList();
+    private int userNum = users.size();
+    private Object[][] data = null;
+
+    public NameTableModel() {
+        data = new Object[userNum][];
+        for (int i = 0; i < userNum; i++) {
+            User u = users.get(i);
+            Object[] userObject = {
+                u.name, u.isExperienced, u.assignSpeech
+            };
+            data[i] = userObject;
+        }
+    }
 
     public int getColumnCount() {
         return columnNames.length;
@@ -56,10 +74,10 @@ public class MyTableModel extends AbstractTableModel {
         data[row][col] = value;
         fireTableCellUpdated(row, col);
 
-        if (DEBUG) {
-            System.out.println("New value of data:");
-            printDebugData();
-        }
+        // if (DEBUG) {
+        //     System.out.println("New value of data:");
+        //     printDebugData();
+        // }
     }
 
     private void printDebugData() {
