@@ -1,5 +1,6 @@
 package com.cheng.rostergenerator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -74,23 +75,27 @@ public class NameTableModel extends AbstractTableModel {
         data[row][col] = value;
         fireTableCellUpdated(row, col);
 
+        var updatedUser = users.get(row);
+        switch (col) {
+        case 0:
+            updatedUser.name = (String) value;
+            break;
+        case 1:
+            updatedUser.isExperienced = (boolean) value;
+            break;
+        case 2:
+            updatedUser.assignSpeech = (boolean) value;
+            break;
+        }
+
         // if (DEBUG) {
         //     System.out.println("New value of data:");
         //     printDebugData();
         // }
     }
 
-    private void printDebugData() {
-        int numRows = getRowCount();
-        int numCols = getColumnCount();
-
-        for (int i = 0; i < numRows; i++) {
-            System.out.print("    row " + i + ":");
-            for (int j = 0; j < numCols; j++) {
-                System.out.print("  " + data[i][j]);
-            }
-            System.out.println();
-        }
-        System.out.println("--------------------------");
+    public List<User> getUserList() {
+        return users;
     }
+
 }

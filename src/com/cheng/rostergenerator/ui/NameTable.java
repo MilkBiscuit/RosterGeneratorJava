@@ -49,6 +49,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.NameTableModel;
 
@@ -60,16 +61,26 @@ public class NameTable extends JPanel {
 
     private JTable table;
     private TableRowSorter<NameTableModel> sorter;
+    private NameTableModel tableModel = new NameTableModel();
     private ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            int viewRow = table.getSelectedRow();
-            if (viewRow >= 0) {
-                int modelRow = table.convertRowIndexToModel(viewRow);
-                String selectedText = String.format("Selected Row in view: %d. " +
-                        "Selected Row in model: %d.", 
-                        viewRow, modelRow);
-                System.out.println(selectedText);
+            var command = e.getActionCommand();
+            switch (command) {
+            case "save":
+                var userList = tableModel.getUserList();
+                FileHelper.writeUserList(userList);
+
+                break;
+            case "generate":
+                int viewRow = table.getSelectedRow();
+                if (viewRow >= 0) {
+                    int modelRow = table.convertRowIndexToModel(viewRow);
+                    String selectedText = String.format("Selected Row in view: %d. " + "Selected Row in model: %d.",
+                            viewRow, modelRow);
+                    System.out.println(selectedText);
+                }
+                break;
             }
         }
     };
@@ -78,10 +89,9 @@ public class NameTable extends JPanel {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        //Create a table with a sorter.
-        NameTableModel model = new NameTableModel();
-        sorter = new TableRowSorter<NameTableModel>(model);
-        table = new JTable(model);
+        // Create a table with a sorter.
+        sorter = new TableRowSorter<NameTableModel>(tableModel);
+        table = new JTable(tableModel);
         table.setRowSorter(sorter);
         table.setPreferredScrollableViewportSize(new Dimension(500, 300));
         table.setFillsViewportHeight(true);
@@ -100,11 +110,13 @@ public class NameTable extends JPanel {
         add(scrollPane);
 
         JButton saveChangeBtn = new JButton(ResBundleHelper.getString("saveChanges"));
+        saveChangeBtn.setActionCommand("save");
         saveChangeBtn.addActionListener(actionListener);
         saveChangeBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(saveChangeBtn);
 
         JButton generateBtn = new JButton(ResBundleHelper.getString("generateRoster"));
+        generateBtn.setActionCommand("generate");
         generateBtn.addActionListener(actionListener);
         generateBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(generateBtn);
