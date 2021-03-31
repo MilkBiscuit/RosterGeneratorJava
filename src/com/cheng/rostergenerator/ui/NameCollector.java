@@ -9,16 +9,18 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
-import com.cheng.rostergenerator.model.UiConstants;
 import com.cheng.rostergenerator.model.Member;
+import com.cheng.rostergenerator.model.UiConstants;
 
 public class NameCollector extends JPanel {
 
@@ -38,6 +40,8 @@ public class NameCollector extends JPanel {
             .collect(Collectors.toList());
 
             FileHelper.writeMemberList(members);
+
+            navigateToNameTable();
         }
     };
 
@@ -81,6 +85,16 @@ public class NameCollector extends JPanel {
 
         c.gridx = 2;
         add(UiConstants.horizontalBox(), c);
+    }
+
+    private void navigateToNameTable() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(NameCollector.this);
+        NameTable nameTable = new NameTable();
+        nameTable.setOpaque(true);
+        frame.getContentPane().removeAll();;
+        frame.getContentPane().add(nameTable);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }
