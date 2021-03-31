@@ -81,11 +81,6 @@ public class NameTableModel extends AbstractTableModel {
             updatedMember.assignSpeech = (boolean) value;
             break;
         }
-
-        // if (DEBUG) {
-        //     System.out.println("New value of data:");
-        //     printDebugData();
-        // }
     }
 
     public ArrayList<Member> getMembers() {
