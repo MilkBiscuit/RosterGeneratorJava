@@ -1,56 +1,47 @@
 package com.cheng.rostergenerator.helper;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import com.cheng.rostergenerator.model.User;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import com.cheng.rostergenerator.model.Member;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class FileHelper {
 
-    private static final String MEMBER_LIST_FILE_PATH = "src/res/memberList.json";
+    private static final String MEMBER_LIST_FILE_PATH = "res/memberList.json";
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    public static List<User> readJsonFile() {
-        JSONParser jsonParser = new JSONParser();
-        ArrayList<User> memberList = new ArrayList<User>();
-        try (FileReader reader = new FileReader(MEMBER_LIST_FILE_PATH))
-        {
-            Object obj = jsonParser.parse(reader);
-            JSONArray jsonArray = (JSONArray) obj;
-            if (jsonArray != null) {
-                int len = jsonArray.size();
-                for (int i = 0; i < len; i++) {
-                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                    User user = parseUser(jsonObject);
-                    memberList.add(user);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+    public static List<Member> readMemberList() {
+        Path filePath = Path.of(MEMBER_LIST_FILE_PATH);
+        try {
+            String content = Files.readString(filePath);
+            Member[] memberArray = gson.fromJson(content, Member[].class);
+            return Arrays.asList(memberArray);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return memberList;
+        return new ArrayList<Member>();
     }
 
-    private static User parseUser(JSONObject json) 
-    {
-        JSONObject userObject = (JSONObject) json.get("member");
-        String name = (String) userObject.get("name");
-        boolean experienced = (boolean) userObject.get("experienced");
-        boolean assignSpeech = (boolean) userObject.get("assignSpeech");
+    public static void writeMemberList(List<Member> members) {
+        try (FileWriter writer = new FileWriter(MEMBER_LIST_FILE_PATH)) {
+            gson.toJson(members, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        return new User(name, experienced, assignSpeech);
+    public static boolean memberListFileExists() {
+        var file = new File(MEMBER_LIST_FILE_PATH);
+        return file.exists();
     }
 
 }

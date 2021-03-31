@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Ross",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Chandler",
+    "isExperienced": true,
+    "assignSpeech": true
+  }
+]

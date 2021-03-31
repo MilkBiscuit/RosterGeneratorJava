@@ -9,13 +9,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.UiConstants;
 
 public class NameCollector extends JPanel {
@@ -30,13 +34,22 @@ public class NameCollector extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String inputText = textArea.getText();
             List<String> lines = Arrays.asList(inputText.split("\n"));
-            List<String> names = lines.stream().filter(line -> !line.isBlank()).collect(Collectors.toList());
+            List<Member> members = lines.stream()
+            .filter(line -> !line.isBlank())
+            .map(name -> new Member(name, true, true))
+            .collect(Collectors.toList());
 
-            System.out.print(names);
+            FileHelper.writeMemberList(members);
+
+            navigateToNameTable();
         }
     };
 
-    public void initLayout() {
+    public NameCollector() {
+        initLayout();
+    }
+
+    private void initLayout() {
         setBorder(new EmptyBorder(UiConstants.PADDING_BIG, UiConstants.PADDING_BIG,
             UiConstants.PADDING_BIG, UiConstants.PADDING_BIG));
         setLayout(new GridBagLayout());
@@ -72,6 +85,16 @@ public class NameCollector extends JPanel {
 
         c.gridx = 2;
         add(UiConstants.horizontalBox(), c);
+    }
+
+    private void navigateToNameTable() {
+        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(NameCollector.this);
+        NameTable nameTable = new NameTable();
+        nameTable.setOpaque(true);
+        frame.getContentPane().removeAll();;
+        frame.getContentPane().add(nameTable);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }
