@@ -1,20 +1,16 @@
 package com.cheng.rostergenerator.helper;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.cheng.rostergenerator.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 public class FileHelper {
 
@@ -22,45 +18,21 @@ public class FileHelper {
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static List<User> readUserList() {
-        JSONParser jsonParser = new JSONParser();
-        ArrayList<User> memberList = new ArrayList<User>();
-        try (FileReader reader = new FileReader(MEMBER_LIST_FILE_PATH))
-        {
-            Object obj = jsonParser.parse(reader);
-            JSONArray jsonArray = (JSONArray) obj;
-            if (jsonArray != null) {
-                int len = jsonArray.size();
-                for (int i = 0; i < len; i++) {
-                    var jsonString = (String) jsonArray.get(i);
-                    User user = gson.fromJson(jsonString, User.class);
-                    memberList.add(user);
-                }
-            }
-        } catch (JsonSyntaxException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        Path filePath = Path.of(MEMBER_LIST_FILE_PATH);
+        try {
+            String content = Files.readString(filePath);
+            User[] userArray = gson.fromJson(content, User[].class);
+            return Arrays.asList(userArray);
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        return memberList;
+        return new ArrayList<User>();
     }
 
     public static void writeUserList(List<User> users) {
-        JSONArray employeeList = new JSONArray();
-        for (var user : users) {
-            var jsonObject = gson.toJson(user);
-            employeeList.add(jsonObject);
-        }
-
-        var formattedArray = gson.toJson(employeeList);
-        formattedArray = formattedArray.concat("\n");
-        try (FileWriter file = new FileWriter(MEMBER_LIST_FILE_PATH)) {
-            file.write(formattedArray);
-            file.flush();
+        try (FileWriter writer = new FileWriter(MEMBER_LIST_FILE_PATH)) {
+            gson.toJson(users, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }

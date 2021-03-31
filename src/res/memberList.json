@@ -1,27 +1,92 @@
 [
-  "{\n  \"name\": \"Ahmed Samy\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Ariana Phan\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Brendan Richardson\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Chandler Cheng\",\n  \"isExperienced\": true,\n  \"assignSpeech\": true\n}",
-  "{\n  \"name\": \"Chris Winter\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Christine Mitchell\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Claire Bond\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Clifford Hall\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Darryl Pascoe\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Gail Henry\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Grant Richardson\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Jamin Wan\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"John Reeve\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Jorge Naron\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Katie Loughlin\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Kenn Cabigayan\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Margaret Meredith\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Peter Stacey\",\n  \"isExperienced\": true,\n  \"assignSpeech\": true\n}",
-  "{\n  \"name\": \"Rachel Lee\",\n  \"isExperienced\": true,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Samuel Shelton\",\n  \"isExperienced\": true,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Stacey Hart\",\n  \"isExperienced\": false,\n  \"assignSpeech\": true\n}",
-  "{\n  \"name\": \"Steve Peeters\",\n  \"isExperienced\": true,\n  \"assignSpeech\": true\n}",
-  "{\n  \"name\": \"Susan Wang\",\n  \"isExperienced\": false,\n  \"assignSpeech\": false\n}",
-  "{\n  \"name\": \"Vanessa Loughlin\",\n  \"isExperienced\": false,\n  \"assignSpeech\": true\n}",
-  "{\n  \"name\": \"Vinay Chauhan\",\n  \"isExperienced\": false,\n  \"assignSpeech\": true\n}"
+  {
+    "name": "Ahmed Samy",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Ariana Phan",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Brendan Richardson",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Chandler Cheng",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Chris Winter",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Christine Mitchell",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Claire Bond",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Clifford Hall",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Darryl Pascoe",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Gail Henry",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Grant Richardson",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Jamin Wan",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "John Reeve",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Kenn Cabigayan",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Margaret Meredith",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Susan Wang",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Vanessa Loughlin",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Vinay Chauhan",
+    "isExperienced": false,
+    "assignSpeech": false
+  }
 ]
