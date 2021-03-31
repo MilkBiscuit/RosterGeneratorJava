@@ -6,7 +6,7 @@ import java.util.ResourceBundle;
 public class ResBundleHelper {
 
     private static ResBundleHelper sInstance = new ResBundleHelper();
-    private static ResourceBundle sResource = ResourceBundle.getBundle("res/string", Locale.US);
+    private static ResourceBundle sResource = ResourceBundle.getBundle("string", Locale.US);
 
     public static ResBundleHelper getInstance() {
         return sInstance;

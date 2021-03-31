@@ -15,7 +15,7 @@ import com.google.gson.GsonBuilder;
 
 public class FileHelper {
 
-    private static final String MEMBER_LIST_FILE_PATH = "src/res/memberList.json";
+    private static final String MEMBER_LIST_FILE_PATH = "res/memberList.json";
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static List<Member> readMemberList() {

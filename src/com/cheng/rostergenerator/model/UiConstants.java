@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.Box;
+import javax.swing.border.EmptyBorder;
 
 public class UiConstants {
 
@@ -18,8 +19,17 @@ public class UiConstants {
     public static Component verticalBox() {
         return Box.createRigidArea(new Dimension(0, PADDING_NORMAL));
     }
+
     public static Component horizontalBox() {
         return Box.createRigidArea(new Dimension(PADDING_NORMAL, 0));
+    }
+
+    public static EmptyBorder bigPaddingBorder() {
+        return new EmptyBorder(PADDING_BIG, PADDING_BIG, PADDING_BIG, PADDING_BIG);
+    }
+
+    public static EmptyBorder smallPaddingBorder() {
+        return new EmptyBorder(PADDING_SMALL, PADDING_SMALL, PADDING_SMALL, PADDING_SMALL);
     }
 
 }

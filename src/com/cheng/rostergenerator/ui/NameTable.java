@@ -33,6 +33,8 @@ package com.cheng.rostergenerator.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -40,11 +42,14 @@ import java.awt.event.ActionListener;
  * NameList.java requires SpringUtilities.java
  */
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -52,6 +57,7 @@ import javax.swing.table.TableRowSorter;
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.NameTableModel;
+import com.cheng.rostergenerator.model.UiConstants;
 
 public class NameTable extends JPanel {
     /**
@@ -60,6 +66,7 @@ public class NameTable extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private JTable table;
+    private JButton removeBtn;
     private TableRowSorter<NameTableModel> sorter;
     private NameTableModel tableModel = new NameTableModel();
     private ActionListener actionListener = new ActionListener() {
@@ -76,8 +83,9 @@ public class NameTable extends JPanel {
                 int viewRow = table.getSelectedRow();
                 if (viewRow >= 0) {
                     int modelRow = table.convertRowIndexToModel(viewRow);
-                    String selectedText = String.format("Selected Row in view: %d. " + "Selected Row in model: %d.",
-                            viewRow, modelRow);
+                    String selectedText = String.format(
+                        "Selected Row in view: %d. " + "Selected Row in model: %d.",
+                        viewRow, modelRow);
                     System.out.println(selectedText);
                 }
                 break;
@@ -89,25 +97,7 @@ public class NameTable extends JPanel {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Create a table with a sorter.
-        sorter = new TableRowSorter<NameTableModel>(tableModel);
-        table = new JTable(tableModel);
-        table.setRowSorter(sorter);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 300));
-        table.setFillsViewportHeight(true);
-
-        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        // When selection changes, provide user with row numbers for both view and model.
-        table.getSelectionModel().addListSelectionListener(
-                new ListSelectionListener() {
-                    public void valueChanged(ListSelectionEvent event) {
-                    }
-                }
-        );
-
-
-        JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane);
+        createTablePanel();
 
         JButton saveChangeBtn = new JButton(ResBundleHelper.getString("saveChanges"));
         saveChangeBtn.setActionCommand("save");
@@ -120,6 +110,60 @@ public class NameTable extends JPanel {
         generateBtn.addActionListener(actionListener);
         generateBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(generateBtn);
+    }
+
+    private void createTablePanel() {
+        sorter = new TableRowSorter<NameTableModel>(tableModel);
+        table = new JTable(tableModel);
+        table.setRowSorter(sorter);
+        table.setPreferredScrollableViewportSize(new Dimension(500, 300));
+        table.setFillsViewportHeight(true);
+
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // When selection changes, provide user with row numbers for both view and model.
+        table.getSelectionModel().addListSelectionListener(
+                new ListSelectionListener() {
+                    public void valueChanged(ListSelectionEvent event) {
+                        removeBtn.setEnabled(true);
+                    }
+                }
+        );
+
+        var tableWithButtons = new JPanel();
+        var layout = new GridBagLayout();
+        var titledBorder = new TitledBorder(ResBundleHelper.getString("memberList"));
+        var outsidePaddingBorder = UiConstants.bigPaddingBorder();
+        var insidePaddingBorder = UiConstants.smallPaddingBorder();
+        var outsideBorder = new CompoundBorder(outsidePaddingBorder, titledBorder);
+        var border = new CompoundBorder(outsideBorder, insidePaddingBorder);
+        tableWithButtons.setBorder(border);
+        tableWithButtons.setLayout(layout);
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.VERTICAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridheight = 2;
+        JScrollPane scrollPane = new JScrollPane(table);
+        tableWithButtons.add(scrollPane, c);
+
+        var addIcon = new ImageIcon("res/drawable/ic_add.png");
+        var addBtn = new JButton(addIcon);
+        c.gridx = 1;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.NONE;
+        tableWithButtons.add(addBtn, c);
+
+        var removeIcon = new ImageIcon("res/drawable/ic_remove.png");
+        removeBtn = new JButton(removeIcon);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.NONE;
+        tableWithButtons.add(removeBtn, c);
+        removeBtn.setEnabled(false);
+
+        add(tableWithButtons);
     }
 
 }
