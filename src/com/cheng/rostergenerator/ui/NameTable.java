@@ -1,34 +1,3 @@
-/*
- * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- *   - Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *
- *   - Redistributions in binary form must reproduce the above copyright
- *     notice, this list of conditions and the following disclaimer in the
- *     documentation and/or other materials provided with the distribution.
- *
- *   - Neither the name of Oracle or the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
- * IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
- * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
- * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
- * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
- * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
- * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
- * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */ 
-
 package com.cheng.rostergenerator.ui;
 
 import java.awt.Component;
@@ -78,7 +47,13 @@ public class NameTable extends JPanel {
             var members = tableModel.getMembers();
             switch (command) {
             case "save":
+                table.getCellEditor().stopCellEditing();
                 FileHelper.writeMemberList(members);
+                break;
+            case "add":
+                var newMember = new Member("", false, true);
+                members.add(newMember);
+                tableModel.refreshTable(members);
                 break;
             case "remove":
                 int viewRow = table.getSelectedRow();
@@ -88,6 +63,10 @@ public class NameTable extends JPanel {
                     tableModel.refreshTable(members);
                 }
                 break;
+            case "restore":
+                var restoredMembers = FileHelper.readMemberList();
+                tableModel.refreshTable(restoredMembers);
+                break;
             }
         }
     };
@@ -95,14 +74,7 @@ public class NameTable extends JPanel {
     public NameTable() {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         createTablePanel();
-
-        JButton saveChangeBtn = new JButton(ResBundleHelper.getString("saveChanges"));
-        saveChangeBtn.setActionCommand("save");
-        saveChangeBtn.addActionListener(actionListener);
-        saveChangeBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        add(saveChangeBtn);
 
         JButton generateBtn = new JButton(ResBundleHelper.getString("generateRoster"));
         generateBtn.setActionCommand("generate");
@@ -142,27 +114,42 @@ public class NameTable extends JPanel {
         c.fill = GridBagConstraints.VERTICAL;
         c.gridx = 0;
         c.gridy = 0;
-        c.gridheight = 2;
+        c.gridheight = 4;
         JScrollPane scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
 
         var addIcon = new ImageIcon("res/drawable/ic_add.png");
         var addBtn = new JButton(addIcon);
-        c.gridx = 1;
+        addBtn.setActionCommand("add");
+        addBtn.addActionListener(actionListener);
         c.gridheight = 1;
+        c.weighty = 1;
+        c.gridx = 1;
+        c.gridy = 0;
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(addBtn, c);
 
         var removeIcon = new ImageIcon("res/drawable/ic_remove.png");
         removeBtn = new JButton(removeIcon);
-        c.gridx = 1;
-        c.gridy = 1;
-        c.gridheight = 1;
-        c.fill = GridBagConstraints.NONE;
-        tableWithButtons.add(removeBtn, c);
         removeBtn.setEnabled(false);
         removeBtn.setActionCommand("remove");
         removeBtn.addActionListener(actionListener);
+        c.gridy = 1;
+        tableWithButtons.add(removeBtn, c);
+
+        var restoreIcon = new ImageIcon("res/drawable/ic_restore.png");
+        var restoreBtn = new JButton(restoreIcon);
+        restoreBtn.setActionCommand("restore");
+        restoreBtn.addActionListener(actionListener);
+        c.gridy = 2;
+        tableWithButtons.add(restoreBtn, c);
+
+        var saveIcon = new ImageIcon("res/drawable/ic_save.png");
+        var saveBtn = new JButton(saveIcon);
+        saveBtn.setActionCommand("save");
+        saveBtn.addActionListener(actionListener);
+        c.gridy = 3;
+        tableWithButtons.add(saveBtn, c);
 
         add(tableWithButtons);
     }
