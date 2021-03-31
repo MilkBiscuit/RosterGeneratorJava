@@ -1,5 +1,6 @@
 package com.cheng.rostergenerator.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -21,19 +22,13 @@ public class NameTableModel extends AbstractTableModel {
         ResBundleHelper.getString("experienced"),
         ResBundleHelper.getString("assignASpeech"),
     };
-    private List<Member> members = FileHelper.readMemberList();
-    private int memberNum = members.size();
+    private List<Member> members = null;
+    private int memberNum = 0;
     private Object[][] data = null;
 
     public NameTableModel() {
-        data = new Object[memberNum][];
-        for (int i = 0; i < memberNum; i++) {
-            Member u = members.get(i);
-            Object[] memberObject = {
-                u.name, u.isExperienced, u.assignSpeech
-            };
-            data[i] = memberObject;
-        }
+        var members = FileHelper.readMemberList();
+        refreshTable(members);
     }
 
     public int getColumnCount() {
@@ -93,8 +88,23 @@ public class NameTableModel extends AbstractTableModel {
         // }
     }
 
-    public List<Member> getMembers() {
-        return members;
+    public ArrayList<Member> getMembers() {
+        return new ArrayList<Member>(members);
+    }
+
+    public void refreshTable(List<Member> newMembers) {
+        this.members = newMembers;
+        this.memberNum = newMembers.size();
+        
+        data = new Object[memberNum][];
+        for (int i = 0; i < memberNum; i++) {
+            Member u = members.get(i);
+            Object[] memberObject = {
+                u.name, u.isExperienced, u.assignSpeech
+            };
+            data[i] = memberObject;
+        }
+        fireTableDataChanged();
     }
 
 }

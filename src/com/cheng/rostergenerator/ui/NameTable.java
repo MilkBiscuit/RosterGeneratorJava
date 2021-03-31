@@ -37,6 +37,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 /*
  * NameList.java requires SpringUtilities.java
@@ -56,6 +57,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.NameTableModel;
 import com.cheng.rostergenerator.model.UiConstants;
 
@@ -73,20 +75,17 @@ public class NameTable extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             var command = e.getActionCommand();
+            var members = tableModel.getMembers();
             switch (command) {
             case "save":
-                var memberList = tableModel.getMembers();
-                FileHelper.writeMemberList(memberList);
-
+                FileHelper.writeMemberList(members);
                 break;
-            case "generate":
+            case "remove":
                 int viewRow = table.getSelectedRow();
                 if (viewRow >= 0) {
                     int modelRow = table.convertRowIndexToModel(viewRow);
-                    String selectedText = String.format(
-                        "Selected Row in view: %d. " + "Selected Row in model: %d.",
-                        viewRow, modelRow);
-                    System.out.println(selectedText);
+                    members.remove(modelRow);
+                    tableModel.refreshTable(members);
                 }
                 break;
             }
@@ -162,6 +161,8 @@ public class NameTable extends JPanel {
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(removeBtn, c);
         removeBtn.setEnabled(false);
+        removeBtn.setActionCommand("remove");
+        removeBtn.addActionListener(actionListener);
 
         add(tableWithButtons);
     }
