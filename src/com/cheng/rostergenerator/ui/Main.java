@@ -5,6 +5,8 @@ package com.cheng.rostergenerator.ui;
 
 import javax.swing.JFrame;
 
+import com.cheng.rostergenerator.helper.FileHelper;
+
 /**
  * @author Chandler Cheng
  *
@@ -18,9 +20,14 @@ public class Main {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        NameTable newContentPane = new NameTable();
-        newContentPane.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(newContentPane);
+        if (FileHelper.memberListFileExists()) {
+            NameTable nameTable = new NameTable();
+            // nameTable.setOpaque(true);
+            frame.setContentPane(nameTable);
+        } else {
+            var nameCollector = new NameCollector();
+            frame.setContentPane(nameCollector);
+        }
 
         frame.pack();
         frame.setVisible(true);

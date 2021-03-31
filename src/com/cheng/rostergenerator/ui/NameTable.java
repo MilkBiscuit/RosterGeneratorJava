@@ -68,8 +68,8 @@ public class NameTable extends JPanel {
             var command = e.getActionCommand();
             switch (command) {
             case "save":
-                var userList = tableModel.getUserList();
-                FileHelper.writeUserList(userList);
+                var memberList = tableModel.getMembers();
+                FileHelper.writeMemberList(memberList);
 
                 break;
             case "generate":
@@ -97,7 +97,7 @@ public class NameTable extends JPanel {
         table.setFillsViewportHeight(true);
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        //When selection changes, provide user with row numbers for both view and model.
+        // When selection changes, provide user with row numbers for both view and model.
         table.getSelectionModel().addListSelectionListener(
                 new ListSelectionListener() {
                     public void valueChanged(ListSelectionEvent event) {

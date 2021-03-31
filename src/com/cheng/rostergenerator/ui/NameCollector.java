@@ -15,8 +15,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.UiConstants;
+import com.cheng.rostergenerator.model.Member;
 
 public class NameCollector extends JPanel {
 
@@ -30,13 +32,20 @@ public class NameCollector extends JPanel {
         public void actionPerformed(ActionEvent e) {
             String inputText = textArea.getText();
             List<String> lines = Arrays.asList(inputText.split("\n"));
-            List<String> names = lines.stream().filter(line -> !line.isBlank()).collect(Collectors.toList());
+            List<Member> members = lines.stream()
+            .filter(line -> !line.isBlank())
+            .map(name -> new Member(name, true, true))
+            .collect(Collectors.toList());
 
-            System.out.print(names);
+            FileHelper.writeMemberList(members);
         }
     };
 
-    public void initLayout() {
+    public NameCollector() {
+        initLayout();
+    }
+
+    private void initLayout() {
         setBorder(new EmptyBorder(UiConstants.PADDING_BIG, UiConstants.PADDING_BIG,
             UiConstants.PADDING_BIG, UiConstants.PADDING_BIG));
         setLayout(new GridBagLayout());

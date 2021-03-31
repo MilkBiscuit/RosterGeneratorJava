@@ -1,6 +1,5 @@
 package com.cheng.rostergenerator.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
@@ -22,18 +21,18 @@ public class NameTableModel extends AbstractTableModel {
         ResBundleHelper.getString("experienced"),
         ResBundleHelper.getString("assignASpeech"),
     };
-    private List<User> users = FileHelper.readUserList();
-    private int userNum = users.size();
+    private List<Member> members = FileHelper.readMemberList();
+    private int memberNum = members.size();
     private Object[][] data = null;
 
     public NameTableModel() {
-        data = new Object[userNum][];
-        for (int i = 0; i < userNum; i++) {
-            User u = users.get(i);
-            Object[] userObject = {
+        data = new Object[memberNum][];
+        for (int i = 0; i < memberNum; i++) {
+            Member u = members.get(i);
+            Object[] memberObject = {
                 u.name, u.isExperienced, u.assignSpeech
             };
-            data[i] = userObject;
+            data[i] = memberObject;
         }
     }
 
@@ -75,16 +74,16 @@ public class NameTableModel extends AbstractTableModel {
         data[row][col] = value;
         fireTableCellUpdated(row, col);
 
-        var updatedUser = users.get(row);
+        var updatedMember = members.get(row);
         switch (col) {
         case 0:
-            updatedUser.name = (String) value;
+            updatedMember.name = (String) value;
             break;
         case 1:
-            updatedUser.isExperienced = (boolean) value;
+            updatedMember.isExperienced = (boolean) value;
             break;
         case 2:
-            updatedUser.assignSpeech = (boolean) value;
+            updatedMember.assignSpeech = (boolean) value;
             break;
         }
 
@@ -94,8 +93,8 @@ public class NameTableModel extends AbstractTableModel {
         // }
     }
 
-    public List<User> getUserList() {
-        return users;
+    public List<Member> getMembers() {
+        return members;
     }
 
 }
