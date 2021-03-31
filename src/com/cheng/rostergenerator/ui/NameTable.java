@@ -22,6 +22,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.helper.FileHelper;
@@ -47,7 +48,10 @@ public class NameTable extends JPanel {
             var members = tableModel.getMembers();
             switch (command) {
             case "save":
-                table.getCellEditor().stopCellEditing();
+                var cellEditor = table.getCellEditor();
+                if (cellEditor != null) {
+                    cellEditor.stopCellEditing();
+                }
                 FileHelper.writeMemberList(members);
                 break;
             case "add":
