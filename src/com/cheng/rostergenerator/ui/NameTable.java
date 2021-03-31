@@ -34,6 +34,7 @@ import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.NameTableModel;
 import com.cheng.rostergenerator.model.UiConstants;
+import com.cheng.rostergenerator.util.NavigateUtil;
 import com.cheng.rostergenerator.util.SpringUtilities;
 
 public class NameTable extends JPanel {
@@ -52,17 +53,13 @@ public class NameTable extends JPanel {
             var command = e.getActionCommand();
             var members = tableModel.getMembers();
             switch (command) {
-            case "save":
-                var cellEditor = table.getCellEditor();
-                if (cellEditor != null) {
-                    cellEditor.stopCellEditing();
-                }
-                FileHelper.writeMemberList(members);
-                break;
             case "add":
                 var newMember = new Member("", false, true);
                 members.add(newMember);
                 tableModel.refreshTable(members);
+                break;
+            case "generate":
+                NavigateUtil.toRosterTable();
                 break;
             case "remove":
                 int viewRow = table.getSelectedRow();
@@ -75,6 +72,13 @@ public class NameTable extends JPanel {
             case "restore":
                 var restoredMembers = FileHelper.readMemberList();
                 tableModel.refreshTable(restoredMembers);
+                break;
+            case "save":
+                var cellEditor = table.getCellEditor();
+                if (cellEditor != null) {
+                    cellEditor.stopCellEditing();
+                }
+                FileHelper.writeMemberList(members);
                 break;
             }
         }
