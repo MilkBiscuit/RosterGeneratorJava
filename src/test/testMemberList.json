@@ -2,82 +2,82 @@
   {
     "name": "Ahmed Samy",
     "isExperienced": true,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Ariana Phan",
     "isExperienced": true,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Brendan Richardson",
     "isExperienced": true,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Chandler Cheng",
     "isExperienced": true,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Chris Winter",
     "isExperienced": true,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Christine Mitchell",
     "isExperienced": true,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Claire Bond",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Clifford Hall",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Darryl Pascoe",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Gail Henry",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Grant Richardson",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Jamin Wan",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "John Reeve",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Kenn Cabigayan",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Margaret Meredith",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Susan Wang",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   },
   {
     "name": "Vanessa Loughlin",
@@ -87,6 +87,6 @@
   {
     "name": "Vinay Chauhan",
     "isExperienced": false,
-    "assignSpeech": true
+    "assignSpeech": false
   }
 ]

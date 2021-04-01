@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.cheng.rostergenerator.model.Member;
+import com.cheng.rostergenerator.util.TestUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,7 +20,8 @@ public class FileHelper {
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static List<Member> readMemberList() {
-        Path filePath = Path.of(MEMBER_LIST_FILE_PATH);
+        var path = (TestUtil.isRunningUnitTest()) ? "src/test/testMemberList.json" : MEMBER_LIST_FILE_PATH;
+        Path filePath = Path.of(path);
         try {
             String content = Files.readString(filePath);
             Member[] memberArray = gson.fromJson(content, Member[].class);

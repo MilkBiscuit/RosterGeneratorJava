@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator.model;
+package com.cheng.rostergenerator.model.constant;
 
 import java.awt.Component;
 import java.awt.Dimension;
