@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
 import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.constant.TextConstants;
@@ -23,9 +24,11 @@ public class RosterProducer {
         return (int) Math.ceil(numOfSpeakers / sSpeechesPerMeeting);
     }
 
-    /** 
-     * Return how many times we need to copy all members into a list so that
-     * roster can be generated.
+    /**
+     * 
+     * @param numOfMeeting, num of meetings so that all speakers are granted a speaking slot
+     * @param numOfClubMembers, how many members does the club have
+     * @return how many times we need to copy all members into a huge duplicated list
      */
     public static int numOfAllMembers(int numOfMeeting, int numOfClubMembers) {
         double totalNumOfRoles = numOfMeeting * sNonSpeechRolesPerMeeting;
@@ -35,10 +38,27 @@ public class RosterProducer {
     }
 
     /**
+     * Validate the member list from the user
+     * @return error message key, if list is valid, return null
+     */
+    public static String validateNumOfMembers() {
+        var members = FileHelper.readMemberList();
+        if (members.size() < sRolesPerMeeting) {
+            return "errorMessage.notEnoghMembers";
+        }
+        var experienced = members.stream().filter(m -> m.isExperienced).toArray();
+        if (experienced.length < 2) {
+            return "errorMessage.notEnoghExperienced";
+        }
+
+        return null;
+    }
+
+    /**
      * 
      * @param speakers, prepared speech speakers this meeting, it should NOT have duplicate values
      * @param totalMembers, n * (whole club member list)
-     * @return
+     * @return map of 'meeting role' to 'name'
      */
     public static Map<String, String> generateOneMeeting(List<Member> speakers, List<Member> totalMembers) {
         var map = new HashMap<String, String>();
