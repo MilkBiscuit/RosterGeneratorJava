@@ -28,18 +28,18 @@ public class MeetingRoleHelper {
      */
     public static List<String> getMeetingRoleForAnyOne() {
         return List.of(
-            TextConstants.GUESTHOSPITALITY,
+            TextConstants.GUEST_HOSPITALITY,
             TextConstants.GRAMMARIAN,
-            TextConstants.TIMEKEEPER,
-            TextConstants.UMAHCOUNTER,
+            TextConstants.TIMER,
+            TextConstants.UM_AH_COUNTER,
             TextConstants.EVALUATOR_1,
             TextConstants.EVALUATOR_2,
             TextConstants.EVALUATOR_3,
             TextConstants.EVALUATOR_4,
-            TextConstants.TABLETOPICMASTER,
-            TextConstants.TABLETOPICEVALUATOR1,
-            TextConstants.TABLETOPICEVALUATOR2,
-            TextConstants.LISTENINGPOST
+            TextConstants.TT_MASTER,
+            TextConstants.TT_EVALUATOR_1,
+            TextConstants.TT_EVALUATOR_2,
+            TextConstants.LISTENING_POST
         );
     }
 

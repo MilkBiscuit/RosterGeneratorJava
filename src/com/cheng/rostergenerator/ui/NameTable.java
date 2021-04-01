@@ -37,16 +37,13 @@ import com.cheng.rostergenerator.util.SpringUtilities;
 import com.cheng.rostergenerator.util.UIUtil;
 
 public class NameTable extends JPanel {
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     private JTable table;
     private JButton removeBtn;
     private TableRowSorter<NameTableModel> sorter;
     private NameTableModel tableModel = new NameTableModel();
-    private ActionListener actionListener = new ActionListener() {
+    private ActionListener buttonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             var command = e.getActionCommand();
@@ -93,12 +90,12 @@ public class NameTable extends JPanel {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         createTablePanel();
-
+        createSidePanel();
         createSettingsPanel();
 
         JButton generateBtn = new JButton(ResBundleHelper.getString("generateRoster"));
         generateBtn.setActionCommand("generate");
-        generateBtn.addActionListener(actionListener);
+        generateBtn.addActionListener(buttonActionListener);
         generateBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(generateBtn);
     }
@@ -119,7 +116,9 @@ public class NameTable extends JPanel {
                     }
                 }
         );
+    }
 
+    private void createSidePanel() {
         var tableWithButtons = new JPanel();
         var layout = new GridBagLayout();
         var titledBorder = new TitledBorder(ResBundleHelper.getString("memberList"));
@@ -141,7 +140,7 @@ public class NameTable extends JPanel {
         var addIcon = new ImageIcon("res/drawable/ic_add.png");
         var addBtn = new JButton(addIcon);
         addBtn.setActionCommand("add");
-        addBtn.addActionListener(actionListener);
+        addBtn.addActionListener(buttonActionListener);
         c.gridheight = 1;
         c.weighty = 1;
         c.gridx = 1;
@@ -153,21 +152,21 @@ public class NameTable extends JPanel {
         removeBtn = new JButton(removeIcon);
         removeBtn.setEnabled(false);
         removeBtn.setActionCommand("remove");
-        removeBtn.addActionListener(actionListener);
+        removeBtn.addActionListener(buttonActionListener);
         c.gridy = 1;
         tableWithButtons.add(removeBtn, c);
 
         var restoreIcon = new ImageIcon("res/drawable/ic_restore.png");
         var restoreBtn = new JButton(restoreIcon);
         restoreBtn.setActionCommand("restore");
-        restoreBtn.addActionListener(actionListener);
+        restoreBtn.addActionListener(buttonActionListener);
         c.gridy = 2;
         tableWithButtons.add(restoreBtn, c);
 
         var saveIcon = new ImageIcon("res/drawable/ic_save.png");
         var saveBtn = new JButton(saveIcon);
         saveBtn.setActionCommand("save");
-        saveBtn.addActionListener(actionListener);
+        saveBtn.addActionListener(buttonActionListener);
         c.gridy = 3;
         tableWithButtons.add(saveBtn, c);
 
@@ -195,6 +194,7 @@ public class NameTable extends JPanel {
         String[] labels = {
             ResBundleHelper.getString("speechNum"),
             ResBundleHelper.getString("ttEvaluatorNum"),
+            ResBundleHelper.getString("settings.reserveForNewMember"),
             ResBundleHelper.getString("meetingRole.guestHospitality"),
             ResBundleHelper.getString("meetingRole.umAhCounter"),
             ResBundleHelper.getString("meetingRole.listeningPost")
@@ -227,16 +227,17 @@ public class NameTable extends JPanel {
         for (int i = 2; i < numPairs; i++) {
             var label = new JLabel(labels[i], JLabel.TRAILING);
             settingsPanel.add(label);
+            var box = UiConstants.horizontalBox();
+            settingsPanel.add(box);
             var checkbox = new JCheckBox();
             settingsPanel.add(checkbox);
             checkbox.setSelected(true);
-            var box = Box.createHorizontalStrut(100);
-            settingsPanel.add(box);
         }
 
         SpringUtilities.makeCompactGrid(
             settingsPanel, labels.length, 3,
-            6, 6, 6, 6
+            UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL,
+            UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL
         );
         settingsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(settingsPanel);
