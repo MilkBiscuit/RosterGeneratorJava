@@ -18,7 +18,7 @@ import javax.swing.border.EmptyBorder;
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.Member;
-import com.cheng.rostergenerator.model.UiConstants;
+import com.cheng.rostergenerator.model.constant.UiConstants;
 import com.cheng.rostergenerator.util.NavigateUtil;
 
 public class NameCollector extends JPanel {

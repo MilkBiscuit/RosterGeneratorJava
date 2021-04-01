@@ -1,0 +1,92 @@
+[
+  {
+    "name": "Ahmed Samy",
+    "isExperienced": true,
+    "assignSpeech": false
+  },
+  {
+    "name": "Ariana Phan",
+    "isExperienced": true,
+    "assignSpeech": false
+  },
+  {
+    "name": "Brendan Richardson",
+    "isExperienced": true,
+    "assignSpeech": false
+  },
+  {
+    "name": "Chandler Cheng",
+    "isExperienced": true,
+    "assignSpeech": false
+  },
+  {
+    "name": "Chris Winter",
+    "isExperienced": true,
+    "assignSpeech": false
+  },
+  {
+    "name": "Christine Mitchell",
+    "isExperienced": true,
+    "assignSpeech": false
+  },
+  {
+    "name": "Claire Bond",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Clifford Hall",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Darryl Pascoe",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Gail Henry",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Grant Richardson",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Jamin Wan",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "John Reeve",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Kenn Cabigayan",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Margaret Meredith",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Susan Wang",
+    "isExperienced": false,
+    "assignSpeech": false
+  },
+  {
+    "name": "Vanessa Loughlin",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Vinay Chauhan",
+    "isExperienced": false,
+    "assignSpeech": false
+  }
+]

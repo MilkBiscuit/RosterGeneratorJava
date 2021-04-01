@@ -1,6 +1,7 @@
 package com.cheng.rostergenerator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,11 +48,12 @@ public class RosterProducer {
 
             return map;
         }
+        Collections.shuffle(totalMembers);
 
         speakers.sort(MeetingRoleHelper.inExperiencedFirst());
         for (int i = 0; i < speakers.size(); i++) {
             String speakerName = speakers.get(i).name;
-            map.put("Speaker_" + i + 1, speakerName);
+            map.put("Speaker " + (i + 1), speakerName);
             namesOfMeeting.add(speakerName);
         }
 
