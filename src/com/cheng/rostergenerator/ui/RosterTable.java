@@ -9,7 +9,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.cheng.rostergenerator.RosterProducer;
+import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.RosterTableModel;
+import com.cheng.rostergenerator.model.constant.UiConstants;
 
 public class RosterTable extends JPanel {
     /**
@@ -27,12 +29,16 @@ public class RosterTable extends JPanel {
         table.setPreferredScrollableViewportSize(new Dimension(500, 140));
         table.setFillsViewportHeight(true);
         JScrollPane areaScrollPane = new JScrollPane(table);
+        final var titleFormat = ResBundleHelper.getString("rosterTable.title");
+        final var title = String.format(titleFormat, dataModel.getColumnCount() - 1);
         areaScrollPane.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                    // TODO: remove hardcode
-                    BorderFactory.createTitledBorder("Roster for 2 meetings"),
-                    BorderFactory.createEmptyBorder(5,5,5,5)
+                    UiConstants.paddingBorder(),
+                    BorderFactory.createCompoundBorder(
+                        BorderFactory.createTitledBorder(title),
+                        UiConstants.smallPaddingBorder()
+                    )
                 ),
                 areaScrollPane.getBorder()
             )

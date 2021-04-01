@@ -28,6 +28,10 @@ public class UiConstants {
         return new EmptyBorder(PADDING_BIG, PADDING_BIG, PADDING_BIG, PADDING_BIG);
     }
 
+    public static EmptyBorder paddingBorder() {
+        return new EmptyBorder(PADDING_NORMAL, PADDING_NORMAL, PADDING_NORMAL, PADDING_NORMAL);
+    }
+
     public static EmptyBorder smallPaddingBorder() {
         return new EmptyBorder(PADDING_SMALL, PADDING_SMALL, PADDING_SMALL, PADDING_SMALL);
     }
