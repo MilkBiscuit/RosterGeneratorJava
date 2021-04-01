@@ -57,34 +57,40 @@ public class RosterProducer {
             namesOfMeeting.add(speakerName);
         }
 
-        var chairperson = totalMembers.stream().filter(
+        var optChairperson = totalMembers.stream().filter(
             m -> (namesOfMeeting.indexOf(m.name) == -1) && m.isExperienced
         ).findFirst();
-        if (chairperson.isPresent()) {
-            map.put(TextConstants.CHAIRPERSON, chairperson.get().name);
-            namesOfMeeting.add(chairperson.get().name);
+        if (optChairperson.isPresent()) {
+            var chair = optChairperson.get();
+            map.put(TextConstants.CHAIRPERSON, chair.name);
+            namesOfMeeting.add(chair.name);
+            totalMembers.remove(chair);
         } else {
             throw new RuntimeException("Impossible, no chairperson!");
         }
 
-        var generalEvaluator = totalMembers.stream().filter(
+        var optGeneral = totalMembers.stream().filter(
             m -> (namesOfMeeting.indexOf(m.name) == -1) && m.isExperienced
         ).findFirst();
-        if (generalEvaluator.isPresent()) {
-            map.put(TextConstants.GENERAL_EVALUATOR, generalEvaluator.get().name);
-            namesOfMeeting.add(generalEvaluator.get().name);
+        if (optGeneral.isPresent()) {
+            var general = optGeneral.get();
+            map.put(TextConstants.GENERAL_EVALUATOR, general.name);
+            namesOfMeeting.add(general.name);
+            totalMembers.remove(general);
         } else {
             throw new RuntimeException("Impossible, no general evaluator!");
         }
 
         var meetingRoles = MeetingRoleHelper.getMeetingRoleForAnyOne();
         for (String role : meetingRoles) {
-            var anyone = totalMembers.stream().filter(
+            var optAnyOne = totalMembers.stream().filter(
                 m -> (namesOfMeeting.indexOf(m.name) == -1)
             ).findFirst();
-            if (anyone.isPresent()) {
-                map.put(role, anyone.get().name);
-                namesOfMeeting.add(anyone.get().name);
+            if (optAnyOne.isPresent()) {
+                var anyone = optAnyOne.get();
+                map.put(role, anyone.name);
+                namesOfMeeting.add(anyone.name);
+                totalMembers.remove(anyone);
             }
         }
 
