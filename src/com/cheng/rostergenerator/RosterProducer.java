@@ -138,12 +138,12 @@ public class RosterProducer {
         for (int i = 0; i < ROLES_PER_MEETING.length; i++) {
             data[i][0] = ROLES_PER_MEETING[i];
         }
-        for (int i = 1; i <= numOfMeetings; i++) {
+        for (int j = 1; j <= numOfMeetings; j++) {
             var numOfSpeaker = Math.min(4, allSpeakers.size());
             var speakers = allSpeakers.subList(0, numOfSpeaker);
             Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
-            for (int j = 0; j < ROLES_PER_MEETING.length; j++) {
-                data[j][i] = rosterMap.get(ROLES_PER_MEETING[j]);
+            for (int i = 0; i < ROLES_PER_MEETING.length; i++) {
+                data[i][j] = rosterMap.get(ROLES_PER_MEETING[i]);
             }
             allSpeakers.removeAll(speakers);
         }
