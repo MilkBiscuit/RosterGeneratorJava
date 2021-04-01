@@ -10,9 +10,6 @@ import com.cheng.rostergenerator.helper.ResBundleHelper;
 
 public class NameTableModel extends AbstractTableModel {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = -1342387483628153701L;
 
     private static final boolean DEBUG = true;

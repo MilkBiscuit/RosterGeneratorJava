@@ -1,13 +1,21 @@
 package com.cheng.rostergenerator.ui;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTable;
+
+import com.cheng.rostergenerator.RosterProducer;
+import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.model.Member;
+import com.cheng.rostergenerator.model.RosterTableModel;
+import com.cheng.rostergenerator.model.constant.TextConstants;
 
 public class RosterTable extends JPanel {
     /**
@@ -18,60 +26,43 @@ public class RosterTable extends JPanel {
     public RosterTable() {
         super(new GridLayout(1,0));
 
-        // String[] columnNames = {"First Name",
-        //                         "Last Name",
-        //                         "Sport",
-        //                         "# of Years",
-        //                         "Vegetarian"};
+        var members = FileHelper.readMemberList();
+        var allMembers = new ArrayList<Member>();
+        var allSpeakers = members.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
+        var speakers = allSpeakers.subList(0, 4);
+        // TODO: Remove speakers from allSpeakers
+        allMembers.addAll(members);
+        allMembers.addAll(members);
+        allMembers.addAll(members);
+        allMembers.addAll(members);
+        allMembers.addAll(members);
 
-        // Object[][] data = {
-	    // {"Kathy", "Smith",
-	    //  "Snowboarding", new Integer(5), new Boolean(false)},
-	    // {"John", "Doe",
-	    //  "Rowing", new Integer(3), new Boolean(true)},
-	    // {"Sue", "Black",
-	    //  "Knitting", new Integer(2), new Boolean(false)},
-	    // {"Jane", "White",
-	    //  "Speed reading", new Integer(20), new Boolean(true)},
-	    // {"Joe", "Brown",
-	    //  "Pool", new Integer(10), new Boolean(false)}
-        // };
-
-        // final JTable table = new JTable(data, columnNames);
-        // table.setPreferredScrollableViewportSize(new Dimension(500, 70));
-        // table.setFillsViewportHeight(true);
-
-        // //Create the scroll pane and add the table to it.
-        // JScrollPane scrollPane = new JScrollPane(table);
-
-        // //Add the scroll pane to this panel.
-        // add(scrollPane);
-
-
-
-        
-
-        JTextArea textArea = new JTextArea(
-                "This is an editable JTextArea. " +
-                "A text area is a \"plain\" text component, " +
-                "which means that although it can display text " +
-                "in any font, all of the text is in the same font."
-        );
-        // textArea.setLineWrap(true);
-        // textArea.setWrapStyleWord(true);
-        textArea.setEditable(false);
-        JScrollPane areaScrollPane = new JScrollPane(textArea);
-        areaScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        areaScrollPane.setPreferredSize(new Dimension(250, 250));
+        Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
+        String[][] data = {
+            {TextConstants.CHAIRPERSON, rosterMap.get(TextConstants.CHAIRPERSON)},
+            {TextConstants.GENERAL_EVALUATOR, rosterMap.get(TextConstants.GENERAL_EVALUATOR)},
+            {TextConstants.SPEAKER_1, rosterMap.get(TextConstants.SPEAKER_1)},
+            {TextConstants.SPEAKER_2, rosterMap.get(TextConstants.SPEAKER_2)},
+            {TextConstants.SPEAKER_3, rosterMap.get(TextConstants.SPEAKER_3)},
+            {TextConstants.SPEAKER_4, rosterMap.get(TextConstants.SPEAKER_4)}
+        };
+        final var dataModel = new RosterTableModel();
+        dataModel.setData(data);
+        final var table = new JTable(dataModel);
+        // table.setModel(dataModel);
+        table.setPreferredScrollableViewportSize(new Dimension(500, 140));
+        table.setFillsViewportHeight(true);
+        JScrollPane areaScrollPane = new JScrollPane(table);
         areaScrollPane.setBorder(
             BorderFactory.createCompoundBorder(
                 BorderFactory.createCompoundBorder(
-                                BorderFactory.createTitledBorder("Plain Text"),
-                                BorderFactory.createEmptyBorder(5,5,5,5)),
+                    // TODO: remove hardcode
+                    BorderFactory.createTitledBorder("Roster for 2 meetings"),
+                    BorderFactory.createEmptyBorder(5,5,5,5)
+                ),
                 areaScrollPane.getBorder()
             )
         );
-
         add(areaScrollPane);
     }
 

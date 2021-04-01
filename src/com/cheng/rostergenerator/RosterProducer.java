@@ -41,7 +41,7 @@ public class RosterProducer {
      * Validate the member list from the user
      * @return error message key, if list is valid, return null
      */
-    public static String validateNumOfMembers() {
+    public static String validateErrorMessage() {
         var members = FileHelper.readMemberList();
         if (members.size() < sRolesPerMeeting) {
             return "errorMessage.notEnoghMembers";

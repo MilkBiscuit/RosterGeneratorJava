@@ -26,6 +26,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
+import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.Member;
@@ -33,6 +34,7 @@ import com.cheng.rostergenerator.model.NameTableModel;
 import com.cheng.rostergenerator.model.constant.UiConstants;
 import com.cheng.rostergenerator.util.NavigateUtil;
 import com.cheng.rostergenerator.util.SpringUtilities;
+import com.cheng.rostergenerator.util.UIUtil;
 
 public class NameTable extends JPanel {
     /**
@@ -56,7 +58,13 @@ public class NameTable extends JPanel {
                 tableModel.refreshTable(members);
                 break;
             case "generate":
-                NavigateUtil.toRosterTable();
+                var errorKey = RosterProducer.validateErrorMessage();
+                if (errorKey == null) {
+                    NavigateUtil.toRosterTable();
+                } else {
+                    var frame = UIUtil.getParentFrame(NameTable.this);
+                    UIUtil.showSimpleDialog(frame, errorKey);
+                }
                 break;
             case "remove":
                 int viewRow = table.getSelectedRow();
