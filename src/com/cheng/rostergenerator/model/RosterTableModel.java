@@ -6,7 +6,6 @@ public class RosterTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -2123497955712881177L;
     private String[][] data = {};
-    // TODO: remove hardcode
 
     public boolean isCellEditable(int row, int col) {
         return false;
@@ -19,8 +18,11 @@ public class RosterTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        // TODO Auto-generated method stub
-        return 2;
+        if (data == null || data.length == 0 || data[0] == null || data[0].length == 0) {
+            return 0;
+        }
+
+        return data[0].length;
     }
 
     @Override

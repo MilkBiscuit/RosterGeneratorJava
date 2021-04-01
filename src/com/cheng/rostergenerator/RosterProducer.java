@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
@@ -17,7 +18,13 @@ public class RosterProducer {
     private static double sSpeechesPerMeeting = 3.5;
     private static int sRolesPerMeeting = 18;
     private static int sNonSpeechRolesPerMeeting = 14;
+    private static String[] ROLES_PER_MEETING = TextConstants.ROLES_PER_MEETING;
 
+    /**
+     * 
+     * @param speakers
+     * @return num of meetings we need to accommodate all speakers
+     */
     public static int numOfMeeting(List<Member> speakers) {
         double numOfSpeakers = (double) speakers.size();
 
@@ -115,5 +122,32 @@ public class RosterProducer {
         }
 
         return map;
+    }
+
+    public static String[][] generateRosterTableData() {
+        List<Member> members = FileHelper.readMemberList();
+        List<Member> allSpeakers = members.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
+        var numOfMeetings = numOfMeeting(allSpeakers);
+        var numOfCopiesOfMember = numOfAllMembers(numOfMeetings, members.size());
+        var allMembers = new ArrayList<Member>();
+        for (int i = 0; i < numOfCopiesOfMember; i++) {
+            allMembers.addAll(members);
+        }
+
+        String[][] data = new String[sRolesPerMeeting][numOfMeetings+1];
+        for (int i = 0; i < ROLES_PER_MEETING.length; i++) {
+            data[i][0] = ROLES_PER_MEETING[i];
+        }
+        for (int i = 1; i <= numOfMeetings; i++) {
+            var numOfSpeaker = Math.min(4, allSpeakers.size());
+            var speakers = allSpeakers.subList(0, numOfSpeaker);
+            Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
+            for (int j = 0; j < ROLES_PER_MEETING.length; j++) {
+                data[j][i] = rosterMap.get(ROLES_PER_MEETING[j]);
+            }
+            allSpeakers.removeAll(speakers);
+        }
+
+        return data;
     }
 }
