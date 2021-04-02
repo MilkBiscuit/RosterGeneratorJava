@@ -7,9 +7,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -43,7 +45,16 @@ public class RosterTable extends JPanel {
                 dataModel.fireTableDataChanged();
                 break;
             case "export":
-                FileHelper.exportToCSV(dataModel, "/Users/chandlercheng/Downloads/aaa.csv");
+                var fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                int returnVal = fileChooser.showSaveDialog(RosterTable.this);
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    var fileToBeSaved = fileChooser.getSelectedFile();
+                    if (!fileToBeSaved.getAbsolutePath().endsWith(".csv")) {
+                        fileToBeSaved = new File(fileChooser.getSelectedFile() + ".csv");
+                    }
+                    FileHelper.exportToCSV(dataModel, fileToBeSaved.getAbsolutePath());
+                }
                 break;
             }
         }
