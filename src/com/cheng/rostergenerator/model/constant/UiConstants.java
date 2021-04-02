@@ -2,6 +2,7 @@ package com.cheng.rostergenerator.model.constant;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Insets;
 
 import javax.swing.Box;
 import javax.swing.border.EmptyBorder;
@@ -34,6 +35,14 @@ public class UiConstants {
 
     public static EmptyBorder smallPaddingBorder() {
         return new EmptyBorder(PADDING_SMALL, PADDING_SMALL, PADDING_SMALL, PADDING_SMALL);
+    }
+
+    public static Insets smallInsets() {
+        return new Insets(PADDING_SMALL, PADDING_SMALL, PADDING_SMALL, PADDING_SMALL);
+    }
+
+    public static Insets insets() {
+        return new Insets(PADDING_NORMAL, PADDING_NORMAL, PADDING_NORMAL, PADDING_NORMAL);
     }
 
 }

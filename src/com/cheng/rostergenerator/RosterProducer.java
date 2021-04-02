@@ -28,14 +28,22 @@ public class RosterProducer {
      * @return num of meetings we need to accommodate all speakers
      */
     public static int numOfMeeting(int numOfSpeakers) {
+        if (numOfSpeakers == 0) {
+            return 0;
+        }
         var reserveForNew = PreferenceHelper.reserveForNewMember();
         if (reserveForNew) {
-            if (numOfSpeakers % 7 == 4) {
+            var remainder = numOfSpeakers % 7;
+            if (remainder == 0) {
+                return (numOfSpeakers / 7) * 2;
+            } else if (remainder <= 4) {
                 return (numOfSpeakers / 7) * 2 + 1;
+            } else {
+                return (numOfSpeakers / 7) * 2 + 2;
             }
         }
 
-        return (int) Math.ceil(numOfSpeakers / 4);
+        return (int) Math.ceil(numOfSpeakers / 4.0f);
     }
 
     public static float numOfSpeechesPerMeeting() {

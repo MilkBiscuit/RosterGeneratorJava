@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -82,6 +83,7 @@ public class RosterTable extends JPanel {
         tableWithButtons.setLayout(layout);
         GridBagConstraints c = new GridBagConstraints();
 
+        c.insets = UiConstants.smallInsets();
         c.fill = GridBagConstraints.VERTICAL;
         c.gridx = 0;
         c.gridy = 0;
@@ -89,8 +91,7 @@ public class RosterTable extends JPanel {
 
         var scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
-
-        var restoreIcon = new ImageIcon("res/drawable/ic_restore.png");
+        var restoreIcon = new ImageIcon("res/drawable/ic_refresh.png");
         var restoreBtn = new JButton(restoreIcon);
         restoreBtn.setActionCommand("refresh");
         restoreBtn.addActionListener(buttonActionListener);

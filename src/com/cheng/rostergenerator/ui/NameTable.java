@@ -119,7 +119,9 @@ public class NameTable extends JPanel {
 
     public NameTable() {
         super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        BoxLayout box = new BoxLayout(this, BoxLayout.Y_AXIS);
+        setLayout(box);
+        setBorder(UiConstants.bigPaddingBorder());
         createTablePanel();
         createSidePanel();
         createSettingsPanel();
@@ -152,15 +154,18 @@ public class NameTable extends JPanel {
     private void createSidePanel() {
         var tableWithButtons = new JPanel();
         var layout = new GridBagLayout();
-        var titledBorder = new TitledBorder(ResBundleHelper.getString("memberList"));
-        // TODO, refactor
-        var outsidePaddingBorder = UiConstants.bigPaddingBorder();
-        var insidePaddingBorder = UiConstants.smallPaddingBorder();
-        var outsideBorder = new CompoundBorder(outsidePaddingBorder, titledBorder);
-        var border = new CompoundBorder(outsideBorder, insidePaddingBorder);
+        var border = new CompoundBorder(
+            // new CompoundBorder(
+            //     UiConstants.bigPaddingBorder(),
+            //     new TitledBorder(ResBundleHelper.getString("memberList"))
+            // ),
+            new TitledBorder(ResBundleHelper.getString("memberList")),
+            UiConstants.smallPaddingBorder()
+        );
         tableWithButtons.setBorder(border);
         tableWithButtons.setLayout(layout);
         GridBagConstraints c = new GridBagConstraints();
+        c.insets = UiConstants.smallInsets();
 
         c.fill = GridBagConstraints.VERTICAL;
         c.gridx = 0;

@@ -31,7 +31,7 @@ class RosterProducerTest {
 
         PreferenceHelper.save(PrefConstants.KEY_RESERVE_FOR_NEW, false);
         result = RosterProducer.numOfMeeting(18);
-        assertEquals(4, result);
+        assertEquals(5, result);
         result = RosterProducer.numOfMeeting(20);
         assertEquals(5, result);
         result = RosterProducer.numOfMeeting(35);
