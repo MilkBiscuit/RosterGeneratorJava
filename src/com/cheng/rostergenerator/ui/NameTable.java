@@ -6,6 +6,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,9 +32,11 @@ import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.NameTableModel;
+import com.cheng.rostergenerator.model.constant.PrefConstants;
 import com.cheng.rostergenerator.model.constant.UiConstants;
 import com.cheng.rostergenerator.util.NavigateUtil;
 import com.cheng.rostergenerator.util.SpringUtilities;
@@ -43,6 +49,17 @@ public class NameTable extends JPanel {
     private JButton removeBtn;
     private TableRowSorter<NameTableModel> sorter;
     private NameTableModel tableModel = new NameTableModel();
+
+    private static String[] SETTING_LABELS = {
+        ResBundleHelper.getString("speechNum"),
+        ResBundleHelper.getString("ttEvaluatorNum"),
+        ResBundleHelper.getString("settings.reserveForNewMember"),
+        ResBundleHelper.getString("meetingRole.guestHospitality"),
+        ResBundleHelper.getString("meetingRole.umAhCounter"),
+        ResBundleHelper.getString("meetingRole.listeningPost")
+    };
+    private List<Object> settingObjects = new ArrayList<Object>(SETTING_LABELS.length);
+
     private ActionListener buttonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -82,6 +99,20 @@ public class NameTable extends JPanel {
                 }
                 FileHelper.writeMemberList(members);
                 break;
+            }
+        }
+    };
+
+    private ItemListener itemListener = new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            var selected = e.getStateChange() == ItemEvent.SELECTED;
+            var source = e.getItemSelectable();
+            var index = settingObjects.indexOf(source);
+            switch (index) {
+                case 2:
+                    PreferenceHelper.save(PrefConstants.KEY_RESERVE_FOR_NEW, selected);
+                    break;
             }
         }
     };
@@ -190,52 +221,50 @@ public class NameTable extends JPanel {
         ttEvaluator.add(ttEvaluator1);
         ttEvaluator.add(ttEvaluator2);
 
-
-        String[] labels = {
-            ResBundleHelper.getString("speechNum"),
-            ResBundleHelper.getString("ttEvaluatorNum"),
-            ResBundleHelper.getString("settings.reserveForNewMember"),
-            ResBundleHelper.getString("meetingRole.guestHospitality"),
-            ResBundleHelper.getString("meetingRole.umAhCounter"),
-            ResBundleHelper.getString("meetingRole.listeningPost")
-        };
-
         var settingsPanel = new JPanel(new SpringLayout());
-        var speechNumLabel = new JLabel(labels[0], JLabel.TRAILING);
+        var speechNumLabel = new JLabel(SETTING_LABELS[0], JLabel.TRAILING);
         var fourSpeechRadio = new JRadioButton("4");
         var fiveSpeechRadio = new JRadioButton("5");
         var speechNumGroup = new ButtonGroup();
+        fiveSpeechRadio.setEnabled(false);
         speechNumGroup.add(fourSpeechRadio);
         speechNumGroup.add(fiveSpeechRadio);
         settingsPanel.add(speechNumLabel);
         settingsPanel.add(fourSpeechRadio);
         settingsPanel.add(fiveSpeechRadio);
         fourSpeechRadio.setSelected(true);
+        settingObjects.add(speechNumGroup);
 
-        var ttNumLabel = new JLabel(labels[1], JLabel.TRAILING);
+        var ttNumLabel = new JLabel(SETTING_LABELS[1], JLabel.TRAILING);
         var oneTTRadio = new JRadioButton("1");
         var twoTTRadio = new JRadioButton("2");
         var ttNumGroup = new ButtonGroup();
+        oneTTRadio.setEnabled(false);
         ttNumGroup.add(oneTTRadio);
         ttNumGroup.add(twoTTRadio);
         settingsPanel.add(ttNumLabel);
         settingsPanel.add(oneTTRadio);
         settingsPanel.add(twoTTRadio);
         twoTTRadio.setSelected(true);
+        settingObjects.add(ttNumGroup);
 
-        var numPairs = labels.length;
+        var numPairs = SETTING_LABELS.length;
         for (int i = 2; i < numPairs; i++) {
-            var label = new JLabel(labels[i], JLabel.TRAILING);
+            var label = new JLabel(SETTING_LABELS[i], JLabel.TRAILING);
             settingsPanel.add(label);
             var box = UiConstants.horizontalBox();
             settingsPanel.add(box);
+
             var checkbox = new JCheckBox();
-            settingsPanel.add(checkbox);
             checkbox.setSelected(true);
+            checkbox.addItemListener(itemListener);
+            settingsPanel.add(checkbox);
+
+            settingObjects.add(i, checkbox);
         }
 
         SpringUtilities.makeCompactGrid(
-            settingsPanel, labels.length, 3,
+            settingsPanel, SETTING_LABELS.length, 3,
             UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL,
             UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL
         );

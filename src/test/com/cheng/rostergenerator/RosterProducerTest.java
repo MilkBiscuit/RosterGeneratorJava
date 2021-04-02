@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
-import com.cheng.rostergenerator.model.Member;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,20 +15,16 @@ class RosterProducerTest {
 
     @Test
     void testNumOfMeeting() {
-        var members = new ArrayList<Member>(0);
-        var result = RosterProducer.numOfMeeting(members);
+        var result = RosterProducer.numOfMeeting(0);
         assertEquals(0, result);
 
-        for (int i = 0; i < 20; i++) {
-            members.add(null);
-        }
-        result = RosterProducer.numOfMeeting(members);
+        // 18 speakers rostered like this: 4, 3, 4, 3, 4
+        result = RosterProducer.numOfMeeting(18);
+        assertEquals(5, result);
+
+        result = RosterProducer.numOfMeeting(20);
         assertEquals(6, result);
-        // 35 members in the club in total
-        for (int i = 0; i < 15; i++) {
-            members.add(null);
-        }
-        result = RosterProducer.numOfMeeting(members);
+        result = RosterProducer.numOfMeeting(35);
         assertEquals(10, result);
     }
 

@@ -9,13 +9,14 @@ import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
+import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.model.Member;
+import com.cheng.rostergenerator.model.constant.PrefConstants;
 import com.cheng.rostergenerator.model.constant.TextConstants;
 
 public class RosterProducer {
 
 
-    private static double sSpeechesPerMeeting = 3.5;
     private static int sRolesPerMeeting = 18;
     private static int sNonSpeechRolesPerMeeting = 14;
     private static String[] ROLES_PER_MEETING = TextConstants.ROLES_PER_MEETING;
@@ -25,10 +26,15 @@ public class RosterProducer {
      * @param speakers
      * @return num of meetings we need to accommodate all speakers
      */
-    public static int numOfMeeting(List<Member> speakers) {
-        double numOfSpeakers = (double) speakers.size();
+    public static int numOfMeeting(int numOfSpeakers) {
+        var reserveForNew = PreferenceHelper.reserveForNewMember();
+        if (reserveForNew) {
+            if (numOfSpeakers % 7 == 4) {
+                return (numOfSpeakers / 7) * 2 + 1;
+            }
+        }
 
-        return (int) Math.ceil(numOfSpeakers / sSpeechesPerMeeting);
+        return (int) Math.ceil(numOfSpeakers / 3.5);
     }
 
     /**
@@ -70,7 +76,7 @@ public class RosterProducer {
     public static Map<String, String> generateOneMeeting(List<Member> speakers, List<Member> totalMembers) {
         var map = new HashMap<String, String>();
         var namesOfMeeting = new ArrayList<String>(sRolesPerMeeting);
-        if (speakers == null || speakers.isEmpty() || speakers.size() > sSpeechesPerMeeting + 1) {
+        if (speakers == null || speakers.isEmpty() || speakers.size() > 5) {
             System.out.println("num of speakers is invalid");
 
             return map;
@@ -78,9 +84,11 @@ public class RosterProducer {
         Collections.shuffle(totalMembers);
 
         speakers.sort(MeetingRoleHelper.inExperiencedFirst());
+        // TODO: watch hardcode 4
+        var alignIndex = 4 - speakers.size() + 1;
         for (int i = 0; i < speakers.size(); i++) {
             String speakerName = speakers.get(i).name;
-            map.put("Speaker " + (i + 1), speakerName);
+            map.put("Speaker " + (i + alignIndex), speakerName);
             namesOfMeeting.add(speakerName);
         }
 
@@ -127,7 +135,7 @@ public class RosterProducer {
     public static String[][] generateRosterTableData() {
         List<Member> members = FileHelper.readMemberList();
         List<Member> allSpeakers = members.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
-        var numOfMeetings = numOfMeeting(allSpeakers);
+        var numOfMeetings = numOfMeeting(allSpeakers.size());
         var numOfCopiesOfMember = numOfAllMembers(numOfMeetings, members.size());
         var allMembers = new ArrayList<Member>();
         for (int i = 0; i < numOfCopiesOfMember; i++) {
@@ -139,7 +147,9 @@ public class RosterProducer {
             data[i][0] = ROLES_PER_MEETING[i];
         }
         for (int j = 1; j <= numOfMeetings; j++) {
-            var numOfSpeaker = Math.min(4, allSpeakers.size());
+            var reserveForNewMember = PreferenceHelper.read(PrefConstants.KEY_RESERVE_FOR_NEW, true);
+            var numOfSpeaker = (j % 2 == 0 && reserveForNewMember) ? 3 : 4;
+            numOfSpeaker = Math.min(numOfSpeaker, allSpeakers.size());
             var speakers = allSpeakers.subList(0, numOfSpeaker);
             Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
             for (int i = 0; i < ROLES_PER_MEETING.length; i++) {

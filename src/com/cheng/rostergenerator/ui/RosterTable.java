@@ -1,5 +1,6 @@
 package com.cheng.rostergenerator.ui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
@@ -26,21 +27,24 @@ public class RosterTable extends JPanel {
         final var data = RosterProducer.generateRosterTableData();
         dataModel.setData(data);
         final var table = new JTable(dataModel);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 140));
+        table.setPreferredScrollableViewportSize(new Dimension(1000, 300));
         table.setFillsViewportHeight(true);
-        JScrollPane areaScrollPane = new JScrollPane(table);
+
+        var renderer = new RosterCellRenderer(1);
+        table.getTableHeader().setDefaultRenderer(renderer);
+        table.setGridColor(Color.LIGHT_GRAY);
+        table.setDefaultRenderer(Object.class, renderer);
+
+        final var areaScrollPane = new JScrollPane(table);
         final var titleFormat = ResBundleHelper.getString("rosterTable.title");
         final var title = String.format(titleFormat, dataModel.getColumnCount() - 1);
         areaScrollPane.setBorder(
             BorderFactory.createCompoundBorder(
+                UiConstants.paddingBorder(),
                 BorderFactory.createCompoundBorder(
-                    UiConstants.paddingBorder(),
-                    BorderFactory.createCompoundBorder(
-                        BorderFactory.createTitledBorder(title),
-                        UiConstants.smallPaddingBorder()
-                    )
-                ),
-                areaScrollPane.getBorder()
+                    BorderFactory.createTitledBorder(title),
+                    UiConstants.smallPaddingBorder()
+                )
             )
         );
         add(areaScrollPane);
