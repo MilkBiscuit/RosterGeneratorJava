@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.helper.PreferenceHelper;
+import com.cheng.rostergenerator.model.constant.PrefConstants;
 
 import org.junit.jupiter.api.Test;
 
@@ -18,14 +20,22 @@ class RosterProducerTest {
         var result = RosterProducer.numOfMeeting(0);
         assertEquals(0, result);
 
+        PreferenceHelper.save(PrefConstants.KEY_RESERVE_FOR_NEW, true);
         // 18 speakers rostered like this: 4, 3, 4, 3, 4
         result = RosterProducer.numOfMeeting(18);
         assertEquals(5, result);
-
         result = RosterProducer.numOfMeeting(20);
         assertEquals(6, result);
         result = RosterProducer.numOfMeeting(35);
         assertEquals(10, result);
+
+        PreferenceHelper.save(PrefConstants.KEY_RESERVE_FOR_NEW, false);
+        result = RosterProducer.numOfMeeting(18);
+        assertEquals(4, result);
+        result = RosterProducer.numOfMeeting(20);
+        assertEquals(5, result);
+        result = RosterProducer.numOfMeeting(35);
+        assertEquals(9, result);
     }
 
     @Test

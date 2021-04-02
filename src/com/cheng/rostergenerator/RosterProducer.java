@@ -34,7 +34,7 @@ public class RosterProducer {
             }
         }
 
-        return (int) Math.ceil(numOfSpeakers / 3.5);
+        return (int) Math.ceil(numOfSpeakers / 4);
     }
 
     /**
