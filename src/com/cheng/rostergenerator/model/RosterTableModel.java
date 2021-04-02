@@ -35,7 +35,9 @@ public class RosterTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return data[rowIndex][columnIndex];
+        var value = data[rowIndex][columnIndex];
+
+        return value == null ? "" : value;
     }
 
     @Override

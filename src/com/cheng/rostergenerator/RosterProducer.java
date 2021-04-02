@@ -94,7 +94,6 @@ public class RosterProducer {
 
             return map;
         }
-        Collections.shuffle(totalMembers);
 
         speakers.sort(MeetingRoleHelper.inExperiencedFirst());
         // TODO: watch hardcode 4
@@ -153,6 +152,10 @@ public class RosterProducer {
         for (int i = 0; i < numOfCopiesOfMember; i++) {
             allMembers.addAll(clubMembers);
         }
+
+        // Randomise the order
+        Collections.shuffle(allSpeakers);
+        Collections.shuffle(allMembers);
 
         String[][] data = new String[sRolesPerMeeting][numOfMeetings+1];
         for (int i = 0; i < ROLES_PER_MEETING.length; i++) {

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.table.TableModel;
+
 import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.util.TestUtil;
 import com.google.gson.Gson;
@@ -44,6 +46,33 @@ public class FileHelper {
     public static boolean memberListFileExists() {
         var file = new File(MEMBER_LIST_FILE_PATH);
         return file.exists();
+    }
+
+    public static boolean exportToCSV(TableModel model, String exportToPath) {
+        try {
+            var file = new File(exportToPath);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            var csv = new FileWriter(new File(exportToPath));
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                csv.write(model.getColumnName(i) + ",");
+            }
+            csv.write("\n");
+
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    csv.write(model.getValueAt(i, j).toString() + ",");
+                }
+                csv.write("\n");
+            }
+            csv.close();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 }

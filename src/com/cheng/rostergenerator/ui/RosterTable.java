@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,6 +17,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 
 import com.cheng.rostergenerator.RosterProducer;
+import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.RosterTableModel;
 import com.cheng.rostergenerator.model.constant.UiConstants;
@@ -38,8 +38,12 @@ public class RosterTable extends JPanel {
             var command = e.getActionCommand();
             switch (command) {
             case "refresh":
+                final var data = RosterProducer.generateRosterTableData();
+                dataModel.setData(data);
+                dataModel.fireTableDataChanged();
                 break;
-            case "save":
+            case "export":
+                FileHelper.exportToCSV(dataModel, "/Users/chandlercheng/Downloads/aaa.csv");
                 break;
             }
         }
@@ -102,9 +106,9 @@ public class RosterTable extends JPanel {
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(restoreBtn, c);
 
-        var saveIcon = new ImageIcon("res/drawable/ic_save.png");
+        var saveIcon = new ImageIcon("res/drawable/ic_download.png");
         var saveBtn = new JButton(saveIcon);
-        saveBtn.setActionCommand("save");
+        saveBtn.setActionCommand("export");
         saveBtn.addActionListener(buttonActionListener);
         c.gridx = 1;
         c.gridy = 1;
