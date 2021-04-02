@@ -11,16 +11,14 @@ import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.model.Member;
-import com.cheng.rostergenerator.model.constant.PrefConstants;
+import com.cheng.rostergenerator.model.RosterException;
 import com.cheng.rostergenerator.model.constant.TextConstants;
 
 public class RosterProducer {
 
-    private static int sRolesPerMeeting = 18;
-    private static int sNonSpeechRolesPerMeeting = 14;
-    private static String[] ROLES_PER_MEETING = TextConstants.ROLES_PER_MEETING;
+    public static int sNumOfAllSpeakers = 0;
+    private static int sRolesPerMeeting = 0;
     public static List<Member> clubMembers = FileHelper.readMemberList();
-    public static List<Member> allSpeakers = clubMembers.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
 
     /**
      * 
@@ -32,36 +30,70 @@ public class RosterProducer {
             return 0;
         }
         var reserveForNew = PreferenceHelper.reserveForNewMember();
+        var fourSpeeches = PreferenceHelper.hasFourSpeeches();
         if (reserveForNew) {
-            var remainder = numOfSpeakers % 7;
-            if (remainder == 0) {
-                return (numOfSpeakers / 7) * 2;
-            } else if (remainder <= 4) {
-                return (numOfSpeakers / 7) * 2 + 1;
+            if (fourSpeeches) {
+                var remainder = numOfSpeakers % 7;
+                if (remainder == 0) {
+                    return (numOfSpeakers / 7) * 2;
+                } else if (remainder <= 4) {
+                    return (numOfSpeakers / 7) * 2 + 1;
+                } else {
+                    return (numOfSpeakers / 7) * 2 + 2;
+                }
             } else {
-                return (numOfSpeakers / 7) * 2 + 2;
+                var remainder = numOfSpeakers % 9;
+                if (remainder == 0) {
+                    return (numOfSpeakers / 9) * 2;
+                } else if (remainder <= 5) {
+                    return (numOfSpeakers / 9) * 2 + 1;
+                } else {
+                    return (numOfSpeakers / 9) * 2 + 2;
+                }
             }
         }
 
-        return (int) Math.ceil(numOfSpeakers / 4.0f);
+        return (int) Math.ceil(numOfSpeakers / (fourSpeeches ? 4.0f : 5.0f));
     }
 
-    public static float numOfSpeechesPerMeeting() {
+    public static float uiNumOfSpeechesPerMeeting() {
         var reserveForNew = PreferenceHelper.reserveForNewMember();
-        return reserveForNew ? 3.5f : 4;
+        var hasFourSpeeches = PreferenceHelper.hasFourSpeeches();
+        float retValue;
+        if (reserveForNew && hasFourSpeeches) {
+            retValue = 3.5f;
+        } else if (reserveForNew && !hasFourSpeeches) {
+            retValue = 4.5f;
+        } else if (!reserveForNew && hasFourSpeeches) {
+            retValue = 4.0f;
+        } else {
+            retValue = 5.0f;
+        }
+
+        return retValue;
+    }
+
+    public static int numOfSpeechesPerMeeting() {
+        var uiNum = uiNumOfSpeechesPerMeeting();
+        var actualNum = (int) Math.ceil(uiNum);
+
+        return actualNum;
     }
 
     /**
      * 
      * @param numOfMeeting, num of meetings so that all speakers are granted a speaking slot
      * @param numOfClubMembers, how many members does the club have
-     * @return how many times we need to copy all members into a huge duplicated list
+     * @return how many times we need to copy all members into a huge duplicated list,
+     * specifically add one more time to alleviate 'Not enough experienced member' error
      */
-    public static int numOfAllMembers(int numOfMeeting, int numOfClubMembers) {
-        double totalNumOfRoles = numOfMeeting * sNonSpeechRolesPerMeeting;
-        double result = totalNumOfRoles / numOfClubMembers;
+    public static int numOfAllMemberCopies(int numOfMeeting, int numOfClubMembers) {
+        var numOfRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
+        int numOfNonSpeechRolesPerMeeting = numOfRolesPerMeeting - numOfSpeechesPerMeeting();
+        double totalNumOfRoles = numOfMeeting * numOfNonSpeechRolesPerMeeting;
+        double result = totalNumOfRoles / (double) numOfClubMembers;
 
-        return (int) Math.ceil(result);
+        return (int) Math.ceil(result) + 1;
     }
 
     /**
@@ -69,6 +101,7 @@ public class RosterProducer {
      * @return error message key, if list is valid, return null
      */
     public static String validateErrorMessage() {
+        sRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
         if (clubMembers.size() < sRolesPerMeeting) {
             return "errorMessage.notEnoghMembers";
         }
@@ -96,11 +129,12 @@ public class RosterProducer {
         }
 
         speakers.sort(MeetingRoleHelper.inExperiencedFirst());
-        // TODO: watch hardcode 4
-        var alignIndex = 4 - speakers.size() + 1;
+
+        var alignIndex = numOfSpeechesPerMeeting() - speakers.size();
         for (int i = 0; i < speakers.size(); i++) {
             String speakerName = speakers.get(i).name;
-            map.put("Speaker " + (i + alignIndex), speakerName);
+            // TODO, pay attention
+            map.put("Speaker " + (i + alignIndex + 1), speakerName);
             namesOfMeeting.add(speakerName);
         }
 
@@ -113,7 +147,7 @@ public class RosterProducer {
             namesOfMeeting.add(chair.name);
             totalMembers.remove(chair);
         } else {
-            throw new RuntimeException("Impossible, no chairperson!");
+            throw new RosterException("errorMessage.notEnoghExperienced.chair");
         }
 
         var optGeneral = totalMembers.stream().filter(
@@ -125,7 +159,7 @@ public class RosterProducer {
             namesOfMeeting.add(general.name);
             totalMembers.remove(general);
         } else {
-            throw new RuntimeException("Impossible, no general evaluator!");
+            throw new RosterException("errorMessage.notEnoghExperienced.general");
         }
 
         var meetingRoles = MeetingRoleHelper.getMeetingRoleForAnyOne();
@@ -144,11 +178,14 @@ public class RosterProducer {
         return map;
     }
 
-    public static String[][] generateRosterTableData() {
+    public static String[][] generateRosterTableData() throws RosterException {
+        sRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
+        clubMembers = FileHelper.readMemberList();
         var allSpeakers = clubMembers.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
         var numOfMeetings = numOfMeeting(allSpeakers.size());
-        var numOfCopiesOfMember = numOfAllMembers(numOfMeetings, clubMembers.size());
+        var numOfCopiesOfMember = numOfAllMemberCopies(numOfMeetings, clubMembers.size());
         var allMembers = new ArrayList<Member>();
+        sNumOfAllSpeakers = allSpeakers.size();
         for (int i = 0; i < numOfCopiesOfMember; i++) {
             allMembers.addAll(clubMembers);
         }
@@ -158,17 +195,23 @@ public class RosterProducer {
         Collections.shuffle(allMembers);
 
         String[][] data = new String[sRolesPerMeeting][numOfMeetings+1];
-        for (int i = 0; i < ROLES_PER_MEETING.length; i++) {
-            data[i][0] = ROLES_PER_MEETING[i];
+        // Fill the row head, various meeting roles
+        var rolesPerMeeting = MeetingRoleHelper.rolesPerMeeting();
+        for (int i = 0; i < rolesPerMeeting.size(); i++) {
+            data[i][0] = rolesPerMeeting.get(i);
         }
+        // Fill the rest of the table
         for (int j = 1; j <= numOfMeetings; j++) {
-            var reserveForNewMember = PreferenceHelper.read(PrefConstants.KEY_RESERVE_FOR_NEW, true);
-            var numOfSpeaker = (j % 2 == 0 && reserveForNewMember) ? 3 : 4;
+            var reserveForNewMember = PreferenceHelper.reserveForNewMember();
+            var fourSpeeches = PreferenceHelper.hasFourSpeeches();
+            var usualSpeeches = fourSpeeches ? 4 : 5;
+            var numOfSpeaker = (j % 2 == 0 && reserveForNewMember) ? usualSpeeches - 1 : usualSpeeches;
             numOfSpeaker = Math.min(numOfSpeaker, allSpeakers.size());
             var speakers = allSpeakers.subList(0, numOfSpeaker);
             Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
-            for (int i = 0; i < ROLES_PER_MEETING.length; i++) {
-                data[i][j] = rosterMap.get(ROLES_PER_MEETING[i]);
+            for (int i = 0; i < rolesPerMeeting.size(); i++) {
+                var role = rolesPerMeeting.get(i);
+                data[i][j] = rosterMap.get(role);
             }
             allSpeakers.removeAll(speakers);
         }

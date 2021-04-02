@@ -21,8 +21,10 @@ import javax.swing.border.TitledBorder;
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.model.RosterException;
 import com.cheng.rostergenerator.model.RosterTableModel;
 import com.cheng.rostergenerator.model.constant.UiConstants;
+import com.cheng.rostergenerator.util.UIUtil;
 
 
 public class RosterTable extends JPanel {
@@ -63,19 +65,26 @@ public class RosterTable extends JPanel {
     public RosterTable() {
         super(new GridLayout(1,0));
 
-        final var data = RosterProducer.generateRosterTableData();
-        dataModel = new RosterTableModel();
-        dataModel.setData(data);
-        table = new JTable(dataModel);
-        table.setPreferredScrollableViewportSize(new Dimension(1000, 300));
-        table.setFillsViewportHeight(true);
+        try {
+            final var data = RosterProducer.generateRosterTableData();
+            dataModel = new RosterTableModel();
+            dataModel.setData(data);
 
-        var renderer = new RosterCellRenderer(1);
-        table.getTableHeader().setDefaultRenderer(renderer);
-        table.setGridColor(Color.LIGHT_GRAY);
-        table.setDefaultRenderer(Object.class, renderer);
-
-        createSidePanel();
+            table = new JTable(dataModel);
+            table.setPreferredScrollableViewportSize(new Dimension(1000, 300));
+            table.setFillsViewportHeight(true);
+    
+            var renderer = new RosterCellRenderer(1);
+            table.getTableHeader().setDefaultRenderer(renderer);
+            table.setGridColor(Color.LIGHT_GRAY);
+            table.setDefaultRenderer(Object.class, renderer);
+    
+            createSidePanel();
+        } catch (RosterException e) {
+            UIUtil.showSimpleDialog(this, e.getLocalizedMessage());
+            var frame = UIUtil.getParentFrame(this);
+            frame.setVisible(false);
+        }
     }
 
     private void createSidePanel() {
@@ -84,8 +93,8 @@ public class RosterTable extends JPanel {
 
         final var titleFormat = ResBundleHelper.getString("rosterTable.title");
         final var numOfMeetings = dataModel.getColumnCount() - 1;
-        final var numOfAllSpeakers = RosterProducer.allSpeakers.size();
-        final var numOfSpeeches = RosterProducer.numOfSpeechesPerMeeting();
+        final var numOfAllSpeakers = RosterProducer.sNumOfAllSpeakers;
+        final var numOfSpeeches = RosterProducer.uiNumOfSpeechesPerMeeting();
         final var title = String.format(titleFormat, numOfAllSpeakers, numOfSpeeches, numOfMeetings);
         var border = new CompoundBorder(
             new CompoundBorder(

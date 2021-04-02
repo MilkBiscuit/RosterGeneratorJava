@@ -28,4 +28,28 @@ public class PreferenceHelper {
         return read(PrefConstants.KEY_RESERVE_FOR_NEW, true);
     }
 
+    public static boolean hasGuestHospitality() {
+        return read(PrefConstants.KEY_GUEST_HOSPITALITY, true);
+    }
+
+    public static boolean hasUmAhCounter() {
+        return read(PrefConstants.KEY_UM_AH_COUNTER, true);
+    }
+
+    public static boolean hasListeningPost() {
+        return read(PrefConstants.KEY_LISTENING_POST, true);
+    }
+
+    public static boolean hasSeenTutorial() {
+        return read(PrefConstants.KEY_HAS_SEEN_TUTORIAL, false);
+    }
+
+    public static boolean hasFourSpeeches() {
+        return read(PrefConstants.KEY_FOUR_SPEECHES, true);
+    }
+
+    public static boolean hasTwoTTEvaluator() {
+        return read(PrefConstants.KEY_TWO_TT_EVALUATORS, true);
+    }
+
 }

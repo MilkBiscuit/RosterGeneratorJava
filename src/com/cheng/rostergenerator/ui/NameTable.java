@@ -66,6 +66,18 @@ public class NameTable extends JPanel {
             var command = e.getActionCommand();
             var members = tableModel.getMembers();
             switch (command) {
+            case "1":
+                PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, false);
+                break;
+            case "2":
+                PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, true);
+                break;
+            case "4":
+                PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, true);
+                break;
+            case "5":
+                PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, false);
+                break;
             case "add":
                 var newMember = new Member("", false, true);
                 members.add(newMember);
@@ -76,8 +88,7 @@ public class NameTable extends JPanel {
                 if (errorKey == null) {
                     NavigateUtil.toRosterTable();
                 } else {
-                    var frame = UIUtil.getParentFrame(NameTable.this);
-                    UIUtil.showSimpleDialog(frame, errorKey);
+                    UIUtil.showSimpleDialog(NameTable.this, errorKey);
                 }
                 break;
             case "remove":
@@ -109,10 +120,8 @@ public class NameTable extends JPanel {
             var selected = e.getStateChange() == ItemEvent.SELECTED;
             var source = e.getItemSelectable();
             var index = settingObjects.indexOf(source);
-            switch (index) {
-                case 2:
-                    PreferenceHelper.save(PrefConstants.KEY_RESERVE_FOR_NEW, selected);
-                    break;
+            if (index > 1 && index < 6) {
+                PreferenceHelper.save(PrefConstants.SETTING_KEYS[index], selected);
             }
         }
     };
@@ -155,10 +164,6 @@ public class NameTable extends JPanel {
         var tableWithButtons = new JPanel();
         var layout = new GridBagLayout();
         var border = new CompoundBorder(
-            // new CompoundBorder(
-            //     UiConstants.bigPaddingBorder(),
-            //     new TitledBorder(ResBundleHelper.getString("memberList"))
-            // ),
             new TitledBorder(ResBundleHelper.getString("memberList")),
             UiConstants.smallPaddingBorder()
         );
@@ -211,35 +216,24 @@ public class NameTable extends JPanel {
     }
 
     private void createSettingsPanel() {
-        var speaker4 = new JRadioButton("4");
-        var speaker5 = new JRadioButton("5");
-        var speakerLabel = new JLabel(ResBundleHelper.getString("speechNum"));
-        var speakerNum = Box.createHorizontalBox();
-        speakerNum.add(speakerLabel);
-        speakerNum.add(speaker4);
-        speakerNum.add(speaker5);
-
-        var ttEvaluator1 = new JRadioButton("1");
-        var ttEvaluator2 = new JRadioButton("2");
-        var ttEvaluatorNum = new JLabel(ResBundleHelper.getString("ttEvaluatorNum"));
-        Box ttEvaluator = Box.createHorizontalBox();
-        ttEvaluator.add(ttEvaluatorNum);
-        ttEvaluator.add(ttEvaluator1);
-        ttEvaluator.add(ttEvaluator2);
-
         var settingsPanel = new JPanel(new SpringLayout());
         var speechNumLabel = new JLabel(SETTING_LABELS[0], JLabel.TRAILING);
         var fourSpeechRadio = new JRadioButton("4");
         var fiveSpeechRadio = new JRadioButton("5");
         var speechNumGroup = new ButtonGroup();
-        fiveSpeechRadio.setEnabled(false);
         speechNumGroup.add(fourSpeechRadio);
         speechNumGroup.add(fiveSpeechRadio);
         settingsPanel.add(speechNumLabel);
         settingsPanel.add(fourSpeechRadio);
         settingsPanel.add(fiveSpeechRadio);
-        fourSpeechRadio.setSelected(true);
         settingObjects.add(speechNumGroup);
+        fourSpeechRadio.addActionListener(buttonActionListener);
+        fiveSpeechRadio.addActionListener(buttonActionListener);
+        if (PreferenceHelper.hasFourSpeeches()) {
+            fourSpeechRadio.setSelected(true);
+        } else {
+            fiveSpeechRadio.setSelected(true);
+        }
 
         var ttNumLabel = new JLabel(SETTING_LABELS[1], JLabel.TRAILING);
         var oneTTRadio = new JRadioButton("1");
@@ -253,6 +247,13 @@ public class NameTable extends JPanel {
         settingsPanel.add(twoTTRadio);
         twoTTRadio.setSelected(true);
         settingObjects.add(ttNumGroup);
+        oneTTRadio.addActionListener(buttonActionListener);
+        twoTTRadio.addActionListener(buttonActionListener);
+        if (PreferenceHelper.hasTwoTTEvaluator()) {
+            twoTTRadio.setSelected(true);
+        } else {
+            oneTTRadio.setSelected(true);
+        }
 
         var numPairs = SETTING_LABELS.length;
         for (int i = 2; i < numPairs; i++) {
@@ -262,7 +263,8 @@ public class NameTable extends JPanel {
             settingsPanel.add(box);
 
             var checkbox = new JCheckBox();
-            checkbox.setSelected(true);
+            var isChecked = PreferenceHelper.read(PrefConstants.SETTING_KEYS[i], true);
+            checkbox.setSelected(isChecked);
             checkbox.addItemListener(itemListener);
             settingsPanel.add(checkbox);
 
