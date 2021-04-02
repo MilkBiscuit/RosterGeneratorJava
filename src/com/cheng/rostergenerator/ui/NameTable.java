@@ -153,6 +153,7 @@ public class NameTable extends JPanel {
         var tableWithButtons = new JPanel();
         var layout = new GridBagLayout();
         var titledBorder = new TitledBorder(ResBundleHelper.getString("memberList"));
+        // TODO, refactor
         var outsidePaddingBorder = UiConstants.bigPaddingBorder();
         var insidePaddingBorder = UiConstants.smallPaddingBorder();
         var outsideBorder = new CompoundBorder(outsidePaddingBorder, titledBorder);

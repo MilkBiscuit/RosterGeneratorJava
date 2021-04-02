@@ -16,10 +16,11 @@ import com.cheng.rostergenerator.model.constant.TextConstants;
 
 public class RosterProducer {
 
-
     private static int sRolesPerMeeting = 18;
     private static int sNonSpeechRolesPerMeeting = 14;
     private static String[] ROLES_PER_MEETING = TextConstants.ROLES_PER_MEETING;
+    public static List<Member> clubMembers = FileHelper.readMemberList();
+    public static List<Member> allSpeakers = clubMembers.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
 
     /**
      * 
@@ -35,6 +36,11 @@ public class RosterProducer {
         }
 
         return (int) Math.ceil(numOfSpeakers / 4);
+    }
+
+    public static float numOfSpeechesPerMeeting() {
+        var reserveForNew = PreferenceHelper.reserveForNewMember();
+        return reserveForNew ? 3.5f : 4;
     }
 
     /**
@@ -55,11 +61,10 @@ public class RosterProducer {
      * @return error message key, if list is valid, return null
      */
     public static String validateErrorMessage() {
-        var members = FileHelper.readMemberList();
-        if (members.size() < sRolesPerMeeting) {
+        if (clubMembers.size() < sRolesPerMeeting) {
             return "errorMessage.notEnoghMembers";
         }
-        var experienced = members.stream().filter(m -> m.isExperienced).toArray();
+        var experienced = clubMembers.stream().filter(m -> m.isExperienced).toArray();
         if (experienced.length < 2) {
             return "errorMessage.notEnoghExperienced";
         }
@@ -133,13 +138,12 @@ public class RosterProducer {
     }
 
     public static String[][] generateRosterTableData() {
-        List<Member> members = FileHelper.readMemberList();
-        List<Member> allSpeakers = members.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
+        var allSpeakers = clubMembers.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
         var numOfMeetings = numOfMeeting(allSpeakers.size());
-        var numOfCopiesOfMember = numOfAllMembers(numOfMeetings, members.size());
+        var numOfCopiesOfMember = numOfAllMembers(numOfMeetings, clubMembers.size());
         var allMembers = new ArrayList<Member>();
         for (int i = 0; i < numOfCopiesOfMember; i++) {
-            allMembers.addAll(members);
+            allMembers.addAll(clubMembers);
         }
 
         String[][] data = new String[sRolesPerMeeting][numOfMeetings+1];
