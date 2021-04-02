@@ -2,6 +2,7 @@ package com.cheng.rostergenerator.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -11,7 +12,6 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -28,6 +28,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.RosterProducer;
@@ -148,6 +149,7 @@ public class NameTable extends JPanel {
         table.setRowSorter(sorter);
         table.setPreferredScrollableViewportSize(new Dimension(500, 300));
         table.setFillsViewportHeight(true);
+        table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // When selection changes, provide user with row numbers for both view and model.
@@ -239,7 +241,6 @@ public class NameTable extends JPanel {
         var oneTTRadio = new JRadioButton("1");
         var twoTTRadio = new JRadioButton("2");
         var ttNumGroup = new ButtonGroup();
-        oneTTRadio.setEnabled(false);
         ttNumGroup.add(oneTTRadio);
         ttNumGroup.add(twoTTRadio);
         settingsPanel.add(ttNumLabel);

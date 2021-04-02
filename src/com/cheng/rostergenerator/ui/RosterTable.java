@@ -42,9 +42,15 @@ public class RosterTable extends JPanel {
             var command = e.getActionCommand();
             switch (command) {
             case "refresh":
-                final var data = RosterProducer.generateRosterTableData();
-                dataModel.setData(data);
-                dataModel.fireTableDataChanged();
+                try {
+                    final var data = RosterProducer.generateRosterTableData();
+                    dataModel.setData(data);
+                    dataModel.fireTableDataChanged();
+                } catch (RosterException exception) {
+                    UIUtil.showSimpleDialog(RosterTable.this, exception.getLocalizedMessage());
+                    var frame = UIUtil.getParentFrame(RosterTable.this);
+                    frame.setVisible(false);
+                }
                 break;
             case "export":
                 var fileChooser = new JFileChooser();

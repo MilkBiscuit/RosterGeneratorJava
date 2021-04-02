@@ -22,7 +22,6 @@ public class Main {
 
         if (FileHelper.memberListFileExists()) {
             NameTable nameTable = new NameTable();
-            // nameTable.setOpaque(true);
             frame.setContentPane(nameTable);
         } else {
             var nameCollector = new NameCollector();

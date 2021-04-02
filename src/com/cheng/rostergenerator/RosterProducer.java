@@ -18,7 +18,7 @@ public class RosterProducer {
 
     public static int sNumOfAllSpeakers = 0;
     private static int sRolesPerMeeting = 0;
-    public static List<Member> clubMembers = FileHelper.readMemberList();
+    private static List<Member> clubMembers = null;
 
     /**
      * 
@@ -101,13 +101,14 @@ public class RosterProducer {
      * @return error message key, if list is valid, return null
      */
     public static String validateErrorMessage() {
+        clubMembers = FileHelper.readMemberList();
         sRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
         if (clubMembers.size() < sRolesPerMeeting) {
-            return "errorMessage.notEnoghMembers";
+            return "errorMessage.notEnoughMembers";
         }
         var experienced = clubMembers.stream().filter(m -> m.isExperienced).toArray();
-        if (experienced.length < 2) {
-            return "errorMessage.notEnoghExperienced";
+        if (experienced.length < 5) {
+            return "errorMessage.notEnoughExperienced";
         }
 
         return null;
@@ -130,11 +131,11 @@ public class RosterProducer {
 
         speakers.sort(MeetingRoleHelper.inExperiencedFirst());
 
-        var alignIndex = numOfSpeechesPerMeeting() - speakers.size();
+        // Speaker number starts from '1' instead of '0'
+        var alignIndex = numOfSpeechesPerMeeting() - speakers.size() + 1;
         for (int i = 0; i < speakers.size(); i++) {
             String speakerName = speakers.get(i).name;
-            // TODO, pay attention
-            map.put("Speaker " + (i + alignIndex + 1), speakerName);
+            map.put("Speaker " + (i + alignIndex), speakerName);
             namesOfMeeting.add(speakerName);
         }
 
@@ -147,7 +148,7 @@ public class RosterProducer {
             namesOfMeeting.add(chair.name);
             totalMembers.remove(chair);
         } else {
-            throw new RosterException("errorMessage.notEnoghExperienced.chair");
+            throw new RosterException("errorMessage.notEnoughExperienced.runtime");
         }
 
         var optGeneral = totalMembers.stream().filter(
@@ -159,7 +160,7 @@ public class RosterProducer {
             namesOfMeeting.add(general.name);
             totalMembers.remove(general);
         } else {
-            throw new RosterException("errorMessage.notEnoghExperienced.general");
+            throw new RosterException("errorMessage.notEnoughExperienced.runtime");
         }
 
         var meetingRoles = MeetingRoleHelper.getMeetingRoleForAnyOne();
