@@ -32,6 +32,7 @@ import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.helper.ResourceHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.Member;
@@ -180,7 +181,7 @@ public class NameTable extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
 
-        var addIcon = new ImageIcon("res/drawable/ic_add.png");
+        var addIcon = ResourceHelper.imageIcon("/drawable/ic_add.png");
         var addBtn = new JButton(addIcon);
         addBtn.setActionCommand("add");
         addBtn.addActionListener(buttonActionListener);
@@ -191,7 +192,7 @@ public class NameTable extends JPanel {
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(addBtn, c);
 
-        var removeIcon = new ImageIcon("res/drawable/ic_remove.png");
+        var removeIcon = ResourceHelper.imageIcon("/drawable/ic_remove.png");
         removeBtn = new JButton(removeIcon);
         removeBtn.setEnabled(false);
         removeBtn.setActionCommand("remove");
@@ -199,14 +200,14 @@ public class NameTable extends JPanel {
         c.gridy = 1;
         tableWithButtons.add(removeBtn, c);
 
-        var restoreIcon = new ImageIcon("res/drawable/ic_restore.png");
+        var restoreIcon = ResourceHelper.imageIcon("/drawable/ic_restore.png");
         var restoreBtn = new JButton(restoreIcon);
         restoreBtn.setActionCommand("restore");
         restoreBtn.addActionListener(buttonActionListener);
         c.gridy = 2;
         tableWithButtons.add(restoreBtn, c);
 
-        var saveIcon = new ImageIcon("res/drawable/ic_save.png");
+        var saveIcon = ResourceHelper.imageIcon("/drawable/ic_save.png");
         var saveBtn = new JButton(saveIcon);
         saveBtn.setActionCommand("save");
         saveBtn.addActionListener(buttonActionListener);

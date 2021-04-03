@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
@@ -20,6 +19,7 @@ import javax.swing.border.TitledBorder;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.helper.ResourceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.RosterException;
 import com.cheng.rostergenerator.model.RosterTableModel;
@@ -121,7 +121,7 @@ public class RosterTable extends JPanel {
 
         var scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
-        var restoreIcon = new ImageIcon("res/drawable/ic_refresh.png");
+        var restoreIcon = ResourceHelper.imageIcon("/drawable/ic_refresh.png");
         var restoreBtn = new JButton(restoreIcon);
         restoreBtn.setActionCommand("refresh");
         restoreBtn.addActionListener(buttonActionListener);
@@ -132,7 +132,7 @@ public class RosterTable extends JPanel {
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(restoreBtn, c);
 
-        var saveIcon = new ImageIcon("res/drawable/ic_download.png");
+        var saveIcon = ResourceHelper.imageIcon("/drawable/ic_download.png");
         var saveBtn = new JButton(saveIcon);
         saveBtn.setActionCommand("export");
         saveBtn.addActionListener(buttonActionListener);
