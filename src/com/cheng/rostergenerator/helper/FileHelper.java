@@ -18,7 +18,7 @@ import com.google.gson.GsonBuilder;
 
 public class FileHelper {
 
-    private static final String MEMBER_LIST_FILE_PATH = "res/memberList.json";
+    private static final String MEMBER_LIST_FILE_PATH = System.getProperty("user.home") + "/rosterGenerator.json";
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static List<Member> readMemberList() {
@@ -36,7 +36,16 @@ public class FileHelper {
     }
 
     public static void writeMemberList(List<Member> members) {
-        try (FileWriter writer = new FileWriter(MEMBER_LIST_FILE_PATH)) {
+        File file = new File(MEMBER_LIST_FILE_PATH);
+        try {
+            if (!memberListFileExists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try (var writer = new FileWriter(file)) {
             gson.toJson(members, writer);
         } catch (IOException e) {
             e.printStackTrace();
