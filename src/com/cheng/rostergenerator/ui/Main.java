@@ -8,14 +8,12 @@ import javax.swing.JFrame;
 import com.cheng.rostergenerator.helper.FileHelper;
 
 /**
+ * The entry of the App
  * @author Chandler Cheng
  *
  */
 public class Main {
 
-    /**
-     * @param args
-     */
     public static void main(String[] args) {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
