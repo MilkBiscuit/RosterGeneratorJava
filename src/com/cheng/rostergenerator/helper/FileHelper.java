@@ -73,6 +73,11 @@ public class FileHelper {
         return false;
     }
 
+    public static void deleteMemberList() {
+        var file = new File(MEMBER_LIST_FILE_PATH);
+        file.delete();
+    }
+
     public static boolean exportToCSV(TableModel model, String exportToPath) {
         try {
             var file = new File(exportToPath);

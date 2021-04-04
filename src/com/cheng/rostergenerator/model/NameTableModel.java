@@ -71,6 +71,7 @@ public class NameTableModel extends AbstractTableModel {
             updatedMember.assignSpeech = (boolean) value;
             break;
         }
+        FileHelper.writeMemberList(members);
     }
 
     public ArrayList<Member> getMembers() {

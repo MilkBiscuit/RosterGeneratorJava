@@ -84,8 +84,20 @@ public class NameTable extends JPanel {
                 tableModel.refreshTable(members);
                 table.editCellAt(members.size() - 1, 0);
                 table.getEditorComponent().requestFocus();
+                var editingRect = table.getCellRect(members.size() - 1, 0, true);
+                table.scrollRectToVisible(editingRect);
+
                 break;
             case "generate":
+                // Stop editing and trigger setValueAt to save data
+                if (table.isEditing()) {
+                    var cellEditor = table.getCellEditor();
+                    if (cellEditor != null) {
+                        cellEditor.stopCellEditing();
+                    }
+                }
+
+                // Start generating
                 var errorKey = RosterProducer.validateErrorMessage();
                 if (errorKey == null) {
                     NavigateUtil.toRosterTable();
@@ -99,18 +111,14 @@ public class NameTable extends JPanel {
                     int modelRow = table.convertRowIndexToModel(viewRow);
                     members.remove(modelRow);
                     tableModel.refreshTable(members);
+                    FileHelper.writeMemberList(members);
                 }
                 break;
-            case "restore":
-                var restoredMembers = FileHelper.readMemberList();
-                tableModel.refreshTable(restoredMembers);
-                break;
-            case "save":
-                var cellEditor = table.getCellEditor();
-                if (cellEditor != null && table.isEditing()) {
-                    cellEditor.stopCellEditing();
-                }
-                FileHelper.writeMemberList(members);
+            case "exit":
+                UIUtil.showYesNoDialog(NameTable.this, "dialog.removeAll", "common.yesImSure", "common.cancel", () -> {
+                    FileHelper.deleteMemberList();
+                    NavigateUtil.toNameCollector(NameTable.this);
+                });
                 break;
             }
         }
@@ -179,7 +187,7 @@ public class NameTable extends JPanel {
         c.gridx = 0;
         c.gridy = 0;
         c.gridheight = 4;
-        JScrollPane scrollPane = new JScrollPane(table);
+        var scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
 
         var addIcon = ResourceHelper.imageIcon("/drawable/ic_add.png");
@@ -201,19 +209,12 @@ public class NameTable extends JPanel {
         c.gridy = 1;
         tableWithButtons.add(removeBtn, c);
 
-        var restoreIcon = ResourceHelper.imageIcon("/drawable/ic_restore.png");
-        var restoreBtn = new JButton(restoreIcon);
-        restoreBtn.setActionCommand("restore");
-        restoreBtn.addActionListener(buttonActionListener);
+        var exitIcon = ResourceHelper.imageIcon("/drawable/ic_exit.png");
+        var exitBtn = new JButton(exitIcon);
+        exitBtn.setActionCommand("exit");
+        exitBtn.addActionListener(buttonActionListener);
         c.gridy = 2;
-        tableWithButtons.add(restoreBtn, c);
-
-        var saveIcon = ResourceHelper.imageIcon("/drawable/ic_save.png");
-        var saveBtn = new JButton(saveIcon);
-        saveBtn.setActionCommand("save");
-        saveBtn.addActionListener(buttonActionListener);
-        c.gridy = 3;
-        tableWithButtons.add(saveBtn, c);
+        tableWithButtons.add(exitBtn, c);
 
         add(tableWithButtons);
     }

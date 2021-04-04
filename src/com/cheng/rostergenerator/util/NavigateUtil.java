@@ -4,6 +4,7 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
+import com.cheng.rostergenerator.ui.NameCollector;
 import com.cheng.rostergenerator.ui.NameTable;
 import com.cheng.rostergenerator.ui.RosterTable;
 
@@ -22,6 +23,15 @@ public class NavigateUtil {
         var frame = new JFrame();
         var table = new RosterTable();
         frame.getContentPane().add(table);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void toNameCollector(Component c) {
+        var frame = UIUtil.getParentFrame(c);
+        var nameCollector = new NameCollector();
+        frame.getContentPane().removeAll();;
+        frame.getContentPane().add(nameCollector);
         frame.pack();
         frame.setVisible(true);
     }

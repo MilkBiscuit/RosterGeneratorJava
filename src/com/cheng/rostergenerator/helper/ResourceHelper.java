@@ -1,7 +1,5 @@
 package com.cheng.rostergenerator.helper;
 
-import java.io.File;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
