@@ -2,15 +2,18 @@ package com.cheng.rostergenerator.ui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -28,30 +31,53 @@ import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.helper.ResourceHelper;
 import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.NameTableModel;
+import com.cheng.rostergenerator.model.constant.PrefConstants;
 import com.cheng.rostergenerator.model.constant.UiConstants;
 import com.cheng.rostergenerator.util.NavigateUtil;
 import com.cheng.rostergenerator.util.SpringUtilities;
 import com.cheng.rostergenerator.util.UIUtil;
 
 public class NameTable extends JPanel {
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
 
     private JTable table;
     private JButton removeBtn;
     private TableRowSorter<NameTableModel> sorter;
     private NameTableModel tableModel = new NameTableModel();
-    private ActionListener actionListener = new ActionListener() {
+
+    private static String[] SETTING_LABELS = {
+        ResBundleHelper.getString("speechNum"),
+        ResBundleHelper.getString("ttEvaluatorNum"),
+        ResBundleHelper.getString("settings.reserveForNewMember"),
+        ResBundleHelper.getString("meetingRole.guestHospitality"),
+        ResBundleHelper.getString("meetingRole.umAhCounter"),
+        ResBundleHelper.getString("meetingRole.listeningPost")
+    };
+    private List<Object> settingObjects = new ArrayList<Object>(SETTING_LABELS.length);
+
+    private ActionListener buttonActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             var command = e.getActionCommand();
             var members = tableModel.getMembers();
             switch (command) {
+            case "1":
+                PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, false);
+                break;
+            case "2":
+                PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, true);
+                break;
+            case "4":
+                PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, true);
+                break;
+            case "5":
+                PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, false);
+                break;
             case "add":
                 var newMember = new Member("", false, true);
                 members.add(newMember);
@@ -62,8 +88,7 @@ public class NameTable extends JPanel {
                 if (errorKey == null) {
                     NavigateUtil.toRosterTable();
                 } else {
-                    var frame = UIUtil.getParentFrame(NameTable.this);
-                    UIUtil.showSimpleDialog(frame, errorKey);
+                    UIUtil.showSimpleDialog(NameTable.this, errorKey);
                 }
                 break;
             case "remove":
@@ -89,16 +114,30 @@ public class NameTable extends JPanel {
         }
     };
 
+    private ItemListener itemListener = new ItemListener() {
+        @Override
+        public void itemStateChanged(ItemEvent e) {
+            var selected = e.getStateChange() == ItemEvent.SELECTED;
+            var source = e.getItemSelectable();
+            var index = settingObjects.indexOf(source);
+            if (index > 1 && index < 6) {
+                PreferenceHelper.save(PrefConstants.SETTING_KEYS[index], selected);
+            }
+        }
+    };
+
     public NameTable() {
         super();
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        BoxLayout box = new BoxLayout(this, BoxLayout.Y_AXIS);
+        setLayout(box);
+        setBorder(UiConstants.bigPaddingBorder());
         createTablePanel();
-
+        createSidePanel();
         createSettingsPanel();
 
         JButton generateBtn = new JButton(ResBundleHelper.getString("generateRoster"));
         generateBtn.setActionCommand("generate");
-        generateBtn.addActionListener(actionListener);
+        generateBtn.addActionListener(buttonActionListener);
         generateBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(generateBtn);
     }
@@ -109,6 +148,7 @@ public class NameTable extends JPanel {
         table.setRowSorter(sorter);
         table.setPreferredScrollableViewportSize(new Dimension(500, 300));
         table.setFillsViewportHeight(true);
+        table.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // When selection changes, provide user with row numbers for both view and model.
@@ -119,17 +159,19 @@ public class NameTable extends JPanel {
                     }
                 }
         );
+    }
 
+    private void createSidePanel() {
         var tableWithButtons = new JPanel();
         var layout = new GridBagLayout();
-        var titledBorder = new TitledBorder(ResBundleHelper.getString("memberList"));
-        var outsidePaddingBorder = UiConstants.bigPaddingBorder();
-        var insidePaddingBorder = UiConstants.smallPaddingBorder();
-        var outsideBorder = new CompoundBorder(outsidePaddingBorder, titledBorder);
-        var border = new CompoundBorder(outsideBorder, insidePaddingBorder);
+        var border = new CompoundBorder(
+            new TitledBorder(ResBundleHelper.getString("memberList")),
+            UiConstants.smallPaddingBorder()
+        );
         tableWithButtons.setBorder(border);
         tableWithButtons.setLayout(layout);
         GridBagConstraints c = new GridBagConstraints();
+        c.insets = UiConstants.smallInsets();
 
         c.fill = GridBagConstraints.VERTICAL;
         c.gridx = 0;
@@ -138,10 +180,10 @@ public class NameTable extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
 
-        var addIcon = new ImageIcon("res/drawable/ic_add.png");
+        var addIcon = ResourceHelper.imageIcon("/drawable/ic_add.png");
         var addBtn = new JButton(addIcon);
         addBtn.setActionCommand("add");
-        addBtn.addActionListener(actionListener);
+        addBtn.addActionListener(buttonActionListener);
         c.gridheight = 1;
         c.weighty = 1;
         c.gridx = 1;
@@ -149,25 +191,25 @@ public class NameTable extends JPanel {
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(addBtn, c);
 
-        var removeIcon = new ImageIcon("res/drawable/ic_remove.png");
+        var removeIcon = ResourceHelper.imageIcon("/drawable/ic_remove.png");
         removeBtn = new JButton(removeIcon);
         removeBtn.setEnabled(false);
         removeBtn.setActionCommand("remove");
-        removeBtn.addActionListener(actionListener);
+        removeBtn.addActionListener(buttonActionListener);
         c.gridy = 1;
         tableWithButtons.add(removeBtn, c);
 
-        var restoreIcon = new ImageIcon("res/drawable/ic_restore.png");
+        var restoreIcon = ResourceHelper.imageIcon("/drawable/ic_restore.png");
         var restoreBtn = new JButton(restoreIcon);
         restoreBtn.setActionCommand("restore");
-        restoreBtn.addActionListener(actionListener);
+        restoreBtn.addActionListener(buttonActionListener);
         c.gridy = 2;
         tableWithButtons.add(restoreBtn, c);
 
-        var saveIcon = new ImageIcon("res/drawable/ic_save.png");
+        var saveIcon = ResourceHelper.imageIcon("/drawable/ic_save.png");
         var saveBtn = new JButton(saveIcon);
         saveBtn.setActionCommand("save");
-        saveBtn.addActionListener(actionListener);
+        saveBtn.addActionListener(buttonActionListener);
         c.gridy = 3;
         tableWithButtons.add(saveBtn, c);
 
@@ -175,33 +217,8 @@ public class NameTable extends JPanel {
     }
 
     private void createSettingsPanel() {
-        var speaker4 = new JRadioButton("4");
-        var speaker5 = new JRadioButton("5");
-        var speakerLabel = new JLabel(ResBundleHelper.getString("speechNum"));
-        var speakerNum = Box.createHorizontalBox();
-        speakerNum.add(speakerLabel);
-        speakerNum.add(speaker4);
-        speakerNum.add(speaker5);
-
-        var ttEvaluator1 = new JRadioButton("1");
-        var ttEvaluator2 = new JRadioButton("2");
-        var ttEvaluatorNum = new JLabel(ResBundleHelper.getString("ttEvaluatorNum"));
-        Box ttEvaluator = Box.createHorizontalBox();
-        ttEvaluator.add(ttEvaluatorNum);
-        ttEvaluator.add(ttEvaluator1);
-        ttEvaluator.add(ttEvaluator2);
-
-
-        String[] labels = {
-            ResBundleHelper.getString("speechNum"),
-            ResBundleHelper.getString("ttEvaluatorNum"),
-            ResBundleHelper.getString("meetingRole.guestHospitality"),
-            ResBundleHelper.getString("meetingRole.umAhCounter"),
-            ResBundleHelper.getString("meetingRole.listeningPost")
-        };
-
         var settingsPanel = new JPanel(new SpringLayout());
-        var speechNumLabel = new JLabel(labels[0], JLabel.TRAILING);
+        var speechNumLabel = new JLabel(SETTING_LABELS[0], JLabel.TRAILING);
         var fourSpeechRadio = new JRadioButton("4");
         var fiveSpeechRadio = new JRadioButton("5");
         var speechNumGroup = new ButtonGroup();
@@ -210,9 +227,16 @@ public class NameTable extends JPanel {
         settingsPanel.add(speechNumLabel);
         settingsPanel.add(fourSpeechRadio);
         settingsPanel.add(fiveSpeechRadio);
-        fourSpeechRadio.setSelected(true);
+        settingObjects.add(speechNumGroup);
+        fourSpeechRadio.addActionListener(buttonActionListener);
+        fiveSpeechRadio.addActionListener(buttonActionListener);
+        if (PreferenceHelper.hasFourSpeeches()) {
+            fourSpeechRadio.setSelected(true);
+        } else {
+            fiveSpeechRadio.setSelected(true);
+        }
 
-        var ttNumLabel = new JLabel(labels[1], JLabel.TRAILING);
+        var ttNumLabel = new JLabel(SETTING_LABELS[1], JLabel.TRAILING);
         var oneTTRadio = new JRadioButton("1");
         var twoTTRadio = new JRadioButton("2");
         var ttNumGroup = new ButtonGroup();
@@ -222,21 +246,35 @@ public class NameTable extends JPanel {
         settingsPanel.add(oneTTRadio);
         settingsPanel.add(twoTTRadio);
         twoTTRadio.setSelected(true);
+        settingObjects.add(ttNumGroup);
+        oneTTRadio.addActionListener(buttonActionListener);
+        twoTTRadio.addActionListener(buttonActionListener);
+        if (PreferenceHelper.hasTwoTTEvaluator()) {
+            twoTTRadio.setSelected(true);
+        } else {
+            oneTTRadio.setSelected(true);
+        }
 
-        var numPairs = labels.length;
+        var numPairs = SETTING_LABELS.length;
         for (int i = 2; i < numPairs; i++) {
-            var label = new JLabel(labels[i], JLabel.TRAILING);
+            var label = new JLabel(SETTING_LABELS[i], JLabel.TRAILING);
             settingsPanel.add(label);
-            var checkbox = new JCheckBox();
-            settingsPanel.add(checkbox);
-            checkbox.setSelected(true);
-            var box = Box.createHorizontalStrut(100);
+            var box = UiConstants.horizontalBox();
             settingsPanel.add(box);
+
+            var checkbox = new JCheckBox();
+            var isChecked = PreferenceHelper.read(PrefConstants.SETTING_KEYS[i], true);
+            checkbox.setSelected(isChecked);
+            checkbox.addItemListener(itemListener);
+            settingsPanel.add(checkbox);
+
+            settingObjects.add(i, checkbox);
         }
 
         SpringUtilities.makeCompactGrid(
-            settingsPanel, labels.length, 3,
-            6, 6, 6, 6
+            settingsPanel, SETTING_LABELS.length, 3,
+            UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL,
+            UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL
         );
         settingsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(settingsPanel);

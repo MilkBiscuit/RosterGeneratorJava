@@ -2,6 +2,8 @@ package com.cheng.rostergenerator.model;
 
 import javax.swing.table.AbstractTableModel;
 
+import com.cheng.rostergenerator.helper.ResBundleHelper;
+
 public class RosterTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -2123497955712881177L;
@@ -27,7 +29,18 @@ public class RosterTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        return data[rowIndex][columnIndex];
+        var value = data[rowIndex][columnIndex];
+
+        return value == null ? "" : value;
+    }
+
+    @Override
+    public String getColumnName(int column) {
+        if (column == 0) {
+            return ResBundleHelper.getString("meetingRoles");
+        }
+
+        return ResBundleHelper.getString("datePlacehoder");
     }
 
     public void setData(String[][] data) {

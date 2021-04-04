@@ -10,7 +10,8 @@ import com.cheng.rostergenerator.helper.ResBundleHelper;
 
 public class UIUtil {
 
-    public static void showSimpleDialog(JFrame frame, String messageResKey) {
+    public static void showSimpleDialog(Component c, String messageResKey) {
+        var frame = getParentFrame(c);
         var message = ResBundleHelper.getString(messageResKey);
         JOptionPane.showMessageDialog(frame, message);
     }
