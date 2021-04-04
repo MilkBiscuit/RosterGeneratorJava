@@ -1,7 +1,5 @@
 package com.cheng.rostergenerator.helper;
 
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -14,7 +12,6 @@ public class ResourceHelper {
             return new ImageIcon(image);
         } catch (Exception exception) {
             FileHelper.printException(exception);
-            // exception.printStackTrace();
         }
 
         return null;

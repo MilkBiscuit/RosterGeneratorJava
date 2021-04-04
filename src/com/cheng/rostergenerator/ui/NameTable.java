@@ -82,6 +82,8 @@ public class NameTable extends JPanel {
                 var newMember = new Member("", false, true);
                 members.add(newMember);
                 tableModel.refreshTable(members);
+                table.editCellAt(members.size() - 1, 0);
+                table.getEditorComponent().requestFocus();
                 break;
             case "generate":
                 var errorKey = RosterProducer.validateErrorMessage();
@@ -105,7 +107,7 @@ public class NameTable extends JPanel {
                 break;
             case "save":
                 var cellEditor = table.getCellEditor();
-                if (cellEditor != null) {
+                if (cellEditor != null && table.isEditing()) {
                     cellEditor.stopCellEditing();
                 }
                 FileHelper.writeMemberList(members);
