@@ -6,7 +6,7 @@
   },
   {
     "name": "Ariana Phan",
-    "isExperienced": true,
+    "isExperienced": false,
     "assignSpeech": true
   },
   {
@@ -31,47 +31,47 @@
   },
   {
     "name": "Claire Bond",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "Clifford Hall",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "Darryl Pascoe",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "Gail Henry",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "Grant Richardson",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "Jamin Wan",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "John Reeve",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "Kenn Cabigayan",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
     "name": "Margaret Meredith",
-    "isExperienced": false,
+    "isExperienced": true,
     "assignSpeech": true
   },
   {
