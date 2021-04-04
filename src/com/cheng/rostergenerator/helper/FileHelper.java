@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,6 +60,22 @@ public class FileHelper {
     public static boolean memberListFileExists() {
         var file = new File(MEMBER_LIST_FILE_PATH);
         return file.exists();
+    }
+
+    public static boolean copySampleData() {
+        var sourceFile = ResourceHelper.file("/memberList.json");
+        var sourcePath = sourceFile.toPath();
+        var desPath = Paths.get(MEMBER_LIST_FILE_PATH);
+
+        try {
+            Files.copy(sourcePath, desPath);
+
+            return true;
+        } catch (IOException e) {
+            printException(e);
+        }
+
+        return false;
     }
 
     public static boolean exportToCSV(TableModel model, String exportToPath) {
