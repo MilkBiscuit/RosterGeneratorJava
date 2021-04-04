@@ -5,12 +5,7 @@ import java.util.ResourceBundle;
 
 public class ResBundleHelper {
 
-    private static ResBundleHelper sInstance = new ResBundleHelper();
     private static ResourceBundle sResource = ResourceBundle.getBundle("string", Locale.US);
-
-    public static ResBundleHelper getInstance() {
-        return sInstance;
-    }
 
     public static String getString(String key) {
         return sResource.getString(key);

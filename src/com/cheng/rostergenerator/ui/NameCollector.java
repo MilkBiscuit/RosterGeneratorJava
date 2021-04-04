@@ -5,7 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.swing.JButton;
@@ -13,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.border.EmptyBorder;
 
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
@@ -31,16 +29,25 @@ public class NameCollector extends JPanel {
     private ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String inputText = textArea.getText();
-            List<String> lines = Arrays.asList(inputText.split("\n"));
-            List<Member> members = lines.stream()
-            .filter(line -> !line.isBlank())
-            .map(name -> new Member(name, true, true))
-            .collect(Collectors.toList());
+            var command = e.getActionCommand();
+            switch (command) {
+            case "trial":
+                FileHelper.copySampleData();
+                NavigateUtil.toNameTable(NameCollector.this);
+                break;
+            case "done":
+                var inputText = textArea.getText();
+                var lines = Arrays.asList(inputText.split("\n"));
+                var members = lines.stream()
+                .filter(line -> !line.isBlank())
+                .map(name -> new Member(name, true, true))
+                .collect(Collectors.toList());
 
-            FileHelper.writeMemberList(members);
+                FileHelper.writeMemberList(members);
 
-            NavigateUtil.toNameTable(NameCollector.this);
+                NavigateUtil.toNameTable(NameCollector.this);
+                break;
+            }
         }
     };
 
@@ -49,41 +56,38 @@ public class NameCollector extends JPanel {
     }
 
     private void initLayout() {
-        setBorder(new EmptyBorder(UiConstants.PADDING_BIG, UiConstants.PADDING_BIG,
-            UiConstants.PADDING_BIG, UiConstants.PADDING_BIG));
-        setLayout(new GridBagLayout());
+        var layout = new GridBagLayout();
+        setLayout(layout);
+        setBorder(UiConstants.bigPaddingBorder());
 
-        JLabel label = new JLabel(ResBundleHelper.getString("pleaseInputNames"));
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
+        var label = new JLabel(ResBundleHelper.getString("pleaseInputNames"));
+        var c = new GridBagConstraints();
+        c.gridwidth = 1;
         c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.insets = UiConstants.smallInsets();
         add(label, c);
 
-        add(UiConstants.verticalBox(), c);
-
-        // Text area with scroll bars
         textArea = new JTextArea(TEXT_AREA_ROW, TEXT_AREA_COL);
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        c.fill = GridBagConstraints.BOTH;
+        var scrollPane = new JScrollPane(textArea);
+        c.gridy = 1;
         add(scrollPane, c);
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        add(UiConstants.verticalBox(), c);
+        var doneBtn = new JButton(ResBundleHelper.getString("common.done"));
+        doneBtn.setActionCommand("done");
+        doneBtn.addActionListener(actionListener);
+        c.fill = GridBagConstraints.NONE;
+        c.gridy = 2;
+        add(doneBtn, c);
 
-        // Done button line
-        c.gridwidth = 1;
-        c.gridy = 4;
-        c.weightx = 0.33;
-        add(UiConstants.horizontalBox(), c);
+        var trialBtn = new JButton(ResBundleHelper.getString("trialWithSampleData"));
+        trialBtn.setActionCommand("trial");
+        trialBtn.addActionListener(actionListener);
+        c.fill = GridBagConstraints.NONE;
+        c.gridy = 3;
+        add(trialBtn, c);
 
-        c.gridx = 1;
-        JButton button = new JButton(ResBundleHelper.getString("common.done"));
-        button.addActionListener(actionListener);
-        add(button, c);
-
-        c.gridx = 2;
-        add(UiConstants.horizontalBox(), c);
     }
 
 }

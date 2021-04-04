@@ -12,8 +12,6 @@ public class NameTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -1342387483628153701L;
 
-    private static final boolean DEBUG = true;
-
     private String[] columnNames = {
         ResBundleHelper.getString("name"),
         ResBundleHelper.getString("experienced"),
@@ -58,11 +56,6 @@ public class NameTableModel extends AbstractTableModel {
     }
 
     public void setValueAt(Object value, int row, int col) {
-        if (DEBUG) {
-            System.out.println("Setting value at " + row + "," + col + " to " + value + " (an instance of "
-                    + value.getClass() + ")");
-        }
-
         data[row][col] = value;
         fireTableCellUpdated(row, col);
 

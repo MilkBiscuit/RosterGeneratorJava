@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -45,20 +46,31 @@ public class FileHelper {
             }
         } catch (Exception e) {
             printException(e);
-            // e.printStackTrace();
         }
 
         try (var writer = new FileWriter(file)) {
             gson.toJson(members, writer);
         } catch (Exception e) {
             printException(e);
-            // e.printStackTrace();
         }
     }
 
     public static boolean memberListFileExists() {
         var file = new File(MEMBER_LIST_FILE_PATH);
         return file.exists();
+    }
+
+    public static boolean copySampleData() {
+        try (var is = FileHelper.class.getResourceAsStream("/memberList.json")) {
+            var desPath = Paths.get(MEMBER_LIST_FILE_PATH);
+            Files.copy(is, desPath);
+
+            return true;
+        } catch (IOException e) {
+            printException(e);
+        }
+
+        return false;
     }
 
     public static boolean exportToCSV(TableModel model, String exportToPath) {
@@ -83,19 +95,17 @@ public class FileHelper {
             return true;
         } catch (Exception e) {
             printException(e);
-            // e.printStackTrace();
         }
 
         return false;
     }
 
     public static void printException(Exception e) {
-        final var file = new File(HOME_FOLDER + "/Downloads/rosterGenerator.log");
+        final var file = new File(HOME_FOLDER + "/rosterGenerator_exception.log");
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            // e.printStackTrace();
             var ps = new PrintStream(file);
             e.printStackTrace(ps);
             ps.close();

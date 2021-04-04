@@ -37,7 +37,7 @@ public class PreferenceHelper {
     }
 
     public static boolean hasListeningPost() {
-        return read(PrefConstants.KEY_LISTENING_POST, true);
+        return read(PrefConstants.KEY_LISTENING_POST, false);
     }
 
     public static boolean hasSeenTutorial() {
