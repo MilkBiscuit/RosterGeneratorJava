@@ -14,7 +14,6 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
@@ -32,9 +31,9 @@ import javax.swing.table.TableRowSorter;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
-import com.cheng.rostergenerator.helper.ResourceHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.helper.ResourceHelper;
 import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.NameTableModel;
 import com.cheng.rostergenerator.model.constant.PrefConstants;

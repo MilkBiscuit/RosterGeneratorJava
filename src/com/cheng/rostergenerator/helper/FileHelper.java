@@ -3,6 +3,7 @@ package com.cheng.rostergenerator.helper;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ import com.google.gson.GsonBuilder;
 
 public class FileHelper {
 
-    private static final String MEMBER_LIST_FILE_PATH = System.getProperty("user.home") + "/rosterGenerator.json";
+    private static final String HOME_FOLDER = System.getProperty("user.home");
+    private static final String MEMBER_LIST_FILE_PATH = HOME_FOLDER + "/rosterGenerator.json";
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static List<Member> readMemberList() {
@@ -28,8 +30,8 @@ public class FileHelper {
             String content = Files.readString(filePath);
             Member[] memberArray = gson.fromJson(content, Member[].class);
             return Arrays.asList(memberArray);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            printException(e);
         }
 
         return new ArrayList<Member>();
@@ -41,14 +43,16 @@ public class FileHelper {
             if (!memberListFileExists()) {
                 file.createNewFile();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            printException(e);
+            // e.printStackTrace();
         }
 
         try (var writer = new FileWriter(file)) {
             gson.toJson(members, writer);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            printException(e);
+            // e.printStackTrace();
         }
     }
 
@@ -77,11 +81,27 @@ public class FileHelper {
             }
             csv.close();
             return true;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            printException(e);
+            // e.printStackTrace();
         }
 
         return false;
+    }
+
+    public static void printException(Exception e) {
+        final var file = new File(HOME_FOLDER + "/Downloads/rosterGenerator.log");
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            // e.printStackTrace();
+            var ps = new PrintStream(file);
+            e.printStackTrace(ps);
+            ps.close();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
 }

@@ -12,8 +12,9 @@ public class ResourceHelper {
             var resource = ResourceHelper.class.getResource(imagePath);
             var image = ImageIO.read(resource);
             return new ImageIcon(image);
-        } catch (IOException exception) {
-            exception.printStackTrace();
+        } catch (Exception exception) {
+            FileHelper.printException(exception);
+            // exception.printStackTrace();
         }
 
         return null;
