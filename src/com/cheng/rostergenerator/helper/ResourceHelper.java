@@ -19,17 +19,4 @@ public class ResourceHelper {
         return null;
     }
 
-    public static File file(String path) {
-        try {
-            var resource = ResourceHelper.class.getResource(path);
-            var file = new File(resource.toURI());
-
-            return file;
-        } catch (Exception exception) {
-            FileHelper.printException(exception);
-        }
-
-        return null;
-    }
-
 }

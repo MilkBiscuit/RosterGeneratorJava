@@ -61,12 +61,9 @@ public class FileHelper {
     }
 
     public static boolean copySampleData() {
-        var sourceFile = ResourceHelper.file("/memberList.json");
-        var sourcePath = sourceFile.toPath();
-        var desPath = Paths.get(MEMBER_LIST_FILE_PATH);
-
-        try {
-            Files.copy(sourcePath, desPath);
+        try (var is = FileHelper.class.getResourceAsStream("/memberList.json")) {
+            var desPath = Paths.get(MEMBER_LIST_FILE_PATH);
+            Files.copy(is, desPath);
 
             return true;
         } catch (IOException e) {
