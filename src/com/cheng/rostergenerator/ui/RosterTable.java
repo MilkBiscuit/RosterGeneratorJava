@@ -14,8 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.TitledBorder;
+import javax.swing.JTextArea;
 
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
@@ -96,31 +95,33 @@ public class RosterTable extends JPanel {
         final var tableWithButtons = new JPanel();
         final var layout = new GridBagLayout();
         final var title = RosterProducer.generateRosterTableInstructionTitle();
-        var border = new CompoundBorder(
-            new CompoundBorder(
-                UiConstants.bigPaddingBorder(),
-                new TitledBorder(title)
-            ),
-            UiConstants.smallPaddingBorder()
-        );
+        final var border = UiConstants.bigPaddingBorder();
         tableWithButtons.setBorder(border);
         tableWithButtons.setLayout(layout);
         GridBagConstraints c = new GridBagConstraints();
 
+        c.fill = GridBagConstraints.NONE;
+        c.gridx = 0;
+        c.gridy = 0;
+        var textArea = new JTextArea(title);
+        textArea.setEditable(false);
+        textArea.setOpaque(false);
+        tableWithButtons.add(textArea, c);
+
         c.insets = UiConstants.smallInsets();
         c.fill = GridBagConstraints.VERTICAL;
         c.gridx = 0;
-        c.gridy = 0;
+        c.gridy = 1;
         c.gridheight = 2;
-
         var scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
+
         var restoreIcon = ResourceHelper.imageIcon("/drawable/ic_refresh.png");
         var restoreBtn = new JButton(restoreIcon);
         restoreBtn.setActionCommand("refresh");
         restoreBtn.addActionListener(buttonActionListener);
         c.gridx = 1;
-        c.gridy = 0;
+        c.gridy = 1;
         c.gridheight = 1;
         c.weighty = 1;
         c.fill = GridBagConstraints.NONE;
@@ -131,7 +132,7 @@ public class RosterTable extends JPanel {
         saveBtn.setActionCommand("export");
         saveBtn.addActionListener(buttonActionListener);
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
         tableWithButtons.add(saveBtn, c);
 
         add(tableWithButtons);

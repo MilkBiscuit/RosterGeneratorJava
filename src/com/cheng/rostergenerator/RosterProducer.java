@@ -17,9 +17,10 @@ import com.cheng.rostergenerator.model.constant.TextConstants;
 
 public class RosterProducer {
 
-    public static int sNumOfAllSpeakers = 0;
-    private static int sRolesPerMeeting = 0;
+    private static int sNumOfAllSpeakers = 0;
+    private static int sNumOfRolesPerMeeting = 0;
     private static int sNumOfMeetings = 0;
+    private static int sNumOfCopiesOfClubMembers = 0;
     private static List<Member> clubMembers = null;
     private static List<String> chairPersonNames = new ArrayList<>();
     private static List<String> generalEvaluatorNames = new ArrayList<>();
@@ -64,7 +65,11 @@ public class RosterProducer {
         final var titleFormat = ResBundleHelper.getString("rosterTable.title");
         final var numOfSpeeches = RosterProducer.numOfSpeechesPerMeetingString();
 
-        return String.format(titleFormat, sNumOfAllSpeakers, numOfSpeeches, sNumOfMeetings);
+        return String.format(titleFormat,
+            sNumOfAllSpeakers, numOfSpeeches, sNumOfMeetings,
+            sNumOfRolesPerMeeting, sNumOfMeetings * sNumOfRolesPerMeeting, clubMembers.size(),
+            sNumOfCopiesOfClubMembers
+        );
     }
 
     // public only for unit test
@@ -97,10 +102,11 @@ public class RosterProducer {
      */
     public static String validateErrorMessage() {
         clubMembers = FileHelper.readMemberList();
-        sRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
+        sNumOfRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
         var speakerNum = (int) clubMembers.stream().filter(m -> m.assignSpeech).count();
         sNumOfMeetings = numOfMeeting(speakerNum);
-        if (clubMembers.size() < sRolesPerMeeting) {
+        sNumOfCopiesOfClubMembers = numOfAllMemberCopies(sNumOfMeetings, clubMembers.size());
+        if (clubMembers.size() < sNumOfRolesPerMeeting) {
             return "errorMessage.notEnoughMembers";
         }
         var experiencedNum = clubMembers.stream().filter(m -> m.isExperienced).count();
@@ -121,7 +127,7 @@ public class RosterProducer {
      */
     public static Map<String, String> generateOneMeeting(List<Member> speakers, List<Member> totalMembers) {
         var map = new HashMap<String, String>();
-        var namesOfMeeting = new ArrayList<String>(sRolesPerMeeting);
+        var namesOfMeeting = new ArrayList<String>(sNumOfRolesPerMeeting);
         if (speakers == null || speakers.isEmpty() || speakers.size() > 5) {
             System.out.println("num of speakers is invalid");
 
@@ -185,14 +191,12 @@ public class RosterProducer {
     }
 
     public static String[][] generateRosterTableData() throws RosterException {
-        sRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
+        // sNumOfRolesPerMeeting, sNumOfMeetings, sNumOfCopiesOfClubMembers were already calculated in validateMessage()
         clubMembers = FileHelper.readMemberList();
         var allSpeakers = clubMembers.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
-        sNumOfMeetings = numOfMeeting(allSpeakers.size());
-        var numOfCopiesOfMember = numOfAllMemberCopies(sNumOfMeetings, clubMembers.size());
         var allMembers = new ArrayList<Member>();
         sNumOfAllSpeakers = allSpeakers.size();
-        for (int i = 0; i < numOfCopiesOfMember; i++) {
+        for (int i = 0; i < sNumOfCopiesOfClubMembers; i++) {
             allMembers.addAll(clubMembers);
         }
 
@@ -200,7 +204,7 @@ public class RosterProducer {
         Collections.shuffle(allSpeakers);
         Collections.shuffle(allMembers);
 
-        String[][] data = new String[sRolesPerMeeting][sNumOfMeetings+1];
+        String[][] data = new String[sNumOfRolesPerMeeting][sNumOfMeetings+1];
         // Fill the row head, name of various meeting roles
         var rolesPerMeeting = MeetingRoleHelper.rolesPerMeeting();
         for (int i = 0; i < rolesPerMeeting.size(); i++) {
