@@ -20,7 +20,6 @@ import javax.swing.border.TitledBorder;
 import com.cheng.rostergenerator.RosterProducer;
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.ResourceHelper;
-import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.RosterException;
 import com.cheng.rostergenerator.model.RosterTableModel;
 import com.cheng.rostergenerator.model.constant.UiConstants;
@@ -77,7 +76,7 @@ public class RosterTable extends JPanel {
             dataModel.setData(data);
 
             table = new JTable(dataModel);
-            table.setPreferredScrollableViewportSize(new Dimension(1000, 300));
+            table.setPreferredScrollableViewportSize(new Dimension(1000, 400));
             table.setFillsViewportHeight(true);
     
             var renderer = new RosterCellRenderer(1);
@@ -96,12 +95,7 @@ public class RosterTable extends JPanel {
     private void createSidePanel() {
         final var tableWithButtons = new JPanel();
         final var layout = new GridBagLayout();
-
-        final var titleFormat = ResBundleHelper.getString("rosterTable.title");
-        final var numOfMeetings = dataModel.getColumnCount() - 1;
-        final var numOfAllSpeakers = RosterProducer.sNumOfAllSpeakers;
-        final var numOfSpeeches = RosterProducer.uiNumOfSpeechesPerMeeting();
-        final var title = String.format(titleFormat, numOfAllSpeakers, numOfSpeeches, numOfMeetings);
+        final var title = RosterProducer.generateRosterTableInstructionTitle();
         var border = new CompoundBorder(
             new CompoundBorder(
                 UiConstants.bigPaddingBorder(),

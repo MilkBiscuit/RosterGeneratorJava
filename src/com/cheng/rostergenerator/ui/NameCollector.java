@@ -72,6 +72,7 @@ public class NameCollector extends JPanel {
         textArea = new JTextArea(TEXT_AREA_ROW, TEXT_AREA_COL);
         var scrollPane = new JScrollPane(textArea);
         c.gridy = 1;
+        c.fill = GridBagConstraints.BOTH;
         add(scrollPane, c);
 
         var doneBtn = new JButton(ResBundleHelper.getString("common.done"));

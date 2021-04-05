@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.cheng.rostergenerator.helper.FileHelper;
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
+import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.model.Member;
 import com.cheng.rostergenerator.model.RosterException;
 import com.cheng.rostergenerator.model.constant.TextConstants;
@@ -18,7 +19,10 @@ public class RosterProducer {
 
     public static int sNumOfAllSpeakers = 0;
     private static int sRolesPerMeeting = 0;
+    private static int sNumOfMeetings = 0;
     private static List<Member> clubMembers = null;
+    private static List<String> chairPersonNames = new ArrayList<>();
+    private static List<String> generalEvaluatorNames = new ArrayList<>();
 
     /**
      * 
@@ -56,25 +60,16 @@ public class RosterProducer {
         return (int) Math.ceil(numOfSpeakers / (fourSpeeches ? 4.0f : 5.0f));
     }
 
-    public static float uiNumOfSpeechesPerMeeting() {
-        var reserveForNew = PreferenceHelper.reserveForNewMember();
-        var hasFourSpeeches = PreferenceHelper.hasFourSpeeches();
-        float retValue;
-        if (reserveForNew && hasFourSpeeches) {
-            retValue = 3.5f;
-        } else if (reserveForNew && !hasFourSpeeches) {
-            retValue = 4.5f;
-        } else if (!reserveForNew && hasFourSpeeches) {
-            retValue = 4.0f;
-        } else {
-            retValue = 5.0f;
-        }
+    public static String generateRosterTableInstructionTitle() {
+        final var titleFormat = ResBundleHelper.getString("rosterTable.title");
+        final var numOfSpeeches = RosterProducer.numOfSpeechesPerMeetingString();
 
-        return retValue;
+        return String.format(titleFormat, sNumOfAllSpeakers, numOfSpeeches, sNumOfMeetings);
     }
 
+    // public only for unit test
     public static int numOfSpeechesPerMeeting() {
-        var uiNum = uiNumOfSpeechesPerMeeting();
+        var uiNum = numOfSpeechesPerMeetingString();
         var actualNum = (int) Math.ceil(uiNum);
 
         return actualNum;
@@ -103,11 +98,14 @@ public class RosterProducer {
     public static String validateErrorMessage() {
         clubMembers = FileHelper.readMemberList();
         sRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
+        var speakerNum = (int) clubMembers.stream().filter(m -> m.assignSpeech).count();
+        sNumOfMeetings = numOfMeeting(speakerNum);
         if (clubMembers.size() < sRolesPerMeeting) {
             return "errorMessage.notEnoughMembers";
         }
-        var experienced = clubMembers.stream().filter(m -> m.isExperienced).toArray();
-        if (experienced.length < 5) {
+        var experiencedNum = clubMembers.stream().filter(m -> m.isExperienced).count();
+        if (experiencedNum < sNumOfMeetings) {
+            // At least the chairperson role should NOT be duplicate
             return "errorMessage.notEnoughExperienced";
         }
 
@@ -115,6 +113,7 @@ public class RosterProducer {
     }
 
     /**
+     * set to public only for unit test
      * 
      * @param speakers, prepared speech speakers this meeting, it should NOT have duplicate values
      * @param totalMembers, n * (whole club member list)
@@ -139,9 +138,12 @@ public class RosterProducer {
             namesOfMeeting.add(speakerName);
         }
 
-        var optChairperson = totalMembers.stream().filter(
-            m -> (namesOfMeeting.indexOf(m.name) == -1) && m.isExperienced
-        ).findFirst();
+        var optChairperson = totalMembers.stream().filter(m -> {
+            var name = m.name;
+            return (namesOfMeeting.indexOf(name) == -1)
+            && (chairPersonNames.indexOf(name) == - 1)
+            && m.isExperienced;
+        }).findFirst();
         if (optChairperson.isPresent()) {
             var chair = optChairperson.get();
             map.put(TextConstants.CHAIRPERSON, chair.name);
@@ -151,9 +153,12 @@ public class RosterProducer {
             throw new RosterException("errorMessage.notEnoughExperienced.runtime");
         }
 
-        var optGeneral = totalMembers.stream().filter(
-            m -> (namesOfMeeting.indexOf(m.name) == -1) && m.isExperienced
-        ).findFirst();
+        var optGeneral = totalMembers.stream().filter(m -> {
+            var name = m.name;
+            return (namesOfMeeting.indexOf(name) == -1)
+            && (generalEvaluatorNames.indexOf(name) == -1)
+            && m.isExperienced;
+        }).findFirst();
         if (optGeneral.isPresent()) {
             var general = optGeneral.get();
             map.put(TextConstants.GENERAL_EVALUATOR, general.name);
@@ -183,8 +188,8 @@ public class RosterProducer {
         sRolesPerMeeting = MeetingRoleHelper.rolesPerMeeting().size();
         clubMembers = FileHelper.readMemberList();
         var allSpeakers = clubMembers.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
-        var numOfMeetings = numOfMeeting(allSpeakers.size());
-        var numOfCopiesOfMember = numOfAllMemberCopies(numOfMeetings, clubMembers.size());
+        sNumOfMeetings = numOfMeeting(allSpeakers.size());
+        var numOfCopiesOfMember = numOfAllMemberCopies(sNumOfMeetings, clubMembers.size());
         var allMembers = new ArrayList<Member>();
         sNumOfAllSpeakers = allSpeakers.size();
         for (int i = 0; i < numOfCopiesOfMember; i++) {
@@ -195,14 +200,16 @@ public class RosterProducer {
         Collections.shuffle(allSpeakers);
         Collections.shuffle(allMembers);
 
-        String[][] data = new String[sRolesPerMeeting][numOfMeetings+1];
-        // Fill the row head, various meeting roles
+        String[][] data = new String[sRolesPerMeeting][sNumOfMeetings+1];
+        // Fill the row head, name of various meeting roles
         var rolesPerMeeting = MeetingRoleHelper.rolesPerMeeting();
         for (int i = 0; i < rolesPerMeeting.size(); i++) {
             data[i][0] = rolesPerMeeting.get(i);
         }
-        // Fill the rest of the table
-        for (int j = 1; j <= numOfMeetings; j++) {
+        // Fill the rest of the table, value of meeting roles
+        chairPersonNames.clear();
+        generalEvaluatorNames.clear();
+        for (int j = 1; j <= sNumOfMeetings; j++) {
             var reserveForNewMember = PreferenceHelper.reserveForNewMember();
             var fourSpeeches = PreferenceHelper.hasFourSpeeches();
             var usualSpeeches = fourSpeeches ? 4 : 5;
@@ -210,6 +217,8 @@ public class RosterProducer {
             numOfSpeaker = Math.min(numOfSpeaker, allSpeakers.size());
             var speakers = allSpeakers.subList(0, numOfSpeaker);
             Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
+            chairPersonNames.add(rosterMap.get(TextConstants.CHAIRPERSON));
+            generalEvaluatorNames.add(rosterMap.get(TextConstants.GENERAL_EVALUATOR));
             for (int i = 0; i < rolesPerMeeting.size(); i++) {
                 var role = rolesPerMeeting.get(i);
                 data[i][j] = rosterMap.get(role);
@@ -218,5 +227,22 @@ public class RosterProducer {
         }
 
         return data;
+    }
+
+    private static float numOfSpeechesPerMeetingString() {
+        var reserveForNew = PreferenceHelper.reserveForNewMember();
+        var hasFourSpeeches = PreferenceHelper.hasFourSpeeches();
+        float retValue;
+        if (reserveForNew && hasFourSpeeches) {
+            retValue = 3.5f;
+        } else if (reserveForNew && !hasFourSpeeches) {
+            retValue = 4.5f;
+        } else if (!reserveForNew && hasFourSpeeches) {
+            retValue = 4.0f;
+        } else {
+            retValue = 5.0f;
+        }
+
+        return retValue;
     }
 }
