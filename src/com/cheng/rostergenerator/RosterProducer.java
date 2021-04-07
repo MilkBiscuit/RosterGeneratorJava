@@ -191,7 +191,9 @@ public class RosterProducer {
     }
 
     public static String[][] generateRosterTableData() throws RosterException {
-        // sNumOfRolesPerMeeting, sNumOfMeetings, sNumOfCopiesOfClubMembers were already calculated in validateMessage()
+        var rolesPerMeeting = MeetingRoleHelper.rolesPerMeeting();
+        sNumOfRolesPerMeeting = rolesPerMeeting.size();
+        // sNumOfMeetings, sNumOfCopiesOfClubMembers were already calculated in validateMessage()
         clubMembers = FileHelper.readMemberList();
         var allSpeakers = clubMembers.stream().filter(m -> m.assignSpeech).collect(Collectors.toList());
         var allMembers = new ArrayList<Member>();
@@ -206,8 +208,7 @@ public class RosterProducer {
 
         String[][] data = new String[sNumOfRolesPerMeeting][sNumOfMeetings+1];
         // Fill the row head, name of various meeting roles
-        var rolesPerMeeting = MeetingRoleHelper.rolesPerMeeting();
-        for (int i = 0; i < rolesPerMeeting.size(); i++) {
+        for (int i = 0; i < sNumOfRolesPerMeeting; i++) {
             data[i][0] = rolesPerMeeting.get(i);
         }
         // Fill the rest of the table, value of meeting roles
@@ -223,7 +224,7 @@ public class RosterProducer {
             Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
             chairPersonNames.add(rosterMap.get(TextConstants.CHAIRPERSON));
             generalEvaluatorNames.add(rosterMap.get(TextConstants.GENERAL_EVALUATOR));
-            for (int i = 0; i < rolesPerMeeting.size(); i++) {
+            for (int i = 0; i < sNumOfRolesPerMeeting; i++) {
                 var role = rolesPerMeeting.get(i);
                 data[i][j] = rosterMap.get(role);
             }

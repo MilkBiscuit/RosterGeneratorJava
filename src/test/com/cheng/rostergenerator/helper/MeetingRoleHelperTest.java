@@ -20,7 +20,7 @@ class MeetingRoleHelperTest {
         assertFalse(result.stream().filter(role -> role == TextConstants.CHAIRPERSON).findFirst().isPresent());
         assertFalse(result.stream().filter(role -> role == TextConstants.GENERAL_EVALUATOR).findFirst().isPresent());
         assertFalse(result.stream().filter(role -> role == TextConstants.SPEAKER_1).findFirst().isPresent());
-        assertEquals(12, result.size());
+        assertFalse(result.stream().filter(role -> role == TextConstants.SPEAKER_5).findFirst().isPresent());
     }
 
     @Test
