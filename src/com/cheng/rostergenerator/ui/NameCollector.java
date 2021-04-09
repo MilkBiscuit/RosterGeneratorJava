@@ -1,5 +1,6 @@
 package com.cheng.rostergenerator.ui;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -71,6 +72,7 @@ public class NameCollector extends JPanel {
 
         textArea = new JTextArea(TEXT_AREA_ROW, TEXT_AREA_COL);
         var scrollPane = new JScrollPane(textArea);
+        scrollPane.setMinimumSize(new Dimension(618, 1000));
         c.gridy = 1;
         c.fill = GridBagConstraints.BOTH;
         add(scrollPane, c);
