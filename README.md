@@ -23,4 +23,4 @@ Hope it can be helpful and hope you like this program.
 
 ### For Windows:
 
-[RosterGenerator-v1.0.1.zip](https://drive.google.com/file/d/1HlojaLBEcC_FxHvhaAxgbnaPVYPZxzDy/view?usp=sharing)
+[RosterGenerator-v1.0.2.zip](https://drive.google.com/file/d/1SLspDd9Ik96SwpHrvO0Il2VcbSJvW2ct/view)
