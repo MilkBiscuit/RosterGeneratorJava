@@ -3,13 +3,13 @@ Life saver for Toastmasters VP Education! Roster generated for several meetings 
 
 ### Pre-conditions of using this App:
 
-1. Club size >= number of roles per meeting. (If unfortunately it is true, add fake names as placeholder).
+1. Club size >= number of roles per meeting. (If unfortunately your club size doesn't meet this condition, add some fake names as placeholders).
 2. Number of meetings is determined by the number of speakers to accomodate and the number of speeches per meeting.
 3. Number of experienced members >= number of meetings.
 
-### This program was written based on some basic rules:
+### The roster is planned based on some basic rules:
 1. Each person only takes one role of a meeting, that means no one would take two or more roles in a meeting.
-2. Chairperson/General Evaluator will only assign to experienced members.
+2. Chairperson/General Evaluator will only be assigned to experienced members.
 3. In the generated cycle, a member won't take the role of Chairperson twice.
 4. In the generated cycle, a member won't take the role of General Evaluator twice.
 
