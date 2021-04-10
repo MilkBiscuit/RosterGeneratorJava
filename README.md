@@ -21,6 +21,6 @@ Hope it can be helpful and hope you like this program.
 
 [Roster-1.0.1.pkg](https://drive.google.com/file/d/1BjQmBhtdhdwO-j7p_07BnuCdwGZ-cgfe/view?usp=sharing)
 
-### For Windows:
+### For Windows (Portable application, zero install) :
 
-[RosterGenerator-v1.0.2.zip](https://drive.google.com/file/d/1SLspDd9Ik96SwpHrvO0Il2VcbSJvW2ct/view)
+[RosterGenerator-v1.0.2.zip](https://drive.google.com/u/0/uc?id=1SLspDd9Ik96SwpHrvO0Il2VcbSJvW2ct&export=download)
