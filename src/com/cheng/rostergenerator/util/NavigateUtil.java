@@ -13,8 +13,8 @@ public class NavigateUtil {
     public static void toNameTable(Component c) {
         var frame = UIUtil.getParentFrame(c);
         var nameTable = new NameTable();
-        frame.getContentPane().removeAll();;
-        frame.getContentPane().add(nameTable);
+        frame.getContentPane().removeAll();
+        frame.setContentPane(nameTable);
         frame.pack();
         frame.setVisible(true);
     }
@@ -30,8 +30,8 @@ public class NavigateUtil {
     public static void toNameCollector(Component c) {
         var frame = UIUtil.getParentFrame(c);
         var nameCollector = new NameCollector();
-        frame.getContentPane().removeAll();;
-        frame.getContentPane().add(nameCollector);
+        frame.getContentPane().removeAll();
+        frame.setContentPane(nameCollector);
         frame.pack();
         frame.setVisible(true);
     }
