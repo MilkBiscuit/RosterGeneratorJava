@@ -22,8 +22,7 @@ public class RosterProducer {
     private static int sNumOfMeetings = 0;
     private static int sNumOfCopiesOfClubMembers = 0;
     private static List<Member> clubMembers = null;
-    private static List<String> chairPersonNames = new ArrayList<>();
-    private static List<String> generalEvaluatorNames = new ArrayList<>();
+    private static Map<String, ArrayList<String>> roleToNames = new HashMap<>();
 
     /**
      * 
@@ -144,6 +143,7 @@ public class RosterProducer {
             namesOfMeeting.add(speakerName);
         }
 
+        var chairPersonNames = roleToNames.get(TextConstants.CHAIRPERSON);
         var optChairperson = totalMembers.stream().filter(m -> {
             var name = m.name;
             return (namesOfMeeting.indexOf(name) == -1)
@@ -159,6 +159,7 @@ public class RosterProducer {
             throw new RosterException("errorMessage.notEnoughExperienced.runtime");
         }
 
+        var generalEvaluatorNames = roleToNames.get(TextConstants.GENERAL_EVALUATOR);
         var optGeneral = totalMembers.stream().filter(m -> {
             var name = m.name;
             return (namesOfMeeting.indexOf(name) == -1)
@@ -211,9 +212,12 @@ public class RosterProducer {
         for (int i = 0; i < sNumOfRolesPerMeeting; i++) {
             data[i][0] = rolesPerMeeting.get(i);
         }
+
         // Fill the rest of the table, value of meeting roles
-        chairPersonNames.clear();
-        generalEvaluatorNames.clear();
+        roleToNames.clear();
+        for (String role : rolesPerMeeting) {
+            roleToNames.put(role, new ArrayList<String>());
+        }
         for (int j = 1; j <= sNumOfMeetings; j++) {
             var reserveForNewMember = PreferenceHelper.reserveForNewMember();
             var fourSpeeches = PreferenceHelper.hasFourSpeeches();
@@ -222,8 +226,11 @@ public class RosterProducer {
             numOfSpeaker = Math.min(numOfSpeaker, allSpeakers.size());
             var speakers = allSpeakers.subList(0, numOfSpeaker);
             Map<String, String> rosterMap = RosterProducer.generateOneMeeting(speakers, allMembers);
-            chairPersonNames.add(rosterMap.get(TextConstants.CHAIRPERSON));
-            generalEvaluatorNames.add(rosterMap.get(TextConstants.GENERAL_EVALUATOR));
+            for (var roleEntry : rosterMap.entrySet()) {
+                var role = roleEntry.getKey();
+                var name = roleEntry.getValue();
+                roleToNames.get(role).add(name);
+            }
             for (int i = 0; i < sNumOfRolesPerMeeting; i++) {
                 var role = rolesPerMeeting.get(i);
                 data[i][j] = rosterMap.get(role);
