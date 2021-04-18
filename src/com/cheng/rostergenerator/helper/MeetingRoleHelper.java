@@ -65,4 +65,8 @@ public class MeetingRoleHelper {
         return rolesPerMeeting;
     }
 
+    public static boolean isTTEvaluator(String role) {
+        return TextConstants.TT_EVALUATOR_1 == role || TextConstants.TT_EVALUATOR_2 == role;
+    }
+
 }

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.helper.FileHelper;
@@ -177,9 +178,27 @@ public class RosterProducer {
 
         var meetingRoles = MeetingRoleHelper.getMeetingRoleForAnyOne();
         for (String role : meetingRoles) {
-            var optAnyOne = totalMembers.stream().filter(
-                m -> (namesOfMeeting.indexOf(m.name) == -1)
-            ).findFirst();
+            List<String> namesForRole = roleToNames.get(role);
+            Optional<Member> optAnyOne;
+            if (MeetingRoleHelper.isTTEvaluator(role)) {
+                var ttEvaluatorNames = new ArrayList<String>();
+                var ttEvaluator1 = roleToNames.get(TextConstants.TT_EVALUATOR_1);
+                if (!ttEvaluator1.isEmpty()) {
+                    ttEvaluatorNames.add(ttEvaluator1.get(ttEvaluator1.size() - 1));
+                }
+                var ttEvaluator2 = roleToNames.get(TextConstants.TT_EVALUATOR_2);
+                if (!ttEvaluator2.isEmpty()) {
+                    ttEvaluatorNames.add(ttEvaluator2.get(ttEvaluator2.size() - 1));
+                }
+                optAnyOne = totalMembers.stream().filter(
+                    m -> (namesOfMeeting.indexOf(m.name) == -1) && (ttEvaluatorNames.indexOf(m.name) == -1)
+                ).findFirst();
+            } else {
+                var excludeNameForRole = namesForRole.isEmpty() ? "" : namesForRole.get(namesForRole.size() - 1);
+                optAnyOne = totalMembers.stream().filter(
+                    m -> (namesOfMeeting.indexOf(m.name) == -1) && (m.name != excludeNameForRole)
+                ).findFirst();
+            }
             if (optAnyOne.isPresent()) {
                 var anyone = optAnyOne.get();
                 map.put(role, anyone.name);
@@ -205,8 +224,6 @@ public class RosterProducer {
 
         // Randomise the order
         Collections.shuffle(allSpeakers);
-        Collections.shuffle(allMembers);
-
         String[][] data = new String[sNumOfRolesPerMeeting][sNumOfMeetings+1];
         // Fill the row head, name of various meeting roles
         for (int i = 0; i < sNumOfRolesPerMeeting; i++) {
@@ -219,6 +236,9 @@ public class RosterProducer {
             roleToNames.put(role, new ArrayList<String>());
         }
         for (int j = 1; j <= sNumOfMeetings; j++) {
+            // Randomise the order
+            Collections.shuffle(allMembers);
+
             var reserveForNewMember = PreferenceHelper.reserveForNewMember();
             var fourSpeeches = PreferenceHelper.hasFourSpeeches();
             var usualSpeeches = fourSpeeches ? 4 : 5;
