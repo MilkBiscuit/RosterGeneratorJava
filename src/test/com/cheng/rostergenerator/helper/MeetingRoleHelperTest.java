@@ -68,4 +68,44 @@ class MeetingRoleHelperTest {
         assertFalse(result.contains("Listening Post"));
     }
 
+    @Test
+    void testIsTTEvaluator() {
+        var result = MeetingRoleHelper.isTTEvaluator(null);
+        assertFalse(result);
+        result = MeetingRoleHelper.isTTEvaluator("");
+        assertFalse(result);
+        result = MeetingRoleHelper.isTTEvaluator("apple");
+        assertFalse(result);
+        result = MeetingRoleHelper.isTTEvaluator("Chairperson");
+        assertFalse(result);
+        result = MeetingRoleHelper.isTTEvaluator("Guest Hospitality");
+        assertFalse(result);
+        result = MeetingRoleHelper.isTTEvaluator("Table Topic Evaluator 1");
+        assertTrue(result);
+        result = MeetingRoleHelper.isTTEvaluator("Table Topic Evaluator 2");
+        assertTrue(result);
+    }
+
+    @Test
+    void testIsSpeechEvaluator() {
+        var result = MeetingRoleHelper.isSpeechEvaluator(null);
+        assertFalse(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("");
+        assertFalse(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("apple");
+        assertFalse(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("Chairperson");
+        assertFalse(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("Guest Hospitality");
+        assertFalse(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("Table Topic Evaluator 1");
+        assertFalse(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("Table Topic Evaluator 2");
+        assertFalse(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("Evaluator 2");
+        assertTrue(result);
+        result = MeetingRoleHelper.isSpeechEvaluator("Evaluator 5");
+        assertTrue(result);
+    }
+
 }

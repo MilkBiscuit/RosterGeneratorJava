@@ -108,9 +108,10 @@ class RosterProducerTest {
         var allMembers = new ArrayList<>(members);
         allMembers.addAll(members);
         allMembers.addAll(members);
-        var cMembers = members.stream().filter(m -> m.name.startsWith("A")).collect(Collectors.toList());
+        var speakers = members.stream().filter(m -> m.name.startsWith("A")).collect(Collectors.toList());
 
-        var result = RosterProducer.generateOneMeeting(cMembers, allMembers);
+        RosterProducer.setupRoleToNames();
+        var result = RosterProducer.generateOneMeeting(speakers, allMembers);
         var nameCollection = result.values();
         var nameSet = new HashSet<>(nameCollection);
         // Should NEVER have one name appear twice or even more

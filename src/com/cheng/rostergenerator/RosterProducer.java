@@ -187,7 +187,7 @@ public class RosterProducer {
                     ttEvaluatorNames.add(ttEvaluator1.get(ttEvaluator1.size() - 1));
                 }
                 var ttEvaluator2 = roleToNames.get(TextConstants.TT_EVALUATOR_2);
-                if (!ttEvaluator2.isEmpty()) {
+                if (ttEvaluator2 != null && !ttEvaluator2.isEmpty()) {
                     ttEvaluatorNames.add(ttEvaluator2.get(ttEvaluator2.size() - 1));
                 }
                 optAnyOne = totalMembers.stream().filter(
@@ -230,11 +230,8 @@ public class RosterProducer {
             data[i][0] = rolesPerMeeting.get(i);
         }
 
+        setupRoleToNames();
         // Fill the rest of the table, value of meeting roles
-        roleToNames.clear();
-        for (String role : rolesPerMeeting) {
-            roleToNames.put(role, new ArrayList<String>());
-        }
         for (int j = 1; j <= sNumOfMeetings; j++) {
             // Randomise the order
             Collections.shuffle(allMembers);
@@ -259,6 +256,14 @@ public class RosterProducer {
         }
 
         return data;
+    }
+
+    public static void setupRoleToNames() {
+        var rolesPerMeeting = MeetingRoleHelper.rolesPerMeeting();
+        roleToNames.clear();
+        for (String role : rolesPerMeeting) {
+            roleToNames.put(role, new ArrayList<String>());
+        }
     }
 
     private static float numOfSpeechesPerMeetingString() {

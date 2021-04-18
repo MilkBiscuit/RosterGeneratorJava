@@ -69,4 +69,12 @@ public class MeetingRoleHelper {
         return TextConstants.TT_EVALUATOR_1 == role || TextConstants.TT_EVALUATOR_2 == role;
     }
 
+    public static boolean isSpeechEvaluator(String role) {
+        return TextConstants.EVALUATOR_1 == role
+        || TextConstants.EVALUATOR_2 == role
+        || TextConstants.EVALUATOR_3 == role
+        || TextConstants.EVALUATOR_4 == role
+        || TextConstants.EVALUATOR_5 == role;
+    }
+
 }
