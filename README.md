@@ -12,6 +12,7 @@ Life saver for Toastmasters VP Education! Roster generated for several meetings 
 2. Chairperson/General Evaluator will only be assigned to experienced members.
 3. In the generated cycle, a member won't take the role of Chairperson twice.
 4. In the generated cycle, a member won't take the role of General Evaluator twice.
+5. No one takes the same role twice in a role (Except Speech Evaluator).
 
 Hope it can be helpful and hope you like this program.
 
@@ -19,7 +20,7 @@ Hope it can be helpful and hope you like this program.
 ## Latest Version download link:
 ### For Mac OS:
 
-[Roster-1.0.1.pkg](https://drive.google.com/file/d/1BjQmBhtdhdwO-j7p_07BnuCdwGZ-cgfe/view?usp=sharing)
+[Roster-1.0.3.pkg](https://drive.google.com/file/d/1Z2iEVTivduhuPhMLUtnCMgIQAF6Xj1tZ/view?usp=sharing)
 
 ### For Windows (Portable application, zero install) :
 
