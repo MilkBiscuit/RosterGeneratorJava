@@ -14,7 +14,7 @@ Life saver for Toastmasters VP Education! Roster generated for several meetings 
 4. In the generated cycle, a member won't take the role of General Evaluator twice.
 5. No one takes the same role twice in a row (except Speech Evaluator).
 
-Hope it can be helpful and hope you like this program.
+I sincerely hope this program can be helpful for VP Eds and that you like it.
 
 
 ## Latest Version download link:
