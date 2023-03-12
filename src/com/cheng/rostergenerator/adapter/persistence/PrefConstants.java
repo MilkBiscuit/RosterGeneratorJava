@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator.model.constant;
+package com.cheng.rostergenerator.adapter.persistence;
 
 public class PrefConstants {
 

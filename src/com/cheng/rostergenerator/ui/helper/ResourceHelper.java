@@ -1,4 +1,6 @@
-package com.cheng.rostergenerator.helper;
+package com.cheng.rostergenerator.ui.helper;
+
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;

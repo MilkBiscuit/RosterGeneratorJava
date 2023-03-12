@@ -5,9 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
-import com.cheng.rostergenerator.model.Member;
-import com.cheng.rostergenerator.model.constant.PrefConstants;
-import com.cheng.rostergenerator.model.constant.TextConstants;
+import com.cheng.rostergenerator.domain.model.Member;
+import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
+import com.cheng.rostergenerator.ui.TextConstants;
 
 import org.junit.jupiter.api.Test;
 

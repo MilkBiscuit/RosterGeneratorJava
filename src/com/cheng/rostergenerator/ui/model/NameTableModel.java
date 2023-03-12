@@ -1,11 +1,12 @@
-package com.cheng.rostergenerator.model;
+package com.cheng.rostergenerator.ui.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.domain.model.Member;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 
 public class NameTableModel extends AbstractTableModel {

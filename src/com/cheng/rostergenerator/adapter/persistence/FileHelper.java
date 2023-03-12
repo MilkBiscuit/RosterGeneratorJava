@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator.helper;
+package com.cheng.rostergenerator.adapter.persistence;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.swing.table.TableModel;
 
-import com.cheng.rostergenerator.model.Member;
+import com.cheng.rostergenerator.domain.model.Member;
 import com.cheng.rostergenerator.util.TestUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -29,17 +29,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
-import com.cheng.rostergenerator.RosterProducer;
-import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.domain.RosterProducer;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
-import com.cheng.rostergenerator.helper.ResourceHelper;
-import com.cheng.rostergenerator.model.Member;
-import com.cheng.rostergenerator.model.NameTableModel;
-import com.cheng.rostergenerator.model.constant.PrefConstants;
-import com.cheng.rostergenerator.model.constant.UiConstants;
-import com.cheng.rostergenerator.util.NavigateUtil;
-import com.cheng.rostergenerator.util.SpringUtilities;
+import com.cheng.rostergenerator.ui.helper.ResourceHelper;
+import com.cheng.rostergenerator.domain.model.Member;
+import com.cheng.rostergenerator.ui.model.NameTableModel;
+import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
+import com.cheng.rostergenerator.util.NavigationUtil;
+import com.cheng.rostergenerator.util.SpringUtil;
 import com.cheng.rostergenerator.util.UIUtil;
 
 public class NameTable extends JPanel {
@@ -100,7 +99,7 @@ public class NameTable extends JPanel {
                 // Start generating
                 var errorKey = RosterProducer.validateErrorMessage();
                 if (errorKey == null) {
-                    NavigateUtil.toRosterTable();
+                    NavigationUtil.toRosterTable();
                 } else {
                     UIUtil.showSimpleDialog(NameTable.this, errorKey);
                 }
@@ -117,7 +116,7 @@ public class NameTable extends JPanel {
             case "exit":
                 UIUtil.showYesNoDialog(NameTable.this, "dialog.removeAll", "common.yesImSure", "common.cancel", () -> {
                     FileHelper.deleteMemberList();
-                    NavigateUtil.toNameCollector(NameTable.this);
+                    NavigationUtil.toNameCollector(NameTable.this);
                 });
                 break;
             }
@@ -274,7 +273,7 @@ public class NameTable extends JPanel {
             settingObjects.add(i, checkbox);
         }
 
-        SpringUtilities.makeCompactGrid(
+        SpringUtil.makeCompactGrid(
             settingsPanel, SETTING_LABELS.length, 3,
             UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL,
             UiConstants.PADDING_SMALL, UiConstants.PADDING_SMALL

@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator;
+package com.cheng.rostergenerator.domain;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,13 +8,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
-import com.cheng.rostergenerator.model.Member;
-import com.cheng.rostergenerator.model.RosterException;
-import com.cheng.rostergenerator.model.constant.TextConstants;
+import com.cheng.rostergenerator.domain.model.Member;
+import com.cheng.rostergenerator.domain.model.RosterException;
+import com.cheng.rostergenerator.ui.TextConstants;
 
 public class RosterProducer {
 

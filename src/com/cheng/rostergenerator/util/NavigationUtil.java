@@ -8,7 +8,7 @@ import com.cheng.rostergenerator.ui.NameCollector;
 import com.cheng.rostergenerator.ui.NameTable;
 import com.cheng.rostergenerator.ui.RosterTable;
 
-public class NavigateUtil {
+public class NavigationUtil {
 
     public static void toNameTable(Component c) {
         var frame = UIUtil.getParentFrame(c);

@@ -5,7 +5,7 @@ package com.cheng.rostergenerator.ui;
 
 import javax.swing.JFrame;
 
-import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 
 /**

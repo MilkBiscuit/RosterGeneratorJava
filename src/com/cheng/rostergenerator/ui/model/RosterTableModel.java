@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator.model;
+package com.cheng.rostergenerator.ui.model;
 
 import javax.swing.table.AbstractTableModel;
 

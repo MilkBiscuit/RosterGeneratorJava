@@ -16,12 +16,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
-import com.cheng.rostergenerator.RosterProducer;
-import com.cheng.rostergenerator.helper.FileHelper;
-import com.cheng.rostergenerator.helper.ResourceHelper;
-import com.cheng.rostergenerator.model.RosterException;
-import com.cheng.rostergenerator.model.RosterTableModel;
-import com.cheng.rostergenerator.model.constant.UiConstants;
+import com.cheng.rostergenerator.domain.RosterProducer;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
+import com.cheng.rostergenerator.ui.helper.ResourceHelper;
+import com.cheng.rostergenerator.domain.model.RosterException;
+import com.cheng.rostergenerator.ui.model.RosterTableModel;
 import com.cheng.rostergenerator.util.UIUtil;
 
 

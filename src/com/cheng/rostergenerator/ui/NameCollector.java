@@ -14,11 +14,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
-import com.cheng.rostergenerator.model.Member;
-import com.cheng.rostergenerator.model.constant.UiConstants;
-import com.cheng.rostergenerator.util.NavigateUtil;
+import com.cheng.rostergenerator.domain.model.Member;
+import com.cheng.rostergenerator.util.NavigationUtil;
 
 public class NameCollector extends JPanel {
 
@@ -34,7 +33,7 @@ public class NameCollector extends JPanel {
             switch (command) {
             case "trial":
                 FileHelper.copySampleData();
-                NavigateUtil.toNameTable(NameCollector.this);
+                NavigationUtil.toNameTable(NameCollector.this);
                 break;
             case "done":
                 var inputText = textArea.getText();
@@ -46,7 +45,7 @@ public class NameCollector extends JPanel {
 
                 FileHelper.writeMemberList(members);
 
-                NavigateUtil.toNameTable(NameCollector.this);
+                NavigationUtil.toNameTable(NameCollector.this);
                 break;
             }
         }

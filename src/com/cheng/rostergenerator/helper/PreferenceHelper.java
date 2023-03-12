@@ -2,7 +2,7 @@ package com.cheng.rostergenerator.helper;
 
 import java.util.prefs.Preferences;
 
-import com.cheng.rostergenerator.model.constant.PrefConstants;
+import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
 
 public class PreferenceHelper {
 

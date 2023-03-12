@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator.model.constant;
+package com.cheng.rostergenerator.ui;
 
 public class TextConstants {
 

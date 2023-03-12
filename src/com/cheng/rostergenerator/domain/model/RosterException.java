@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator.model;
+package com.cheng.rostergenerator.domain.model;
 
 public class RosterException extends RuntimeException {
 

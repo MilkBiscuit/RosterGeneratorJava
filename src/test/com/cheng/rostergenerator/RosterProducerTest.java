@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import com.cheng.rostergenerator.RosterProducer;
-import com.cheng.rostergenerator.helper.FileHelper;
+import com.cheng.rostergenerator.domain.RosterProducer;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
-import com.cheng.rostergenerator.model.constant.PrefConstants;
+import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
 
 import org.junit.jupiter.api.Test;
 
