@@ -6,7 +6,7 @@ import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
 
 public class PreferenceHelper {
 
-    private static Preferences sPref = Preferences.userRoot();
+    private static final Preferences sPref = Preferences.userRoot();
 
     public static void save(String key, boolean value) {
         sPref.putBoolean(key, value);

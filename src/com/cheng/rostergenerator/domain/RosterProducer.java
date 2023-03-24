@@ -23,7 +23,7 @@ public class RosterProducer {
     private static int sNumOfMeetings = 0;
     private static int sNumOfCopiesOfClubMembers = 0;
     private static List<Member> clubMembers = null;
-    private static Map<String, ArrayList<String>> roleToNames = new HashMap<>();
+    private static final Map<String, ArrayList<String>> roleToNames = new HashMap<>();
 
     /**
      * 
@@ -75,9 +75,8 @@ public class RosterProducer {
     // public only for unit test
     public static int numOfSpeechesPerMeeting() {
         var uiNum = numOfSpeechesPerMeetingString();
-        var actualNum = (int) Math.ceil(uiNum);
 
-        return actualNum;
+        return (int) Math.ceil(uiNum);
     }
 
     /**
@@ -147,8 +146,8 @@ public class RosterProducer {
         var chairPersonNames = roleToNames.get(TextConstants.CHAIRPERSON);
         var optChairperson = totalMembers.stream().filter(m -> {
             var name = m.name;
-            return (namesOfMeeting.indexOf(name) == -1)
-            && (chairPersonNames.indexOf(name) == - 1)
+            return (!namesOfMeeting.contains(name))
+            && (!chairPersonNames.contains(name))
             && m.isExperienced;
         }).findFirst();
         if (optChairperson.isPresent()) {
@@ -163,8 +162,8 @@ public class RosterProducer {
         var generalEvaluatorNames = roleToNames.get(TextConstants.GENERAL_EVALUATOR);
         var optGeneral = totalMembers.stream().filter(m -> {
             var name = m.name;
-            return (namesOfMeeting.indexOf(name) == -1)
-            && (generalEvaluatorNames.indexOf(name) == -1)
+            return (!namesOfMeeting.contains(name))
+            && (!generalEvaluatorNames.contains(name))
             && m.isExperienced;
         }).findFirst();
         if (optGeneral.isPresent()) {
@@ -191,12 +190,12 @@ public class RosterProducer {
                     ttEvaluatorNames.add(ttEvaluator2.get(ttEvaluator2.size() - 1));
                 }
                 optAnyOne = totalMembers.stream().filter(
-                    m -> (namesOfMeeting.indexOf(m.name) == -1) && (ttEvaluatorNames.indexOf(m.name) == -1)
+                    m -> (!namesOfMeeting.contains(m.name)) && (!ttEvaluatorNames.contains(m.name))
                 ).findFirst();
             } else {
                 var excludeNameForRole = namesForRole.isEmpty() ? "" : namesForRole.get(namesForRole.size() - 1);
                 optAnyOne = totalMembers.stream().filter(
-                    m -> (namesOfMeeting.indexOf(m.name) == -1) && (m.name != excludeNameForRole)
+                    m -> (!namesOfMeeting.contains(m.name)) && (m.name != excludeNameForRole)
                 ).findFirst();
             }
             if (optAnyOne.isPresent()) {

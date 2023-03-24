@@ -4,8 +4,11 @@ import javax.swing.table.AbstractTableModel;
 
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 
+import java.io.Serial;
+
 public class RosterTableModel extends AbstractTableModel {
 
+    @Serial
     private static final long serialVersionUID = -2123497955712881177L;
     private String[][] data = {};
 
