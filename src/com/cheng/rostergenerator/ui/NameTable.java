@@ -12,17 +12,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.SpringLayout;
+import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -37,7 +27,6 @@ import com.cheng.rostergenerator.ui.helper.ResourceHelper;
 import com.cheng.rostergenerator.domain.model.Member;
 import com.cheng.rostergenerator.ui.model.NameTableModel;
 import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
-import com.cheng.rostergenerator.util.NavigationUtil;
 import com.cheng.rostergenerator.util.SpringUtil;
 import com.cheng.rostergenerator.util.UIUtil;
 
@@ -99,7 +88,7 @@ public class NameTable extends JPanel {
                 // Start generating
                 var errorKey = RosterProducer.validateErrorMessage();
                 if (errorKey == null) {
-                    NavigationUtil.toRosterTable();
+                    toRosterTable();
                 } else {
                     UIUtil.showSimpleDialog(NameTable.this, errorKey);
                 }
@@ -116,7 +105,7 @@ public class NameTable extends JPanel {
             case "exit":
                 UIUtil.showYesNoDialog(NameTable.this, "dialog.removeAll", "common.yesImSure", "common.cancel", () -> {
                     FileHelper.deleteMemberList();
-                    NavigationUtil.toNameCollector(NameTable.this);
+                    toNameCollector(NameTable.this);
                 });
                 break;
             }
@@ -280,6 +269,23 @@ public class NameTable extends JPanel {
         );
         settingsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(settingsPanel);
+    }
+
+    private void toRosterTable() {
+        var frame = new JFrame();
+        var table = new RosterTable();
+        frame.getContentPane().add(table);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void toNameCollector(Component c) {
+        var frame = UIUtil.getParentFrame(c);
+        var nameCollector = new NameCollector();
+        frame.getContentPane().removeAll();
+        frame.setContentPane(nameCollector);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }

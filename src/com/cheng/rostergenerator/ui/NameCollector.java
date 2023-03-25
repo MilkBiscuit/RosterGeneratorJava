@@ -1,8 +1,6 @@
 package com.cheng.rostergenerator.ui;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -17,7 +15,7 @@ import javax.swing.JTextArea;
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.domain.model.Member;
-import com.cheng.rostergenerator.util.NavigationUtil;
+import com.cheng.rostergenerator.util.UIUtil;
 
 public class NameCollector extends JPanel {
 
@@ -33,7 +31,7 @@ public class NameCollector extends JPanel {
             switch (command) {
             case "trial":
                 FileHelper.copySampleData();
-                NavigationUtil.toNameTable(NameCollector.this);
+                toNameTable(NameCollector.this);
                 break;
             case "done":
                 var inputText = textArea.getText();
@@ -45,7 +43,7 @@ public class NameCollector extends JPanel {
 
                 FileHelper.writeMemberList(members);
 
-                NavigationUtil.toNameTable(NameCollector.this);
+                toNameTable(NameCollector.this);
                 break;
             }
         }
@@ -90,6 +88,15 @@ public class NameCollector extends JPanel {
         c.gridy = 3;
         add(trialBtn, c);
 
+    }
+
+    private void toNameTable(Component c) {
+        var frame = UIUtil.getParentFrame(c);
+        var nameTable = new NameTable();
+        frame.getContentPane().removeAll();
+        frame.setContentPane(nameTable);
+        frame.pack();
+        frame.setVisible(true);
     }
 
 }
