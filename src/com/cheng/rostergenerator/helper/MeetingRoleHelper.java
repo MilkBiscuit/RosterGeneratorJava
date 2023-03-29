@@ -11,19 +11,6 @@ import com.cheng.rostergenerator.ui.TextConstants;
 
 public class MeetingRoleHelper {
 
-    public static Comparator<Member> inExperiencedFirst() {
-        Comparator<Member> comparator = (Member o1, Member o2) -> {
-            if (o1.isExperienced == o2.isExperienced) {
-                return 0;
-            } else if (o1.isExperienced) {
-                return 1;
-            } else {
-                return -1;
-            }
-        };
-        return comparator;
-    }
-
     public static List<String> rolesPerMeeting() {
         var rolesPerMeeting = Arrays.stream(TextConstants.ROLES_PER_MEETING)
         .collect(Collectors.toCollection(ArrayList::new));

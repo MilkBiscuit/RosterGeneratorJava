@@ -1,15 +1,13 @@
 package test.com.cheng.rostergenerator.helper;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
 import com.cheng.rostergenerator.helper.MeetingRoleHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
-import com.cheng.rostergenerator.domain.model.Member;
-import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
 import com.cheng.rostergenerator.ui.TextConstants;
-
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MeetingRoleHelperTest {
 
@@ -20,21 +18,6 @@ class MeetingRoleHelperTest {
         assertFalse(result.stream().filter(role -> role == TextConstants.GENERAL_EVALUATOR).findFirst().isPresent());
         assertFalse(result.stream().filter(role -> role == TextConstants.SPEAKER_1).findFirst().isPresent());
         assertFalse(result.stream().filter(role -> role == TextConstants.SPEAKER_5).findFirst().isPresent());
-    }
-
-    @Test
-    void testInExperiencedFirst() {
-        var experiencedMember = new Member("AAA", true, true);
-        var inexperiencedMember = new Member("BBB", false, false);
-        var result = MeetingRoleHelper.inExperiencedFirst().compare(experiencedMember, inexperiencedMember);
-        assertTrue(result > 0);
-
-        result = MeetingRoleHelper.inExperiencedFirst().compare(inexperiencedMember, experiencedMember);
-        assertTrue(result < 0);
-
-        inexperiencedMember.isExperienced = true;
-        result = MeetingRoleHelper.inExperiencedFirst().compare(inexperiencedMember, experiencedMember);
-        assertTrue(result == 0);
     }
 
     @Test

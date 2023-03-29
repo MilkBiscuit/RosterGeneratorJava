@@ -133,7 +133,7 @@ public class RosterProducer {
             return map;
         }
 
-        speakers.sort(MeetingRoleHelper.inExperiencedFirst());
+        speakers.sort(MemberComparator.inExperiencedFirst());
 
         // Speaker number starts from '1' instead of '0'
         var alignIndex = numOfSpeechesPerMeeting() - speakers.size() + 1;
