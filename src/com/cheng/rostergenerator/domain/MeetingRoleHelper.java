@@ -1,4 +1,4 @@
-package com.cheng.rostergenerator.helper;
+package com.cheng.rostergenerator.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.domain.model.Member;
+import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.ui.TextConstants;
 
 public class MeetingRoleHelper {
@@ -53,15 +54,15 @@ public class MeetingRoleHelper {
     }
 
     public static boolean isTTEvaluator(String role) {
-        return TextConstants.TT_EVALUATOR_1 == role || TextConstants.TT_EVALUATOR_2 == role;
+        return TextConstants.TT_EVALUATOR_1.equals(role) || TextConstants.TT_EVALUATOR_2 == role;
     }
 
     public static boolean isSpeechEvaluator(String role) {
-        return TextConstants.EVALUATOR_1 == role
-        || TextConstants.EVALUATOR_2 == role
-        || TextConstants.EVALUATOR_3 == role
-        || TextConstants.EVALUATOR_4 == role
-        || TextConstants.EVALUATOR_5 == role;
+        return TextConstants.EVALUATOR_1.equals(role)
+        || TextConstants.EVALUATOR_2.equals(role)
+        || TextConstants.EVALUATOR_3.equals(role)
+        || TextConstants.EVALUATOR_4.equals(role)
+        || TextConstants.EVALUATOR_5.equals(role);
     }
 
 }

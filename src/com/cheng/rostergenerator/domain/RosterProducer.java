@@ -9,7 +9,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.helper.MeetingRoleHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.helper.ResBundleHelper;
 import com.cheng.rostergenerator.domain.model.Member;
@@ -221,16 +220,16 @@ public class RosterProducer {
             allMembers.addAll(clubMembers);
         }
 
-        // Randomise the order
+        // Randomise the speakers order
         Collections.shuffle(allSpeakers);
-        String[][] data = new String[sNumOfRolesPerMeeting][sNumOfMeetings+1];
+        String[][] data = new String[sNumOfRolesPerMeeting][sNumOfMeetings + 1];
         // Fill the row head, name of various meeting roles
         for (int i = 0; i < sNumOfRolesPerMeeting; i++) {
             data[i][0] = rolesPerMeeting.get(i);
         }
 
         setupRoleToNames();
-        // Fill the rest of the table, value of meeting roles
+        // Fill the rest of the table with meeting role values
         for (int j = 1; j <= sNumOfMeetings; j++) {
             // Randomise the order
             Collections.shuffle(allMembers);

@@ -1,7 +1,7 @@
 package test.com.cheng.rostergenerator.helper;
 
 import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
-import com.cheng.rostergenerator.helper.MeetingRoleHelper;
+import com.cheng.rostergenerator.domain.MeetingRoleHelper;
 import com.cheng.rostergenerator.helper.PreferenceHelper;
 import com.cheng.rostergenerator.ui.TextConstants;
 import org.junit.jupiter.api.Test;
