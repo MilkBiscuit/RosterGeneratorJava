@@ -134,11 +134,13 @@ public class RosterProducer {
 
         speakers.sort(MemberComparator.inExperiencedFirst());
 
-        // Speaker number starts from '1' instead of '0'
-        var alignIndex = numOfSpeechesPerMeeting() - speakers.size() + 1;
+
+        // Speaker number starts from '1' instead of '0',
+        // If a speaking slot is reserved for a NEW MEMBER, then Speaker number starts from '2' instead of '0'.
+        var firstSpeakerNo = numOfSpeechesPerMeeting() - speakers.size() + 1;
         for (int i = 0; i < speakers.size(); i++) {
             String speakerName = speakers.get(i).name;
-            map.put("Speaker " + (i + alignIndex), speakerName);
+            map.put("Speaker " + (i + firstSpeakerNo), speakerName);
             namesOfMeeting.add(speakerName);
         }
 
