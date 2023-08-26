@@ -1,16 +1,14 @@
 package com.cheng.rostergenerator.ui;
 
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ArrayList;
-import java.util.List;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
+import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
+import com.cheng.rostergenerator.domain.RosterProducer;
+import com.cheng.rostergenerator.domain.model.Member;
+import com.cheng.rostergenerator.ui.model.NameTableModel;
+import com.cheng.rostergenerator.util.ResBundleUtil;
+import com.cheng.rostergenerator.util.SpringUtil;
+import com.cheng.rostergenerator.util.UiUtil;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -18,17 +16,13 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
-
-import com.cheng.rostergenerator.domain.RosterProducer;
-import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.helper.PreferenceHelper;
-import com.cheng.rostergenerator.helper.ResBundleHelper;
-import com.cheng.rostergenerator.ui.helper.ResourceHelper;
-import com.cheng.rostergenerator.domain.model.Member;
-import com.cheng.rostergenerator.ui.model.NameTableModel;
-import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
-import com.cheng.rostergenerator.util.SpringUtil;
-import com.cheng.rostergenerator.util.UIUtil;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NameTable extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -39,12 +33,12 @@ public class NameTable extends JPanel {
     private NameTableModel tableModel = new NameTableModel();
 
     private static String[] SETTING_LABELS = {
-        ResBundleHelper.getString("speechNum"),
-        ResBundleHelper.getString("ttEvaluatorNum"),
-        ResBundleHelper.getString("settings.reserveForNewMember"),
-        ResBundleHelper.getString("meetingRole.guestHospitality"),
-        ResBundleHelper.getString("meetingRole.umAhCounter"),
-        ResBundleHelper.getString("meetingRole.listeningPost")
+        ResBundleUtil.getString("speechNum"),
+        ResBundleUtil.getString("ttEvaluatorNum"),
+        ResBundleUtil.getString("settings.reserveForNewMember"),
+        ResBundleUtil.getString("meetingRole.guestHospitality"),
+        ResBundleUtil.getString("meetingRole.umAhCounter"),
+        ResBundleUtil.getString("meetingRole.listeningPost")
     };
     private List<Object> settingObjects = new ArrayList<Object>(SETTING_LABELS.length);
 
@@ -90,7 +84,7 @@ public class NameTable extends JPanel {
                 if (errorKey == null) {
                     toRosterTable();
                 } else {
-                    UIUtil.showSimpleDialog(NameTable.this, errorKey);
+                    UiUtil.showSimpleDialog(NameTable.this, errorKey);
                 }
                 break;
             case "remove":
@@ -103,7 +97,7 @@ public class NameTable extends JPanel {
                 }
                 break;
             case "exit":
-                UIUtil.showYesNoDialog(NameTable.this, "dialog.removeAll", "common.yesImSure", "common.cancel", () -> {
+                UiUtil.showYesNoDialog(NameTable.this, "dialog.removeAll", "common.yesImSure", "common.cancel", () -> {
                     FileHelper.deleteMemberList();
                     toNameCollector(NameTable.this);
                 });
@@ -133,7 +127,7 @@ public class NameTable extends JPanel {
         createSidePanel();
         createSettingsPanel();
 
-        JButton generateBtn = new JButton(ResBundleHelper.getString("generateRoster"));
+        JButton generateBtn = new JButton(ResBundleUtil.getString("generateRoster"));
         generateBtn.setActionCommand("generate");
         generateBtn.addActionListener(buttonActionListener);
         generateBtn.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -163,7 +157,7 @@ public class NameTable extends JPanel {
         var tableWithButtons = new JPanel();
         var layout = new GridBagLayout();
         var border = new CompoundBorder(
-            new TitledBorder(ResBundleHelper.getString("memberList")),
+            new TitledBorder(ResBundleUtil.getString("memberList")),
             UiConstants.smallPaddingBorder()
         );
         tableWithButtons.setBorder(border);
@@ -178,7 +172,7 @@ public class NameTable extends JPanel {
         var scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
 
-        var addIcon = ResourceHelper.imageIcon("/drawable/ic_add.png");
+        var addIcon = ResBundleUtil.imageIcon("/drawable/ic_add.png");
         var addBtn = new JButton(addIcon);
         addBtn.setActionCommand("add");
         addBtn.addActionListener(buttonActionListener);
@@ -189,7 +183,7 @@ public class NameTable extends JPanel {
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(addBtn, c);
 
-        var removeIcon = ResourceHelper.imageIcon("/drawable/ic_remove.png");
+        var removeIcon = ResBundleUtil.imageIcon("/drawable/ic_remove.png");
         removeBtn = new JButton(removeIcon);
         removeBtn.setEnabled(false);
         removeBtn.setActionCommand("remove");
@@ -197,7 +191,7 @@ public class NameTable extends JPanel {
         c.gridy = 1;
         tableWithButtons.add(removeBtn, c);
 
-        var exitIcon = ResourceHelper.imageIcon("/drawable/ic_exit.png");
+        var exitIcon = ResBundleUtil.imageIcon("/drawable/ic_exit.png");
         var exitBtn = new JButton(exitIcon);
         exitBtn.setActionCommand("exit");
         exitBtn.addActionListener(buttonActionListener);
@@ -280,7 +274,7 @@ public class NameTable extends JPanel {
     }
 
     private void toNameCollector(Component c) {
-        var frame = UIUtil.getParentFrame(c);
+        var frame = UiUtil.getParentFrame(c);
         var nameCollector = new NameCollector();
         frame.getContentPane().removeAll();
         frame.setContentPane(nameCollector);

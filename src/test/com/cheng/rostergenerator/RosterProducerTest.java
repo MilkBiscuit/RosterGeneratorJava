@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.domain.RosterProducer;
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.helper.PreferenceHelper;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
 import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
 
 import org.junit.jupiter.api.Test;

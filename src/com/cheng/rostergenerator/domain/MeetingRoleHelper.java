@@ -2,12 +2,10 @@ package com.cheng.rostergenerator.domain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.cheng.rostergenerator.domain.model.Member;
-import com.cheng.rostergenerator.helper.PreferenceHelper;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
 import com.cheng.rostergenerator.ui.TextConstants;
 
 public class MeetingRoleHelper {

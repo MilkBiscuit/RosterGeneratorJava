@@ -13,9 +13,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.util.ResBundleUtil;
 import com.cheng.rostergenerator.domain.model.Member;
-import com.cheng.rostergenerator.util.UIUtil;
+import com.cheng.rostergenerator.util.UiUtil;
 
 public class NameCollector extends JPanel {
 
@@ -58,7 +58,7 @@ public class NameCollector extends JPanel {
         setLayout(layout);
         setBorder(UiConstants.bigPaddingBorder());
 
-        var label = new JLabel(ResBundleHelper.getString("pleaseInputNames"));
+        var label = new JLabel(ResBundleUtil.getString("pleaseInputNames"));
         var c = new GridBagConstraints();
         c.gridwidth = 1;
         c.gridx = 0;
@@ -74,14 +74,14 @@ public class NameCollector extends JPanel {
         c.fill = GridBagConstraints.BOTH;
         add(scrollPane, c);
 
-        var doneBtn = new JButton(ResBundleHelper.getString("common.done"));
+        var doneBtn = new JButton(ResBundleUtil.getString("common.done"));
         doneBtn.setActionCommand("done");
         doneBtn.addActionListener(actionListener);
         c.fill = GridBagConstraints.NONE;
         c.gridy = 2;
         add(doneBtn, c);
 
-        var trialBtn = new JButton(ResBundleHelper.getString("trialWithSampleData"));
+        var trialBtn = new JButton(ResBundleUtil.getString("trialWithSampleData"));
         trialBtn.setActionCommand("trial");
         trialBtn.addActionListener(actionListener);
         c.fill = GridBagConstraints.NONE;
@@ -91,7 +91,7 @@ public class NameCollector extends JPanel {
     }
 
     private void toNameTable(Component c) {
-        var frame = UIUtil.getParentFrame(c);
+        var frame = UiUtil.getParentFrame(c);
         var nameTable = new NameTable();
         frame.getContentPane().removeAll();
         frame.setContentPane(nameTable);

@@ -1,22 +1,19 @@
 /**
  * 
  */
-package com.cheng.rostergenerator.ui;
+package com.cheng.rostergenerator;
 
 import javax.swing.JFrame;
 
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.ui.NameCollector;
+import com.cheng.rostergenerator.ui.NameTable;
+import com.cheng.rostergenerator.util.ResBundleUtil;
 
-/**
- * The entry of the App
- * @author Chandler Cheng
- *
- */
 public class Main {
 
     public static void main(String[] args) {
-        System.setProperty("apple.awt.application.name", ResBundleHelper.getString("aboutInfo"));
+        System.setProperty("apple.awt.application.name", ResBundleUtil.getString("aboutInfo"));
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,7 +29,5 @@ public class Main {
         frame.pack();
         frame.setVisible(true);
     }
-
-
 
 }

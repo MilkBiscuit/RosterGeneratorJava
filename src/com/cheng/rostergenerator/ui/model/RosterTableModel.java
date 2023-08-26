@@ -2,7 +2,7 @@ package com.cheng.rostergenerator.ui.model;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.util.ResBundleUtil;
 
 import java.io.Serial;
 
@@ -40,10 +40,10 @@ public class RosterTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         if (column == 0) {
-            return ResBundleHelper.getString("meetingRoles");
+            return ResBundleUtil.getString("meetingRoles");
         }
 
-        return ResBundleHelper.getString("datePlacehoder");
+        return ResBundleUtil.getString("datePlacehoder");
     }
 
     public void setData(String[][] data) {

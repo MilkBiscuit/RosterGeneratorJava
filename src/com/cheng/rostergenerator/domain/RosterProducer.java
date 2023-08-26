@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.helper.PreferenceHelper;
-import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
+import com.cheng.rostergenerator.util.ResBundleUtil;
 import com.cheng.rostergenerator.domain.model.Member;
 import com.cheng.rostergenerator.domain.model.RosterException;
 import com.cheng.rostergenerator.ui.TextConstants;
@@ -61,7 +61,7 @@ public class RosterProducer {
     }
 
     public static String generateRosterTableInstructionTitle() {
-        final var titleFormat = ResBundleHelper.getString("rosterTable.title");
+        final var titleFormat = ResBundleUtil.getString("rosterTable.title");
         final var numOfSpeeches = RosterProducer.numOfSpeechesPerMeetingString();
 
         return String.format(titleFormat,

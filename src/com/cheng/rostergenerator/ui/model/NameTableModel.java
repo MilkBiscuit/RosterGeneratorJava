@@ -7,16 +7,16 @@ import javax.swing.table.AbstractTableModel;
 
 import com.cheng.rostergenerator.domain.model.Member;
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.helper.ResBundleHelper;
+import com.cheng.rostergenerator.util.ResBundleUtil;
 
 public class NameTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = -1342387483628153701L;
 
     private String[] columnNames = {
-        ResBundleHelper.getString("name"),
-        ResBundleHelper.getString("experienced"),
-        ResBundleHelper.getString("assignASpeech"),
+        ResBundleUtil.getString("name"),
+        ResBundleUtil.getString("experienced"),
+        ResBundleUtil.getString("assignASpeech"),
     };
     private List<Member> members = null;
     private int memberNum = 0;

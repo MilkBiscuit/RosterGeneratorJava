@@ -1,8 +1,6 @@
-package com.cheng.rostergenerator.helper;
+package com.cheng.rostergenerator.adapter.persistence;
 
 import java.util.prefs.Preferences;
-
-import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
 
 public class PreferenceHelper {
 
@@ -12,16 +10,8 @@ public class PreferenceHelper {
         sPref.putBoolean(key, value);
     }
 
-    public static void save(String key, int value) {
-        sPref.putInt(key, value);
-    }
-
     public static boolean read(String key, boolean def) {
         return sPref.getBoolean(key, def);
-    }
-
-    public static int read(String key, int def) {
-        return sPref.getInt(key, def);
     }
 
     public static boolean reserveForNewMember() {
@@ -38,10 +28,6 @@ public class PreferenceHelper {
 
     public static boolean hasListeningPost() {
         return read(PrefConstants.KEY_LISTENING_POST, false);
-    }
-
-    public static boolean hasSeenTutorial() {
-        return read(PrefConstants.KEY_HAS_SEEN_TUTORIAL, false);
     }
 
     public static boolean hasFourSpeeches() {

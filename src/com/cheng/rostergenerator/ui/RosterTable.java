@@ -1,27 +1,17 @@
 package com.cheng.rostergenerator.ui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
+import com.cheng.rostergenerator.domain.RosterProducer;
+import com.cheng.rostergenerator.domain.model.RosterException;
+import com.cheng.rostergenerator.ui.model.RosterTableModel;
+import com.cheng.rostergenerator.util.ResBundleUtil;
+import com.cheng.rostergenerator.util.UiUtil;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-
-import com.cheng.rostergenerator.domain.RosterProducer;
-import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.ui.helper.ResourceHelper;
-import com.cheng.rostergenerator.domain.model.RosterException;
-import com.cheng.rostergenerator.ui.model.RosterTableModel;
-import com.cheng.rostergenerator.util.UIUtil;
 
 
 public class RosterTable extends JPanel {
@@ -44,8 +34,8 @@ public class RosterTable extends JPanel {
                     dataModel.setData(data);
                     dataModel.fireTableDataChanged();
                 } catch (RosterException exception) {
-                    UIUtil.showSimpleDialog(RosterTable.this, exception.getLocalizedMessage());
-                    var frame = UIUtil.getParentFrame(RosterTable.this);
+                    UiUtil.showSimpleDialog(RosterTable.this, exception.getLocalizedMessage());
+                    var frame = UiUtil.getParentFrame(RosterTable.this);
                     frame.setVisible(false);
                 }
                 break;
@@ -84,8 +74,8 @@ public class RosterTable extends JPanel {
     
             createSidePanel();
         } catch (RosterException e) {
-            UIUtil.showSimpleDialog(this, e.getLocalizedMessage());
-            var frame = UIUtil.getParentFrame(this);
+            UiUtil.showSimpleDialog(this, e.getLocalizedMessage());
+            var frame = UiUtil.getParentFrame(this);
             frame.setVisible(false);
         }
     }
@@ -115,7 +105,7 @@ public class RosterTable extends JPanel {
         var scrollPane = new JScrollPane(table);
         tableWithButtons.add(scrollPane, c);
 
-        var restoreIcon = ResourceHelper.imageIcon("/drawable/ic_refresh.png");
+        var restoreIcon = ResBundleUtil.imageIcon("/drawable/ic_refresh.png");
         var restoreBtn = new JButton(restoreIcon);
         restoreBtn.setActionCommand("refresh");
         restoreBtn.addActionListener(buttonActionListener);
@@ -126,7 +116,7 @@ public class RosterTable extends JPanel {
         c.fill = GridBagConstraints.NONE;
         tableWithButtons.add(restoreBtn, c);
 
-        var saveIcon = ResourceHelper.imageIcon("/drawable/ic_download.png");
+        var saveIcon = ResBundleUtil.imageIcon("/drawable/ic_download.png");
         var saveBtn = new JButton(saveIcon);
         saveBtn.setActionCommand("export");
         saveBtn.addActionListener(buttonActionListener);

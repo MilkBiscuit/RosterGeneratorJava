@@ -22,7 +22,7 @@ public class FileHelper {
 
     private static final String HOME_FOLDER = System.getProperty("user.home");
     private static final String MEMBER_LIST_FILE_PATH = HOME_FOLDER + "/rosterGenerator.json";
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static List<Member> readMemberList() {
         var path = (TestUtil.isRunningUnitTest()) ? "src/test/testMemberList.json" : MEMBER_LIST_FILE_PATH;
@@ -60,17 +60,13 @@ public class FileHelper {
         return file.exists();
     }
 
-    public static boolean copySampleData() {
+    public static void copySampleData() {
         try (var is = FileHelper.class.getResourceAsStream("/memberList.json")) {
             var desPath = Paths.get(MEMBER_LIST_FILE_PATH);
             Files.copy(is, desPath);
-
-            return true;
         } catch (IOException e) {
             printException(e);
         }
-
-        return false;
     }
 
     public static void deleteMemberList() {
