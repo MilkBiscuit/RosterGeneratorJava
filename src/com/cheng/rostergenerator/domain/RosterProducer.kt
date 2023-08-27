@@ -2,8 +2,6 @@ package com.cheng.rostergenerator.domain
 
 import com.cheng.rostergenerator.adapter.persistence.FileHelper
 import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper
-import com.cheng.rostergenerator.domain.MeetingRoleHelper.getMeetingRoleForAnyOne
-import com.cheng.rostergenerator.domain.MeetingRoleHelper.isTTEvaluator
 import com.cheng.rostergenerator.domain.MeetingRoleHelper.rolesPerMeeting
 import com.cheng.rostergenerator.domain.model.Member
 import com.cheng.rostergenerator.domain.model.RosterException
@@ -12,6 +10,7 @@ import com.cheng.rostergenerator.util.ResBundleUtil
 import java.util.*
 import java.util.stream.Collectors
 import kotlin.math.ceil
+import kotlin.math.min
 
 object RosterProducer {
 
@@ -23,12 +22,36 @@ object RosterProducer {
     private val roleToNames: MutableMap<String, ArrayList<String>> = HashMap()
 
     /**
+     * Validate the member list from the user
+     * @return error message key, if list is valid, return null
+     */
+    @JvmStatic
+    fun initialValidate(): String? {
+        clubMembers = FileHelper.readMemberList()
+        sNumOfRolesPerMeeting = rolesPerMeeting().size
+        val speakerNum = clubMembers.stream().filter { m: Member? -> m!!.assignSpeech }
+            .count().toInt()
+        sNumOfMeetings = numOfMeeting(speakerNum)
+        sNumOfCopiesOfClubMembers = numOfAllMemberCopies(sNumOfMeetings, clubMembers.size)
+        if (clubMembers.size < sNumOfRolesPerMeeting) {
+            return "errorMessage.notEnoughMembers"
+        }
+        val experiencedNum = clubMembers.stream().filter { m: Member? -> m!!.isExperienced }
+            .count()
+        return if (experiencedNum < sNumOfMeetings) {
+            // At least the chairperson role should NOT be duplicate
+            "errorMessage.notEnoughExperienced"
+        } else null
+    }
+
+    /**
      *
      * @param numOfSpeakers
      * @return num of meetings we need to accommodate all speakers
      */
     @JvmStatic
     fun numOfMeeting(numOfSpeakers: Int): Int {
+        // TODO: Use numOfSpeechesPerMeetingFloat to simplify the logic
         if (numOfSpeakers == 0) {
             return 0
         }
@@ -58,14 +81,12 @@ object RosterProducer {
     }
 
     @JvmStatic
-    fun generateRosterTableInstructionTitle(): String? {
+    fun generateRosterTableInstructionTitle(): String {
         val titleFormat = ResBundleUtil.getString("rosterTable.title")
         val numOfSpeeches = numOfSpeechesPerMeetingFloat()
         return String.format(
-            titleFormat,
-            sNumOfAllSpeakers, numOfSpeeches, sNumOfMeetings,
-            sNumOfRolesPerMeeting, sNumOfMeetings * sNumOfRolesPerMeeting, clubMembers!!.size,
-            sNumOfCopiesOfClubMembers
+            titleFormat, sNumOfAllSpeakers, numOfSpeeches, sNumOfMeetings, sNumOfRolesPerMeeting,
+            sNumOfMeetings * sNumOfRolesPerMeeting, clubMembers.size, sNumOfCopiesOfClubMembers
         )
     }
 
@@ -87,32 +108,9 @@ object RosterProducer {
     fun numOfAllMemberCopies(numOfMeeting: Int, numOfClubMembers: Int): Int {
         val numOfRolesPerMeeting = rolesPerMeeting().size
         val numOfNonSpeechRolesPerMeeting = numOfRolesPerMeeting - numOfSpeechesPerMeeting()
-        val totalNumOfRoles = (numOfMeeting * numOfNonSpeechRolesPerMeeting).toDouble()
-        val result = totalNumOfRoles / numOfClubMembers.toDouble()
+        val totalNumOfNonSpeechRoles = (numOfMeeting * numOfNonSpeechRolesPerMeeting).toDouble()
+        val result = totalNumOfNonSpeechRoles / numOfClubMembers.toDouble()
         return ceil(result).toInt() + 1
-    }
-
-    /**
-     * Validate the member list from the user
-     * @return error message key, if list is valid, return null
-     */
-    @JvmStatic
-    fun validateErrorMessage(): String? {
-        clubMembers = FileHelper.readMemberList()
-        sNumOfRolesPerMeeting = rolesPerMeeting().size
-        val speakerNum = clubMembers.stream().filter { m: Member? -> m!!.assignSpeech }
-            .count().toInt()
-        sNumOfMeetings = numOfMeeting(speakerNum)
-        sNumOfCopiesOfClubMembers = numOfAllMemberCopies(sNumOfMeetings, clubMembers.size)
-        if (clubMembers.size < sNumOfRolesPerMeeting) {
-            return "errorMessage.notEnoughMembers"
-        }
-        val experiencedNum = clubMembers.stream().filter { m: Member? -> m!!.isExperienced }
-            .count()
-        return if (experiencedNum < sNumOfMeetings) {
-            // At least the chairperson role should NOT be duplicate
-            "errorMessage.notEnoughExperienced"
-        } else null
     }
 
     /**
@@ -124,126 +122,101 @@ object RosterProducer {
      */
     @JvmStatic
     fun generateOneMeeting(speakers: List<Member>, totalMembers: MutableList<Member>): Map<String, String> {
-        val map = HashMap<String, String>()
+        val retMap = HashMap<String, String>()
         val namesOfMeeting = ArrayList<String>(sNumOfRolesPerMeeting)
         if (speakers.isEmpty() || speakers.size > 5) {
             println("num of speakers is invalid")
-            return map
+            return retMap
         }
-        speakers.sortedWith(MemberComparator.inExperiencedFirst())
 
-
+        Collections.sort(speakers, MemberComparator.inExperiencedFirst())
         // Speaker number starts from '1' instead of '0',
         // If a speaking slot is reserved for a NEW MEMBER, then Speaker number starts from '2' instead of '0'.
         val firstSpeakerNo = numOfSpeechesPerMeeting() - speakers.size + 1
         for (i in speakers.indices) {
-            val speakerName = speakers[i]!!.name
-            map["Speaker " + (i + firstSpeakerNo)] = speakerName
+            val speakerName = speakers[i].name
+            retMap["Speaker " + (i + firstSpeakerNo)] = speakerName
             namesOfMeeting.add(speakerName)
         }
+        totalMembers.shuffle()
         val chairPersonNames = roleToNames[TextConstants.CHAIRPERSON]!!
-        val optChairperson = totalMembers.stream().filter { m: Member? ->
-            val name = m!!.name
-            (!namesOfMeeting.contains(name)
-                    && !chairPersonNames.contains(name)
-                    && m.isExperienced)
+        val optChairperson = totalMembers.stream().filter { m: Member -> !namesOfMeeting.contains(m.name)
+                && !chairPersonNames.contains(m.name)
+                && m.isExperienced
         }.findFirst()
         if (optChairperson.isPresent) {
             val chair = optChairperson.get()
-            map[TextConstants.CHAIRPERSON] = chair.name
+            retMap[TextConstants.CHAIRPERSON] = chair.name
             namesOfMeeting.add(chair.name)
             totalMembers.remove(chair)
         } else {
             throw RosterException("errorMessage.notEnoughExperienced.runtime")
         }
         val generalEvaluatorNames = roleToNames[TextConstants.GENERAL_EVALUATOR]!!
-        val optGeneral = totalMembers.stream().filter { m: Member? ->
-            val name = m!!.name
-            (!namesOfMeeting.contains(name)
-                    && !generalEvaluatorNames.contains(name)
-                    && m.isExperienced)
+        val optGeneral = totalMembers.stream().filter { m: Member -> !namesOfMeeting.contains(m.name)
+                && !generalEvaluatorNames.contains(m.name)
+                && m.isExperienced
         }.findFirst()
         if (optGeneral.isPresent) {
             val general = optGeneral.get()
-            map[TextConstants.GENERAL_EVALUATOR] = general.name
+            retMap[TextConstants.GENERAL_EVALUATOR] = general.name
             namesOfMeeting.add(general.name)
             totalMembers.remove(general)
         } else {
             throw RosterException("errorMessage.notEnoughExperienced.runtime")
         }
-        val meetingRoles = getMeetingRoleForAnyOne()
-        for (role in meetingRoles!!) {
-            val namesForRole: List<String> = roleToNames[role]!!
-            var optAnyOne: Optional<Member?>
-            optAnyOne = if (isTTEvaluator(role)) {
-                val ttEvaluatorNames = ArrayList<String>()
-                val ttEvaluator1 = roleToNames[TextConstants.TT_EVALUATOR_1]!!
-                if (!ttEvaluator1.isEmpty()) {
-                    ttEvaluatorNames.add(ttEvaluator1[ttEvaluator1.size - 1])
-                }
-                val ttEvaluator2 = roleToNames[TextConstants.TT_EVALUATOR_2]
-                if (ttEvaluator2 != null && !ttEvaluator2.isEmpty()) {
-                    ttEvaluatorNames.add(ttEvaluator2[ttEvaluator2.size - 1])
-                }
-                totalMembers.stream().filter { m: Member? ->
-                    !namesOfMeeting.contains(
-                        m!!.name
-                    ) && !ttEvaluatorNames.contains(m.name)
-                }.findFirst()
-            } else {
-                val excludeNameForRole = if (namesForRole.isEmpty()) "" else namesForRole[namesForRole.size - 1]
-                totalMembers.stream().filter { m: Member? ->
-                    !namesOfMeeting.contains(
-                        m!!.name
-                    ) && m.name !== excludeNameForRole
-                }.findFirst()
-            }
+        for (role in MeetingRoleHelper.getMeetingRoleForAnyOne()) {
+            val optAnyOne: Optional<Member> = totalMembers.stream().filter { m: Member ->
+                !namesOfMeeting.contains(m.name)
+            }.findFirst()
             if (optAnyOne.isPresent) {
                 val anyone = optAnyOne.get()
-                map[role] = anyone.name
+                retMap[role] = anyone.name
                 namesOfMeeting.add(anyone.name)
                 totalMembers.remove(anyone)
             }
         }
-        return map
+
+        return retMap
     }
 
+    // TODO: Add unit test
     @Throws(RosterException::class)
     @JvmStatic
-    fun generateRosterTableData(): Array<Array<String?>>? {
+    fun generateRosterTableData(): Array<Array<String?>> {
         val rolesPerMeeting: List<String> = rolesPerMeeting()
         sNumOfRolesPerMeeting = rolesPerMeeting.size
-        // sNumOfMeetings, sNumOfCopiesOfClubMembers were already calculated in validateMessage()
+        // sNumOfMeetings, sNumOfCopiesOfClubMembers were already calculated in initialValidate()
         clubMembers = FileHelper.readMemberList()
         val allSpeakers = clubMembers.stream().filter { m: Member? -> m!!.assignSpeech }
             .collect(Collectors.toList())
-        val allMembers = ArrayList<Member>()
         sNumOfAllSpeakers = allSpeakers.size
+        val allMembers = ArrayList<Member>()
         for (i in 0 until sNumOfCopiesOfClubMembers) {
             allMembers.addAll(clubMembers)
         }
 
         // Randomise the speakers order
-        Collections.shuffle(allSpeakers)
-        val data = Array(sNumOfRolesPerMeeting) {
+        allSpeakers.shuffle()
+        val retData: Array<Array<String?>> = Array(sNumOfRolesPerMeeting) {
             arrayOfNulls<String>(
                 sNumOfMeetings + 1
             )
         }
-        // Fill the row head, name of various meeting roles
+        // Fill the row head with the title of various meeting roles
         for (i in 0 until sNumOfRolesPerMeeting) {
-            data[i][0] = rolesPerMeeting[i]
+            retData[i][0] = rolesPerMeeting[i]
         }
         setupRoleToNames()
         // Fill the rest of the table with meeting role values
         for (j in 1..sNumOfMeetings) {
             // Randomise the order
-            Collections.shuffle(allMembers)
+            allMembers.shuffle()
             val reserveForNewMember = PreferenceHelper.reserveForNewMember()
             val fourSpeeches = PreferenceHelper.hasFourSpeeches()
             val usualSpeeches = if (fourSpeeches) 4 else 5
             var numOfSpeaker = if (j % 2 == 0 && reserveForNewMember) usualSpeeches - 1 else usualSpeeches
-            numOfSpeaker = Math.min(numOfSpeaker, allSpeakers.size)
+            numOfSpeaker = min(numOfSpeaker, allSpeakers.size)
             val speakers: List<Member> = allSpeakers.subList(0, numOfSpeaker)
             val rosterMap = generateOneMeeting(speakers, allMembers)
             for ((role, name) in rosterMap) {
@@ -251,11 +224,11 @@ object RosterProducer {
             }
             for (i in 0 until sNumOfRolesPerMeeting) {
                 val role = rolesPerMeeting[i]
-                data[i][j] = rosterMap[role]
+                retData[i][j] = rosterMap[role]
             }
             allSpeakers.removeAll(speakers)
         }
-        return data
+        return retData
     }
 
     @JvmStatic

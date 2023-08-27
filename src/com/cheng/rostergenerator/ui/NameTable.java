@@ -80,7 +80,7 @@ public class NameTable extends JPanel {
                 }
 
                 // Start generating
-                var errorKey = RosterProducer.validateErrorMessage();
+                var errorKey = RosterProducer.initialValidate();
                 if (errorKey == null) {
                     toRosterTable();
                 } else {

@@ -36,7 +36,7 @@ object MeetingRoleHelper {
      * Exclude chairperson and general evaluator, also exclude prepared speech roles,
      */
     @JvmStatic
-    fun getMeetingRoleForAnyOne(): List<String>? {
+    fun getMeetingRoleForAnyOne(): List<String> {
         val rolesPerMeeting = rolesPerMeeting()
         rolesPerMeeting.remove(TextConstants.SPEAKER_1)
         rolesPerMeeting.remove(TextConstants.SPEAKER_2)

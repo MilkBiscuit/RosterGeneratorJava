@@ -103,18 +103,19 @@ class RosterProducerTest {
 
     @Test
     void testGenerateOneMeeting() {
-        var members = FileHelper.readMemberList();
-        var allMembers = new ArrayList<>(members);
-        allMembers.addAll(members);
-        allMembers.addAll(members);
-        var speakers = members.stream().filter(m -> m.name.startsWith("A")).collect(Collectors.toList());
-
-        RosterProducer.setupRoleToNames();
-        var result = RosterProducer.generateOneMeeting(speakers, allMembers);
-        var nameCollection = result.values();
-        var nameSet = new HashSet<>(nameCollection);
-        // Should NEVER have one name appear twice or even more
-        assertEquals(nameCollection.size(), nameSet.size());
+        for (int i = 0; i < 100; i++) {
+            var members = FileHelper.readMemberList();
+            var allMembers = new ArrayList<>(members);
+            allMembers.addAll(members);
+            allMembers.addAll(members);
+            var speakers = members.stream().filter(m -> m.name.startsWith("A")).collect(Collectors.toList());
+            RosterProducer.setupRoleToNames();
+            var result = RosterProducer.generateOneMeeting(speakers, allMembers);
+            var nameCollection = result.values();
+            var nameSet = new HashSet<>(nameCollection);
+            // Should NEVER have one name appear twice or even more
+            assertEquals(nameCollection.size(), nameSet.size());
+        }
     }
 
 }
