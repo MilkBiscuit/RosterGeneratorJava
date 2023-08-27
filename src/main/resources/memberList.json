@@ -1,91 +1,91 @@
 [
   {
-    "name": "Ahmed Samy",
+    "name": "Ahmed",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Ariana Phan",
+    "name": "Ariana",
     "isExperienced": false,
     "assignSpeech": true
   },
   {
-    "name": "Brendan Richardson",
+    "name": "Brendan",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Chandler Cheng",
+    "name": "Chandler",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Chris Winter",
+    "name": "Chris",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Christine Mitchell",
+    "name": "Christine",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Claire Bond",
+    "name": "Claire",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Clifford Hall",
+    "name": "Clifford",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Darryl Pascoe",
+    "name": "Darryl",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Gail Henry",
+    "name": "Gail",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Grant Richardson",
+    "name": "Grant",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Jamin Wan",
+    "name": "Jamin",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "John Reeve",
+    "name": "John",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Kenn Cabigayan",
+    "name": "Kenn",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Margaret Meredith",
+    "name": "Margaret",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Susan Wang",
+    "name": "Susan",
     "isExperienced": false,
     "assignSpeech": true
   },
   {
-    "name": "Vanessa Loughlin",
+    "name": "Vanessa",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Vinay Chauhan",
+    "name": "Vinay",
     "isExperienced": false,
     "assignSpeech": true
   }
