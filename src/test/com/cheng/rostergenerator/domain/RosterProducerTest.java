@@ -1,4 +1,4 @@
-package test.com.cheng.rostergenerator;
+package test.com.cheng.rostergenerator.domain;
 
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.adapter.persistence.PreferenceConstants;
