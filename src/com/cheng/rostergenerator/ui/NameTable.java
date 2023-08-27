@@ -1,7 +1,7 @@
 package com.cheng.rostergenerator.ui;
 
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceConstants;
 import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
 import com.cheng.rostergenerator.domain.RosterProducer;
 import com.cheng.rostergenerator.domain.model.Member;
@@ -49,16 +49,16 @@ public class NameTable extends JPanel {
             var members = tableModel.getMembers();
             switch (command) {
             case "1":
-                PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, false);
+                PreferenceHelper.save(PreferenceConstants.KEY_TWO_TT_EVALUATORS, false);
                 break;
             case "2":
-                PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, true);
+                PreferenceHelper.save(PreferenceConstants.KEY_TWO_TT_EVALUATORS, true);
                 break;
             case "4":
-                PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, true);
+                PreferenceHelper.save(PreferenceConstants.KEY_FOUR_SPEECHES, true);
                 break;
             case "5":
-                PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, false);
+                PreferenceHelper.save(PreferenceConstants.KEY_FOUR_SPEECHES, false);
                 break;
             case "add":
                 var newMember = new Member("", false, true);
@@ -113,7 +113,7 @@ public class NameTable extends JPanel {
             var source = e.getItemSelectable();
             var index = settingObjects.indexOf(source);
             if (index > 1 && index < 6) {
-                PreferenceHelper.save(PrefConstants.SETTING_KEYS[index], selected);
+                PreferenceHelper.save(PreferenceConstants.INSTANCE.getSETTING_KEYS()[index], selected);
             }
         }
     };
@@ -248,7 +248,7 @@ public class NameTable extends JPanel {
             settingsPanel.add(box);
 
             var checkbox = new JCheckBox();
-            var isChecked = PreferenceHelper.read(PrefConstants.SETTING_KEYS[i], true);
+            var isChecked = PreferenceHelper.read(PreferenceConstants.INSTANCE.getSETTING_KEYS()[i], true);
             checkbox.setSelected(isChecked);
             checkbox.addItemListener(itemListener);
             settingsPanel.add(checkbox);

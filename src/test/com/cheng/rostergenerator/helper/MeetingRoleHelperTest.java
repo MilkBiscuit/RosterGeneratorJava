@@ -1,6 +1,6 @@
 package test.com.cheng.rostergenerator.helper;
 
-import com.cheng.rostergenerator.adapter.persistence.PrefConstants;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceConstants;
 import com.cheng.rostergenerator.domain.MeetingRoleHelper;
 import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
 import com.cheng.rostergenerator.ui.TextConstants;
@@ -22,12 +22,12 @@ class MeetingRoleHelperTest {
 
     @Test
     void testRolesPerMeeting() {
-        PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, true);
-        PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, true);
-        PreferenceHelper.save(PrefConstants.KEY_RESERVE_FOR_NEW, true);
-        PreferenceHelper.save(PrefConstants.KEY_GUEST_HOSPITALITY, true);
-        PreferenceHelper.save(PrefConstants.KEY_UM_AH_COUNTER, true);
-        PreferenceHelper.save(PrefConstants.KEY_LISTENING_POST, true);
+        PreferenceHelper.save(PreferenceConstants.KEY_FOUR_SPEECHES, true);
+        PreferenceHelper.save(PreferenceConstants.KEY_TWO_TT_EVALUATORS, true);
+        PreferenceHelper.save(PreferenceConstants.KEY_RESERVE_FOR_NEW, true);
+        PreferenceHelper.save(PreferenceConstants.KEY_GUEST_HOSPITALITY, true);
+        PreferenceHelper.save(PreferenceConstants.KEY_UM_AH_COUNTER, true);
+        PreferenceHelper.save(PreferenceConstants.KEY_LISTENING_POST, true);
         var result = MeetingRoleHelper.rolesPerMeeting();
         assertFalse(result.contains("Speaker 5"));
         assertFalse(result.contains("Evaluator 5"));
@@ -36,12 +36,12 @@ class MeetingRoleHelperTest {
         assertTrue(result.contains("Um-Ah Counter"));
         assertTrue(result.contains("Listening Post"));
 
-        PreferenceHelper.save(PrefConstants.KEY_FOUR_SPEECHES, false);
-        PreferenceHelper.save(PrefConstants.KEY_TWO_TT_EVALUATORS, false);
-        PreferenceHelper.save(PrefConstants.KEY_RESERVE_FOR_NEW, false);
-        PreferenceHelper.save(PrefConstants.KEY_GUEST_HOSPITALITY, false);
-        PreferenceHelper.save(PrefConstants.KEY_UM_AH_COUNTER, false);
-        PreferenceHelper.save(PrefConstants.KEY_LISTENING_POST, false);
+        PreferenceHelper.save(PreferenceConstants.KEY_FOUR_SPEECHES, false);
+        PreferenceHelper.save(PreferenceConstants.KEY_TWO_TT_EVALUATORS, false);
+        PreferenceHelper.save(PreferenceConstants.KEY_RESERVE_FOR_NEW, false);
+        PreferenceHelper.save(PreferenceConstants.KEY_GUEST_HOSPITALITY, false);
+        PreferenceHelper.save(PreferenceConstants.KEY_UM_AH_COUNTER, false);
+        PreferenceHelper.save(PreferenceConstants.KEY_LISTENING_POST, false);
         result = MeetingRoleHelper.rolesPerMeeting();
         assertTrue(result.contains("Speaker 5"));
         assertTrue(result.contains("Evaluator 5"));
