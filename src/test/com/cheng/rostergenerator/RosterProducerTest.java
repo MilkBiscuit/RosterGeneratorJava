@@ -1,17 +1,16 @@
 package test.com.cheng.rostergenerator;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import com.cheng.rostergenerator.adapter.persistence.FileHelper;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceConstants;
+import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
+import com.cheng.rostergenerator.domain.RosterProducer;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-import com.cheng.rostergenerator.adapter.persistence.PreferenceConstants;
-import com.cheng.rostergenerator.domain.RosterProducer;
-import com.cheng.rostergenerator.adapter.persistence.FileHelper;
-import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
-
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RosterProducerTest {
 

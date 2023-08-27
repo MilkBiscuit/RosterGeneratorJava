@@ -17,8 +17,9 @@ public class RosterCellRenderer implements TableCellRenderer {
     }
 
     @Override
-    public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-    int row, int column) {
+    public Component getTableCellRendererComponent(
+            JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column
+    ) {
         var newValue = (String) value;
         var label = new JLabel(newValue);
         label.setBorder(border);

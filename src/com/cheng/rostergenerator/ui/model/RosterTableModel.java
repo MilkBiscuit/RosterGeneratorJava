@@ -43,7 +43,7 @@ public class RosterTableModel extends AbstractTableModel {
             return ResBundleUtil.getString("meetingRoles");
         }
 
-        return ResBundleUtil.getString("datePlacehoder");
+        return ResBundleUtil.getString("datePlaceholder");
     }
 
     public void setData(String[][] data) {
