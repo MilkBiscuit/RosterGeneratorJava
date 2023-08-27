@@ -7,7 +7,7 @@ object PreferenceConstants {
     const val KEY_GUEST_HOSPITALITY = "guestHospitality"
     const val KEY_UM_AH_COUNTER = "umAhCounter"
     const val KEY_LISTENING_POST = "listening"
-    // TODO: JVMStatic annotation?
+    @JvmField
     val SETTING_KEYS: Array<String> = arrayOf(
         KEY_FOUR_SPEECHES,
         KEY_TWO_TT_EVALUATORS,

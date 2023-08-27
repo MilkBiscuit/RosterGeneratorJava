@@ -113,7 +113,7 @@ public class NameTable extends JPanel {
             var source = e.getItemSelectable();
             var index = settingObjects.indexOf(source);
             if (index > 1 && index < 6) {
-                PreferenceHelper.save(PreferenceConstants.INSTANCE.getSETTING_KEYS()[index], selected);
+                PreferenceHelper.save(PreferenceConstants.SETTING_KEYS[index], selected);
             }
         }
     };
@@ -248,7 +248,7 @@ public class NameTable extends JPanel {
             settingsPanel.add(box);
 
             var checkbox = new JCheckBox();
-            var isChecked = PreferenceHelper.read(PreferenceConstants.INSTANCE.getSETTING_KEYS()[i], true);
+            var isChecked = PreferenceHelper.read(PreferenceConstants.SETTING_KEYS[i], true);
             checkbox.setSelected(isChecked);
             checkbox.addItemListener(itemListener);
             settingsPanel.add(checkbox);
