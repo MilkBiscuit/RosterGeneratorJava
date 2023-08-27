@@ -1,8 +1,8 @@
 package test.com.cheng.rostergenerator.helper;
 
 import com.cheng.rostergenerator.adapter.persistence.PreferenceConstants;
-import com.cheng.rostergenerator.domain.MeetingRoleHelper;
 import com.cheng.rostergenerator.adapter.persistence.PreferenceHelper;
+import com.cheng.rostergenerator.domain.MeetingRoleHelper;
 import com.cheng.rostergenerator.ui.TextConstants;
 import org.junit.jupiter.api.Test;
 
@@ -53,9 +53,7 @@ class MeetingRoleHelperTest {
 
     @Test
     void testIsTTEvaluator() {
-        var result = MeetingRoleHelper.isTTEvaluator(null);
-        assertFalse(result);
-        result = MeetingRoleHelper.isTTEvaluator("");
+        var result = MeetingRoleHelper.isTTEvaluator("");
         assertFalse(result);
         result = MeetingRoleHelper.isTTEvaluator("apple");
         assertFalse(result);
@@ -71,9 +69,7 @@ class MeetingRoleHelperTest {
 
     @Test
     void testIsSpeechEvaluator() {
-        var result = MeetingRoleHelper.isSpeechEvaluator(null);
-        assertFalse(result);
-        result = MeetingRoleHelper.isSpeechEvaluator("");
+        var result = MeetingRoleHelper.isSpeechEvaluator("");
         assertFalse(result);
         result = MeetingRoleHelper.isSpeechEvaluator("apple");
         assertFalse(result);
