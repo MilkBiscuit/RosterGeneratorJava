@@ -24,4 +24,4 @@ I sincerely hope this program can be helpful for VP Eds and that you like it.
 
 ### For Windows (Portable application, zero install) :
 
-[RosterGenerator-v1.0.2.zip](https://drive.google.com/u/0/uc?id=1SLspDd9Ik96SwpHrvO0Il2VcbSJvW2ct&export=download)
+[Roster-v1.0.4.zip](https://drive.google.com/file/d/11EXBVwuwjVz-SoVKwJ8eNkFn2WW8gdGz/view)
