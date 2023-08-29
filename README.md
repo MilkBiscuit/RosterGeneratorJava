@@ -1,5 +1,5 @@
 # RosterGeneratorJava
-Life saver for Toastmasters VP Education! Roster generated for several meetings in the blink of an eye!
+Life saver for Toastmasters VP Education! Roster generated for several meetings in a blink of an eye!
 
 ### Pre-conditions of using this App:
 
@@ -20,7 +20,7 @@ I sincerely hope this program can be helpful for VP Eds and that you like it.
 ## Latest Version download link:
 ### For Mac OS:
 
-[Roster-1.0.3.pkg](https://drive.google.com/file/d/1Z2iEVTivduhuPhMLUtnCMgIQAF6Xj1tZ/view?usp=sharing)
+[Roster-1.0.4.dmg](https://drive.google.com/file/d/1vukYMJsyYXfQSVDy5Phm6UXTL5Lg9A6m/view?usp=drive_link)
 
 ### For Windows (Portable application, zero install) :
 

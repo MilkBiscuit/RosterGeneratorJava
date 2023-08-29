@@ -13,13 +13,13 @@ jpackage --type app-image --temp "D:\all new\android\Eclipse\RosterGeneratorJava
 ### MAC
 jpackage --type app-image \
 
-jpackage --type pkg \
+jpackage --type dmg \
  --temp ~/Downloads/temp \
  --name Roster \
  --mac-package-name "Roster @Chandler" \
- --app-version 1.0.3 \
+ --app-version 1.0.4 \
  --input ~/Downloads/jar \
- --main-jar RosterGenerator.jar \
+ --main-jar roster.jar \
  --main-class com.cheng.rostergenerator.Main \
  --icon "/Users/chandlerc/Development/otherPeople/RosterGeneratorJava/icon.icns"
 
