@@ -1,92 +1,107 @@
 [
   {
-    "name": "Ahmed",
+    "name": "Albus Dumbledore",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Ariana",
+    "name": "Andromeda Tonks",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Argus Filch",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Bellatrix Lestrange",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Buckbeak",
     "isExperienced": false,
     "assignSpeech": true
   },
   {
-    "name": "Brendan",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Chandler",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Chris",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Christine",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Claire",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Clifford",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Darryl",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Gail",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Grant",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Jamin",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "John",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Kenn",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Margaret",
-    "isExperienced": true,
-    "assignSpeech": true
-  },
-  {
-    "name": "Susan",
+    "name": "Charlie Weasley",
     "isExperienced": false,
     "assignSpeech": true
   },
   {
-    "name": "Vanessa",
+    "name": "Cho Chang",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Crookshanks",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Dean Thomas",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Dolores Umbridge",
     "isExperienced": true,
     "assignSpeech": true
   },
   {
-    "name": "Vinay",
+    "name": "Fleur Delacour",
     "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Fred Weasley",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "George Weasley",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Harry Potter",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Hermione Granger",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "James Potter",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Kreacher",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Lucius Malfoy",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Luna Lovegood",
+    "isExperienced": false,
+    "assignSpeech": true
+  },
+  {
+    "name": "Mary Riddle",
+    "isExperienced": true,
+    "assignSpeech": true
+  },
+  {
+    "name": "Molly Weasley",
+    "isExperienced": true,
     "assignSpeech": true
   }
 ]

@@ -5,8 +5,8 @@ import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import com.cheng.rostergenerator.domain.model.Member;
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
+import com.cheng.rostergenerator.domain.model.Member;
 import com.cheng.rostergenerator.util.ResBundleUtil;
 
 public class NameTableModel extends AbstractTableModel {

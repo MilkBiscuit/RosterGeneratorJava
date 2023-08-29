@@ -3,12 +3,12 @@
  */
 package com.cheng.rostergenerator;
 
-import javax.swing.JFrame;
-
 import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.ui.NameCollector;
 import com.cheng.rostergenerator.ui.NameTable;
 import com.cheng.rostergenerator.util.ResBundleUtil;
+
+import javax.swing.*;
 
 public class Main {
 

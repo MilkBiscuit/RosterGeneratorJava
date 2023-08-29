@@ -4,6 +4,7 @@ import com.cheng.rostergenerator.adapter.persistence.FileHelper;
 import com.cheng.rostergenerator.domain.RosterProducer;
 import com.cheng.rostergenerator.domain.model.RosterException;
 import com.cheng.rostergenerator.ui.model.RosterTableModel;
+import com.cheng.rostergenerator.util.CsvHelper;
 import com.cheng.rostergenerator.util.ResBundleUtil;
 import com.cheng.rostergenerator.util.UiUtil;
 
@@ -48,7 +49,7 @@ public class RosterTable extends JPanel {
                     if (!fileToBeSaved.getAbsolutePath().endsWith(".csv")) {
                         fileToBeSaved = new File(fileChooser.getSelectedFile() + ".csv");
                     }
-                    FileHelper.exportToCSV(dataModel, fileToBeSaved.getAbsolutePath());
+                    CsvHelper.exportToCSV(dataModel, fileToBeSaved.getAbsolutePath());
                 }
                 break;
             }
